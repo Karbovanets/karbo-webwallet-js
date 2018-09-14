@@ -80,7 +80,7 @@ body.native .hideOnNonNative{
 	height:34px;line-height:34px;
 	position: fixed;
 	top:0;
-	background: #00853D;
+	background: #0760BD;
 	color:white;
 	font-size:16px;
 	font-weight: bold;
@@ -121,7 +121,7 @@ body.menuHidden #menu {
 }
 
 #menu{
-	background: #00853D;
+	background: #0760BD;
 	color: white;
 	padding:10px 15px;
 }
@@ -849,8 +849,8 @@ body{
 
 .btn.primary{color: #fff;background-color: #40C18E;}
 .btn.primary.basic{color: #40C18E;border-color: #40C18E;}
-.btn.primary:hover {background-color: #00853D;}
-.btn.primary.basic:hover{color: #00853D;border-color: #00853D;}
+.btn.primary:hover {background-color: #0760BD;}
+.btn.primary.basic:hover{color: #0760BD;border-color: #0760BD;}
 
 .btn.teal{background-color: #00b5ad;color: #fff;}
 .btn.teal:hover{background-color: #009c95;color: #fff;}
