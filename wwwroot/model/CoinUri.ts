@@ -2,6 +2,7 @@
  * Copyright (c) 2018, Gnock
  * Copyright (c) 2018, The Masari Project
  * Copyright (c) 2018, The TurtleCoin Project
+ * Copyright (c) 2018, The Karbo Project
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
  *
@@ -16,9 +17,9 @@
 
 export class CoinUri{
 
-	static coinTxPrefix = 'turtlecoin:';
-	static coinWalletPrefix = 'turtlecoin:';
-	static coinAddressLength = 99;
+	static coinTxPrefix = 'karbowanec:';
+	static coinWalletPrefix = 'karbowanec:';
+	static coinAddressLength = 95;
 
 	static decodeTx(str : string) : {
 		address:string,

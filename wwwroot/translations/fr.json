@@ -1,7 +1,7 @@
 {
   "website":{
-	"title":"Portefeuille officiel en ligne pour TurtleCoin ",
-	"description":"Portefeuille en ligne officiel pour la monnaie TurtleCoin, anonyme, sécurisé et entièrement géré dans votre navigateur for une sécurité optimale"
+	"title":"Portefeuille officiel en ligne pour Karbo ",
+	"description":"Portefeuille en ligne officiel pour la monnaie Karbo, anonyme, sécurisé et entièrement géré dans votre navigateur for une sécurité optimale"
   },
   "messages": {
     "menu": {
@@ -62,8 +62,8 @@
       "github": "GitHub"
     },
     "homepage": {
-      "mainTitle": "Portefeuille sécurisé pour TurtleCoin",
-      "tagLine": "Le moyen le plus simple d'utiliser TurtleCoin, n'importe où, n'importe quand",
+      "mainTitle": "Portefeuille sécurisé pour Karbo",
+      "tagLine": "Le moyen le plus simple d'utiliser Karbo, n'importe où, n'importe quand",
       "actions": {
         "loadWallet": "Charger mon portefeuille",
         "importWallet": "Importer un portefeuille",
@@ -81,7 +81,7 @@
         },
         "technology": {
           "title": "Technologie unique",
-          "description": "Connectée directement à la Blockchain TurtleCoin !"
+          "description": "Connectée directement à la Blockchain Karbo!"
         },
         "openSource": {
           "title": "Entièrement open-source",
@@ -105,7 +105,7 @@
         "emptyWallet": "Vous n'avez aucun fond sur ce portefeuille",
         "waitSync": "Veuillez attendre la fin de la synchronisation",
         "beReallyPatient": "La première synchronisation peut prendre quelques minutes...",
-        "getTRTLAddress": "Obtenir mon adresse pour recevoir des TRTL"
+        "getKRBAddress": "Obtenir mon adresse pour recevoir des KRB"
       },
       "txDetails": {
         "title": "Détails de la transaction",
@@ -141,7 +141,7 @@
       },
       "finalizationStep": {
         "title": "C'était simple. Votre portefeuille est prêt !",
-        "subtitle": "Soyer près à utiliser TurtleCoin le plus simplement possible",
+        "subtitle": "Soyer près à utiliser Karbo le plus simplement possible",
         "passwordSelectionBlock": {
           "label": "Sécuriser mon portefeuille"
         },
@@ -164,8 +164,8 @@
         }
       },
       "disclaimerBlock": {
-        "title": "Risques liés à l'utilisation de TurtleCoinWallet",
-        "content": "TurtleCoinWallet est un service web. Il vous aide à utiliser TurtleCoin facilement sans avoir un installer des logiciels. <br/>Nous vous conseillons de traiter ce site comme vous traiteriez votre portefeuille."
+        "title": "Risques liés à l'utilisation de KarboWallet",
+        "content": "KarboWallet est un service web. Il vous aide à utiliser Karbo facilement sans avoir un installer des logiciels. <br/>Nous vous conseillons de traiter ce site comme vous traiteriez votre portefeuille."
       }
     },
     "donatePage": {
@@ -176,8 +176,8 @@
         "content": "Ce portefeuille est développé par Gnock sur son temps libre.<br/>Si vous voulez aider au développement, payer les serveur et que vous aimez ce service, considérez une petite donation: <br/><br/>"
       },
       "masariFundBlock": {
-        "title": "Fond de développement de TurtleCoin",
-        "content": "Pour aidez TurtleCoin globalement, vous pouvez donner à cette adresse"
+        "title": "Fond de développement de Karbo",
+        "content": "Pour aidez Karbo globalement, vous pouvez donner à cette adresse"
       }
     },
     "supportPage": {
@@ -186,12 +186,12 @@
       "getInTouchBlock": {
         "title": "Reston en contact !",
         "content": "Vous avez des idées, des retours pour aider à améliorer le service ? Contactez nous !",
-        "discord": "Discord Officiel de TurtleCoin"
+        "discord": "Discord Officiel de Karbo"
       }
     },
     "networkPage": {
       "title": "Statistiques du réseau",
-      "subtitle": "Détails sur le réseaux TurtleCoin",
+      "subtitle": "Détails sur le réseaux Karbo",
       "statsBlock": {
         "hashrate": "Hashrate du réseau",
         "height": "Hauteur de la Blockchain",
@@ -201,7 +201,7 @@
       }
     },
     "sendPage": {
-      "title": "Envoyer des TRTL",
+      "title": "Envoyer des KRB",
       "sendBlock": {
         "address": {
           "label": "Adresse de destination",
@@ -231,7 +231,7 @@
       },
       "thankYouDonationModal": {
         "title": "Merci pour votre donation !",
-        "content": "Votre aide est apprécié. <br/>Cette donation contribuera à améliorer TurtleCoin",
+        "content": "Votre aide est apprécié. <br/>Cette donation contribuera à améliorer Karbo",
         "confirmText": "Fermer"
       },
       "transferSentModal": {
@@ -268,7 +268,7 @@
       }
     },
     "receivePage": {
-      "title": "Recevoir des TRTL",
+      "title": "Recevoir des KRB",
       "receiveBlock": {
         "address": {
           "title": "Votre adresse pour recevoir des fonds",
@@ -296,10 +296,10 @@
     },
     "miningPage": {
       "title": "Mining information",
-      "subtitle": "Support the network by mining and be rewarded with TRTL",
+      "subtitle": "Support the network by mining and be rewarded with KRB",
       "contentBlock": {
         "title": "How to get started mining",
-        "intro": "Mining helps decentralise the network and allows you to earn TurtleCoin. There is no need for specialist equipment to mine TurtleCoin.",
+        "intro": "Mining helps decentralise the network and allows you to earn Karbo. There is no need for specialist equipment to mine Karbo.",
         "linkText": "Click here to read our mining guide"
       }
     },

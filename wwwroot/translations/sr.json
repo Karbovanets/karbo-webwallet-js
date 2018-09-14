@@ -105,7 +105,7 @@
         "emptyWallet": "Тренутно немате средстава у новчанику",
         "waitSync": "Сачекајте да се новчаник освежи",
         "beReallyPatient": "Овај поступак може да потраје...",
-        "getTRTLAddress": "Адреса за пријем новчића"
+        "getKRBAddress": "Адреса за пријем новчића"
       },
       "txDetails": {
         "title": "Transaction details",
@@ -297,10 +297,10 @@
     },
     "miningPage": {
       "title": "Mining information",
-      "subtitle": "Support the network by mining and be rewarded with TRTL",
+      "subtitle": "Support the network by mining and be rewarded with KRB",
       "contentBlock": {
         "title": "How to get started mining",
-        "intro": "Mining helps decentralise the network and allows you to earn TurtleCoin. There is no need for specialist equipment to mine TurtleCoin.",
+        "intro": "Mining helps decentralise the network and allows you to earn Karbo. There is no need for specialist equipment to mine Karbo.",
         "linkText": "Click here to read our mining guide"
       }
     },

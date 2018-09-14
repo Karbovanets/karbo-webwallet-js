@@ -1,7 +1,7 @@
 {
-  "name": "TurtleCoinWebWallet",
+  "name": "KarboWebWallet",
   "version": "1.0.0",
-  "description": "Fully client side web wallet for TurtleCoin",
+  "description": "Fully client side web wallet for Karbo",
   "main": "index.js",
   "dependencies": {
     "localforage": "^1.7.2",
@@ -11,12 +11,12 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/turtlecoin/turtlecoin-webwallet-js.git"
+    "url": "git+https://github.com/Karbovanets/Karbo-webwallet-js.git"
   },
   "author": "gnock & TurtleCoin",
   "license": "BSD-3",
   "bugs": {
-    "url": "https://github.com/turtlecoin/turtlecoin-webwallet-jsissues"
+    "url": "https://github.com/Karbovanets/Karbo-webwallet-js/issues"
   },
-  "homepage": "https://github.com/turtlecoin/turtlecoin-webwallet-js#readme"
+  "homepage": "https://github.com/Karbovanets/Karbo-webwallet-js#readme"
 }
