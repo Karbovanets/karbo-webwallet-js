@@ -18,7 +18,7 @@ namespace WebWallet.Helpers
     public static class BlockchainCache
     {
 
-        private static ILogger logger = StaticLogger.CreateLogger("BlockchainChache");
+        private static ILogger logger = StaticLogger.CreateLogger("BlockchainCache");
 
         private static void LogException(Exception ex)
         {
