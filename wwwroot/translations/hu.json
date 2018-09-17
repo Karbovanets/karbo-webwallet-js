@@ -105,7 +105,7 @@
         "emptyWallet": "Jelenleg nincsen egyenleged ebben a tárcában.",
         "waitSync": "Kérlek, várj, míg a tárca naprakész lesz",
         "beReallyPatient": "A kezdeti beállítás némi időbe telhet...",
-        "getTRTLAddress": "TRTL fogadása"
+        "getKRBAddress": "KRB fogadása"
       },
       "txDetails": {
         "title": "Tranzakciórészletek",
@@ -201,7 +201,7 @@
       }
     },
     "sendPage": {
-      "title": "TRTL küldése",
+      "title": "KRB küldése",
       "sendBlock": {
         "address": {
           "label": "Kedvezményezett címe",
@@ -268,7 +268,7 @@
       }
     },
     "receivePage": {
-      "title": "TRTL fogadása",
+      "title": "KRB fogadása",
       "receiveBlock": {
         "address": {
           "title": "Pénz fogadására szolgáló cím:",
@@ -296,7 +296,7 @@
     },
     "miningPage": {
       "title": "Mining information",
-      "subtitle": "Support the network by mining and be rewarded with TRTL",
+      "subtitle": "Support the network by mining and be rewarded with KRB",
       "contentBlock": {
         "title": "How to get started mining",
         "intro": "Mining helps decentralise the network and allows you to earn Karbo. There is no need for specialist equipment to mine Karbo.",

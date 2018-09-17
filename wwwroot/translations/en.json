@@ -105,7 +105,7 @@
 		"emptyWallet": "You currently have no funds in this wallet.",
 		"waitSync": "Please wait until the wallet is updated",
 		"beReallyPatient": "The initial setup can take some time...",
-		"getTRTLAddress": "Receive TRTL"
+		"getKRBAddress": "Receive KRB"
 	  },
 	  "txDetails":{
 		"title":"Transaction details",
@@ -201,7 +201,7 @@
 	  }
 	},
 	"sendPage":{
-	  "title":"Send TRTL",
+	  "title":"Send KRB",
 	  "sendBlock":{
 		"address":{
 		  "label":"Destination address",
@@ -268,7 +268,7 @@
 	  }
 	},
 	"receivePage":{
-	  "title":"Receive TRTL",
+	  "title":"Receive KRB",
 	  "receiveBlock":{
 		"address":{
 		  "title":"Your address to receive funds:",
@@ -296,7 +296,7 @@
 	},
 	"miningPage":{
 	  "title":"Mining information",
-	  "subtitle":"Support the network by mining and be rewarded with TRTL",
+	  "subtitle":"Support the network by mining and be rewarded with KRB",
     "contentBlock": {
       "title": "How to get started mining",
       "intro": "Mining helps decentralise the network and allows you to earn Karbo. There is no need for specialist equipment to mine Karbo.",
@@ -381,7 +381,7 @@
 	  },
 	  "warningBlock":{
 		"title":"Warning",
-		"content":"If you choose to save your private keys or your mnemonic phrase, TRTLASE DO NOT store them in clear-text for your own safety.<br/>The file is an alternate solution where your keys are encrypted and contains a backup of all your transactions to spare you a future synchronisation."
+		"content":"If you choose to save your private keys or your mnemonic phrase, KRBASE DO NOT store them in clear-text for your own safety.<br/>The file is an alternate solution where your keys are encrypted and contains a backup of all your transactions to spare you a future synchronisation."
 	  },
 	  "exportBlock":{
 		"title":"Export your RAW credentials",

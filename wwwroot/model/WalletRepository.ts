@@ -266,7 +266,7 @@ export class WalletRepository{
         doc.setFontSize(10)
         doc.setTextColor(255, 255, 255)
         doc.text(108, 125, 'To deposit funds to this paper wallet, send the');
-        doc.text(108, 130, 'Karbo (TRTL) coins to the public address.');
+        doc.text(108, 130, 'Karbo (KRB) coins to the public address.');
         doc.text(108, 150, 'DO NOT REVEAL THE PRIVATE SPEND KEY.');
         doc.text(108, 165, 'Until you are ready to import the balance from this');
         doc.text(108, 170, 'wallet to your Karbo wallet, a cryptocurrency');

@@ -105,7 +105,7 @@
         "emptyWallet": "Vous n'avez aucun fond sur ce portefeuille",
         "waitSync": "Veuillez attendre la fin de la synchronisation",
         "beReallyPatient": "La première synchronisation peut prendre quelques minutes...",
-        "getTRTLAddress": "Obtenir mon adresse pour recevoir des TRTL"
+        "getKRBAddress": "Obtenir mon adresse pour recevoir des KRB"
       },
       "txDetails": {
         "title": "Détails de la transaction",
@@ -201,7 +201,7 @@
       }
     },
     "sendPage": {
-      "title": "Envoyer des TRTL",
+      "title": "Envoyer des KRB",
       "sendBlock": {
         "address": {
           "label": "Adresse de destination",
@@ -268,7 +268,7 @@
       }
     },
     "receivePage": {
-      "title": "Recevoir des TRTL",
+      "title": "Recevoir des KRB",
       "receiveBlock": {
         "address": {
           "title": "Votre adresse pour recevoir des fonds",
@@ -296,7 +296,7 @@
     },
     "miningPage": {
       "title": "Mining information",
-      "subtitle": "Support the network by mining and be rewarded with TRTL",
+      "subtitle": "Support the network by mining and be rewarded with KRB",
       "contentBlock": {
         "title": "How to get started mining",
         "intro": "Mining helps decentralise the network and allows you to earn Karbo. There is no need for specialist equipment to mine Karbo.",
