@@ -1,7 +1,7 @@
 {
   "website":{
-	"title":"Offizielle TurtleCoin Web Wallet",
-	"description":"Offizielle Online Wallet für TurtleCoin currency, anonym, sicher und für optimale Sicherheit vollständig in deinem Browser verwaltet"
+	"title":"Offizielle Karbo Web Wallet",
+	"description":"Offizielle Online Wallet für Karbo currency, anonym, sicher und für optimale Sicherheit vollständig in deinem Browser verwaltet"
   },
   "messages": {
     "menu": {
@@ -62,8 +62,8 @@
       "github": "GitHub"
     },
     "homepage": {
-      "mainTitle": "Gesicherte TurtleCoin Wallet",
-      "tagLine": "Der einfachste Weg TurtleCoin jederzeit und überall zu nutzen",
+      "mainTitle": "Gesicherte Karbo Wallet",
+      "tagLine": "Der einfachste Weg Karbo jederzeit und überall zu nutzen",
       "actions": {
         "loadWallet": "Lade meine Wallet",
         "importWallet": "Importiere eine Wallet",
@@ -81,7 +81,7 @@
         },
         "technology": {
           "title": "Einzigartige Technologie",
-          "description": "Direkt mit der TurtleCoin Blockchain verbunden!"
+          "description": "Direkt mit der Karbo Blockchain verbunden!"
         },
         "openSource": {
           "title": "Komplett open-source",
@@ -141,7 +141,7 @@
       },
       "finalizationStep": {
         "title": "Das war einfach. Dein Account ist bereit!",
-        "subtitle": "Benutze TurtleCoin wie noch nie zuvor",
+        "subtitle": "Benutze Karbo wie noch nie zuvor",
         "passwordSelectionBlock": {
           "label": "Schütze deine Daten mit einem Passwort"
         },
@@ -159,13 +159,13 @@
           "mnemonicPhrase": "Mnemonic phrase",
           "separatorManualMethodsSolution": " oder ",
           "confirmManuallyWritten": "Ich habe es aufgeschieben",
-          "warningMessage": "**Auf keinen Fall verlieren!** Sie können nicht wiederhergestellt werden wenn du sie verlierst.<br/>**Nicht weitergeben!** Deine TurtleCoin werden gestohlen werden wenn diese Datei auf einer bösartigen/Phishing Seite benutzt.<br/>**Mache ein Backup!** Sichere es so wie die Millionen Euro, die es eines Tages vielleicht wert sein wird.<br/>",
+          "warningMessage": "**Auf keinen Fall verlieren!** Sie können nicht wiederhergestellt werden wenn du sie verlierst.<br/>**Nicht weitergeben!** Deine Karbo werden gestohlen werden wenn diese Datei auf einer bösartigen/Phishing Seite benutzt.<br/>**Mache ein Backup!** Sichere es so wie die Millionen Euro, die es eines Tages vielleicht wert sein wird.<br/>",
           "finishButton": "Ich habe verstanden. Weiter"
         }
       },
       "disclaimerBlock": {
-        "title": "Risiko beim benutzen der TurtleCoinWallet",
-        "content": "TurtleCoinWallet ist ein web-basierendes Interface. Es hilft beim Nutzen von TurtleCoin ohne einen vollen Node zu betreiben. <br/>Wir empfehlen TurtleCoinWallet sicherheitstechnisch wie eine richtige Wallet zu behandeln."
+        "title": "Risiko beim benutzen der KarboWallet",
+        "content": "KarboWallet ist ein web-basierendes Interface. Es hilft beim Nutzen von Karbo ohne einen vollen Node zu betreiben. <br/>Wir empfehlen KarboWallet sicherheitstechnisch wie eine richtige Wallet zu behandeln."
       }
     },
     "donatePage": {
@@ -176,8 +176,8 @@
         "content": "Diese Webwallet ist von Gnock in seiner Freizeit entwickelt.<br/>Bitte denk über eine Spende nach wenn dir die App gefällt und du bei der Bezahlung der Server und der Enwicklung helfen willst.: <br/><br/>"
       },
       "masariFundBlock": {
-        "title": "TurtleCoin Entwicklerfonds",
-        "content": "Spende an diese Adresse um TurtleCoin zu helfen"
+        "title": "Karbo Entwicklerfonds",
+        "content": "Spende an diese Adresse um Karbo zu helfen"
       }
     },
     "supportPage": {
@@ -186,7 +186,7 @@
       "getInTouchBlock": {
         "title": "Nehmen wir Kontakt auf!",
         "content": "Wenn du Ideen oder Feedback hast um die Wallet zu verbessern, kontaktiere uns!",
-        "discord": "TurtleCoin Discord Channel"
+        "discord": "Karbo Discord Channel"
       }
     },
     "networkPage": {
@@ -231,7 +231,7 @@
       },
       "thankYouDonationModal": {
         "title": "Danke für deine Spende!",
-        "content": "Deine Hilfe wird sehr geschätzt. <br/>Diese Spende wird helfen TurtleCoin noch beser zu machen",
+        "content": "Deine Hilfe wird sehr geschätzt. <br/>Diese Spende wird helfen Karbo noch beser zu machen",
         "confirmText": "Schließen"
       },
       "transferSentModal": {
@@ -299,7 +299,7 @@
       "subtitle": "Support the network by mining and be rewarded with TRTL",
       "contentBlock": {
         "title": "How to get started mining",
-        "intro": "Mining helps decentralise the network and allows you to earn TurtleCoin. There is no need for specialist equipment to mine TurtleCoin.",
+        "intro": "Mining helps decentralise the network and allows you to earn Karbo. There is no need for specialist equipment to mine Karbo.",
         "linkText": "Click here to read our mining guide"
       }
     },

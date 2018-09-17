@@ -1,13 +1,13 @@
 let global : any = typeof window !== 'undefined' ? window : self;
 global.config = {
     apiUrl: typeof window !== 'undefined' && window.location ? window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1) + 'api/' : 'https://wallet.plenteum.com/api/',
-    mainnetExplorerUrl: "https://turtle.land",
-    testnetExplorerUrl: "https://explorer.turtlecoin.lol/",
+    mainnetExplorerUrl: "https://explorer.karbo.io/",
+    testnetExplorerUrl: "https://explorer.karbo.io/",
     testnet: false,
-    coinUnitPlaces: 2,
-    txMinConfirms: 60,         // corresponds to CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE in Monero
-    txCoinbaseMinConfirms: 120, // corresponds to CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW in Monero
-    addressPrefix: 3914525,
+    coinUnitPlaces: 12,
+    txMinConfirms: 10,         // corresponds to CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE in Monero
+    txCoinbaseMinConfirms: 10, // corresponds to CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW in Monero
+    addressPrefix: 111,
     integratedAddressPrefix: 0,
     addressPrefixTestnet: 0,
     integratedAddressPrefixTestnet: 0,
@@ -19,10 +19,10 @@ global.config = {
     idleTimeout: 30,
     idleWarningDuration: 20,
 
-    coinSymbol: 'TRTL',
-    openAliasPrefix: "trtl",
-    coinName: 'TurtleCoin',
-    coinUriPrefix: 'turtlecoin:',
+    coinSymbol: 'KRB',
+    openAliasPrefix: "krb1",
+    coinName: 'karbowanec',
+    coinUriPrefix: 'karbowanec:',
     avgBlockTime: 30,
     maxBlockNumber: 500000000,
 };
