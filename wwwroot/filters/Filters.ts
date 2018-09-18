@@ -28,6 +28,6 @@ export function VueFilterPiconero(value : number){
         return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + (Math.abs(amount - parseInt(i)).toFixed(decimalCount)).slice(2) : "");
     } catch (e) {
         console.log(e);
-        return value / 000000000000;
+        return value / 1000000000000;
     }
 }
