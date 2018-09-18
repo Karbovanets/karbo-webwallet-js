@@ -59,7 +59,7 @@ class NetworkView extends DestructableView{
 			url:config.apiUrl+'network'
 		}).done(function(data : any){
             self.networkDifficulty = data.difficulty;
-            self.networkHashrate = parseFloat((data.difficulty / config.avgBlockTime).toFixed(2));//hash rate in MH/s
+            self.networkHashrate = parseFloat((data.difficulty / config.avgBlockTime / 1000).toFixed(2));//hash rate in MH/s
 			self.blockchainHeight = data.height;
 			self.lastReward = data.reward;
 			self.lastBlockFound = parseInt(data.timestamp);
