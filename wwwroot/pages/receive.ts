@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Gnock
  * Copyright (c) 2018, The Masari Project
+ * Copyright (c) 2018, The Plenteum Project
  * Copyright (c) 2018, The TurtleCoin Project
  * Copyright (c) 2018, The Karbo Project
  *
@@ -101,7 +102,7 @@ class AccountView extends DestructableView{
 	generateQrCode(){
 		let el = kjua({
 			text: this.getAddressEncoded(),
-			image:document.getElementById('masariQrCodeLogo'),
+			image:document.getElementById('krbQrCodeLogo'),
 			size:300,
 			mode:'image',
 			mSize: 10,

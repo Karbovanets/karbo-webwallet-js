@@ -1,4 +1,5 @@
 ﻿/*
+ * Copyright (c) 2018, The Plenteum Project
  * Copyright (c) 2018, The TurtleCoin Project
  * Copyright (c) 2018, The Karbo Project
  *
@@ -54,13 +55,12 @@ namespace WebWallet
                .Enrich.FromLogContext()
                .CreateLogger();
 
-
             //add Hangfire
             services.AddHangfire(config => {
                 config.UseMemoryStorage();
                 config.UseConsole();
             });
-            
+
             //add MVC
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.Configure<GzipCompressionProviderOptions>(options =>

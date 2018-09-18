@@ -2,9 +2,6 @@ type vi = {
     amount: number,
     k_image: string,
     key_offsets: number[],
-    mixin: number
-    outnumber: number,
-    outhash: string,
     type: string
 }
 

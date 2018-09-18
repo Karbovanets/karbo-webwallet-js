@@ -30,7 +30,9 @@ namespace WebWallet.Controllers
             {
                 foreach (var rawTx in txs.transactions)
                 {
-                    transactions.Add(TransactionHelpers.MapTx(rawTx));
+                    var memPoolTx = TransactionHelpers.MapTx(rawTx);
+                    memPoolTx.height = 0;
+                    transactions.Add(memPoolTx);
                 }
             }
             return new JsonResult(JsonConvert.SerializeObject(transactions));

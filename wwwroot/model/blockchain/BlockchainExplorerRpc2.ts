@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Gnock
  * Copyright (c) 2018, The Masari Project
+ * Copyright (c) 2018, The Plenteum Project
  * Copyright (c) 2018, The TurtleCoin Project
  * Copyright (c) 2018, The Karbo Project
  *
@@ -106,12 +107,17 @@ export class WalletWatchdog {
         }
 
         this.wallet.txsMem = [];
+        this.wallet.fusionTxs = [];
         this.explorer.getTransactionPool().then(function (data: any) {
             if (typeof data !== 'undefined')
                 for (let rawTx of data) {
                     let tx = TransactionsExplorer.parse(rawTx, self.wallet);
                     if (tx !== null) {
-                        self.wallet.txsMem.push(tx);
+                        if (tx.isFusionTx()) {
+                            self.wallet.fusionTxs.push(tx);
+                        } else {
+                            self.wallet.txsMem.push(tx);
+                        }
                     }
                 }
         }).catch(function () { });
@@ -237,25 +243,32 @@ export class WalletWatchdog {
                 let previousStartBlock = self.lastBlockLoading;
                 let startBlock = Math.floor(self.lastBlockLoading / 100) * 100;
                 // console.log('=>',self.lastBlockLoading, endBlock, height, startBlock, self.lastBlockLoading);
-                console.log('load block from ' + startBlock);
-                self.explorer.getTransactionsForBlocks(previousStartBlock).then(function (transactions: RawDaemonTransaction[]) {
-                    //to ensure no pile explosion
-                    if (transactions.length > 0) {
-                        let lastTx = transactions[transactions.length - 1];
+                console.log('load block from ' + startBlock + ' (actual block: ' + previousStartBlock + ') at height :' + height);
+                if (previousStartBlock <= height) {
+                    self.explorer.getTransactionsForBlocks(previousStartBlock).then(function (transactions: RawDaemonTransaction[]) {
+                        //to ensure no pile explosion
+                        if (transactions.length > 0) {
+                            let lastTx = transactions[transactions.length - 1];
 
-                        if (typeof lastTx.height !== 'undefined') {
-                            self.lastBlockLoading = lastTx.height + 2; //we're operating one block behind to give the Tx Caching process a chance to catch up
+                            if (typeof lastTx.height !== 'undefined') {
+                                self.lastBlockLoading = lastTx.height + 2; //we're operating one block behind to give the Tx Caching process a chance to catch up
+                            }
                         }
-                    }
-                    self.processTransactions(transactions);
+                        self.processTransactions(transactions);
+                        setTimeout(function () {
+                            self.loadHistory();
+                        }, 1);// then try load history again... 
+                    }).catch(function () {
+                        setTimeout(function () {
+                            self.loadHistory();
+                        }, 30 * 1000);//retry 30s later if an error occurred
+                    });
+                } else {
+                    //if we're on the current height, then only try sync every 30 seconds... 
                     setTimeout(function () {
                         self.loadHistory();
-                    }, 1);// then try load history again... 
-                }).catch(function () {
-                    setTimeout(function () {
-                        self.loadHistory();
-                    }, 30 * 1000);//retry 30s later if an error occurred
-                });
+                    }, 30000);// then try load history again... 
+                }
             } else {
                 setTimeout(function () {
                     self.loadHistory();

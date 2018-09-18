@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "webwallet": {
+    "karbo-webwallet": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "",

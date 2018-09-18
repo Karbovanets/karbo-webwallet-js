@@ -43,7 +43,7 @@ namespace WebWallet.Helpers
                 var currentHeight = 0;
                 try
                 {
-                    currentHeight = RpcHelper.Request<GetHeightResp>("getheight").Height - 1;
+                    currentHeight = RpcHelper.Request<GetHeightResp>("getheight").Height;
                 }
                 catch
                 {

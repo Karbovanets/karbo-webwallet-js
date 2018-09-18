@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Gnock
  * Copyright (c) 2018, The Masari Project
+ * Copyright (c) 2018, The Plenteum Project
  * Copyright (c) 2018, The TurtleCoin Project
  * Copyright (c) 2018, The Karbo Project
  *
@@ -65,6 +66,7 @@ export class Wallet extends Observable {
     private _lastHeight: number = 0;
 
     private transactions: Transaction[] = [];
+    fusionTxs: Transaction[] = [];
     txsMem: Transaction[] = [];
     private modified = true;
     creationHeight: number = 0;
@@ -286,7 +288,7 @@ export class Wallet extends Observable {
                     amount += out.amount;
                 }
             for (let nin of transaction.ins) {
-                amount += nin.amount;
+                amount -= nin.amount;
             }
         }
 
@@ -302,7 +304,7 @@ export class Wallet extends Observable {
                 }
 
             for (let nin of transaction.ins) {
-                amount += nin.amount;
+                amount -= nin.amount;
                 // console.log('-'+nin.amount);
             }
         }

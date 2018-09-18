@@ -2,6 +2,7 @@
 /*
  * Copyright (c) 2018, Gnock
  * Copyright (c) 2018, The Masari Project
+ * Copyright (c) 2018, The Plenteum Project
  * Copyright (c) 2018, The TurtleCoin Project
  * Copyright (c) 2018, The Karbo Project
  *

@@ -58,7 +58,7 @@ namespace WebWallet.Models
     {
         
         public string k_image { get; set; }
-
+        public Int64 amount { get; set; }
         public List<int> key_offsets { get; set; }
     }
 

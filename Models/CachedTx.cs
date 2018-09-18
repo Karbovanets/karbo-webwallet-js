@@ -23,10 +23,10 @@ namespace WebWallet.Models
     public class CachedInput
     {
         public Int64 amount { get; set; } //amount
-        public string type { get; set; } //type
+        //public string type { get; set; } //type
         public string k_image { get; set; } //k_image
-        public List<int> key_offsets { get; set; } //key_offsets
-        public int mixin { get; set; } //mixin
+        //public List<int> key_offsets { get; set; } //key_offsets
+        //public int mixin { get; set; } //mixin
         //public int outnumber { get; set; } //output.number
         //public string outhash { get; set; } //output.hash
     }
@@ -34,7 +34,7 @@ namespace WebWallet.Models
     {
         public int globalIndex { get; set; } //global_index
         public Int64 amount { get; set; } //amount
-        public string type { get; set; } //type
+        //public string type { get; set; } //type
         public string key { get; set; } //key
     }
 
