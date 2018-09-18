@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Gnock
  * Copyright (c) 2018, The Masari Project
+ * Copyright (c) 2018, The Plenteum Project
  * Copyright (c) 2018, The TurtleCoin Project
  * Copyright (c) 2018, The Karbo Project
  *
@@ -16,5 +17,17 @@
  */
 
 export function VueFilterPiconero(value : number){
-	return value/100000000;
+    let amount = value / 1000000000000;
+    try {
+        let decimalCount = 12, decimal = ".", thousands = ",";
+        decimalCount = Math.abs(decimalCount);
+        decimalCount = isNaN(decimalCount) ? 12 : decimalCount;
+        const negativeSign = amount < 0 ? "-" : "";
+        let i = parseInt((amount = Math.abs(amount || 0)).toFixed(decimalCount)).toString();
+        let j = (i.length > 13) ? i.length % 13 : 0;
+        return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + (Math.abs(amount - parseInt(i)).toFixed(decimalCount)).slice(2) : "");
+    } catch (e) {
+        console.log(e);
+        return value / 000000000000;
+    }
 }
