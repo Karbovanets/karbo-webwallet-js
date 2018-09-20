@@ -18,7 +18,7 @@ namespace WebWallet.Controllers
         public JsonResult Get(int height = 0)
         {
             //TODO: Update this to split get Tx's from Split BC cache
-            var startHeight = height;
+            var startHeight = Convert.ToInt32(Math.Floor((double)(height / 100) * 100));
             var endHeight = startHeight + 100;
             if (startHeight < 1) startHeight = 1;
             var chainHeight = RpcHelper.Request<GetHeightResp>("getheight").Height;

@@ -38,7 +38,67 @@ namespace WebWallet.Helpers
 
             try
             {
-                //first, we need to know the current BC Height
+                //first, we need to try again to fetch any failed or missing Tx's... 
+                using (var db = new LiteDatabase(string.Concat(AppContext.BaseDirectory, @"App_Data/", "failedHashes.db")))
+                {
+                    var failedTransactions = db.GetCollection<FailedHash>("failed_txs");
+                    failedTransactions.EnsureIndex(x => x.height);
+                    failedTransactions.EnsureIndex(x => x.hash);
+                    var allFails = failedTransactions.FindAll().ToList();
+                    foreach (var failedHash in allFails)
+                    {
+                        using (var txDb = new LiteDatabase(failedHash.DbFile))
+                        {
+                            var transactions = db.GetCollection<CachedTx>("cached_txs");
+                            var date = DateTime.Now;
+                            // Index document using height's, hash and Id
+                            transactions.EnsureIndex(x => x.height);
+                            transactions.EnsureIndex(x => x.Id);
+                            transactions.EnsureIndex(x => x.hash);
+                            //try fetch the transaction again... 
+                            var tx_args = new Dictionary<string, object>();
+                            tx_args.Add("transactionHashes", new string[] { failedHash.hash });
+                            try
+                            {
+                                var txs = RpcHelper.Request<TxDetailResp>("get_transaction_details_by_hashes", tx_args);
+                                var transactionsToInsert = new List<CachedTx>();
+                                foreach (var tx in txs.transactions)
+                                {
+                                    var cachedTx = TransactionHelpers.MapTx(tx);
+                                    //persist tx's to cache
+                                    if (cachedTx != null && !transactions.Find(x => x.hash == cachedTx.hash).Any())
+                                    {
+                                        transactionsToInsert.Add(cachedTx);
+                                    }
+                                }
+                                if (transactionsToInsert.Any())
+                                {
+                                    transactions.InsertBulk(transactionsToInsert);
+                                    logger.Log(LogLevel.Information, $"Added {transactionsToInsert.Count} transactions to cache.");
+                                    //remove from failedTx DB
+                                    foreach (var tx in transactionsToInsert)
+                                    {
+                                        var failedTx = failedTransactions.FindOne(x => x.hash == tx.hash);
+                                        if (failedTx != null)
+                                        {
+                                            failedTransactions.Delete(failedTx.Id);
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                failedHash.FetchAttempts++;
+                                logger.Log(LogLevel.Information, $"Failed to add single transaction {failedHash.hash} on attempt number {failedHash.FetchAttempts}.");
+                                LogException(ex);
+                                //update the failed Tx and restore it in DB to try again
+                                failedTransactions.Update(failedHash);
+                            }
+                        }
+                    }
+                }
+
+                //now, we're processing the pending transactions, we need to know the current BC Height
                 //get bc height from RPC
                 var currentHeight = 0;
                 try
@@ -172,6 +232,21 @@ namespace WebWallet.Helpers
                                                 else
                                                 {
                                                     logger.LogError($"failed to fetch single transaction: {hash}");
+                                                    //log the failed hash and come back to try add it later on.
+                                                    var failedHash = new FailedHash()
+                                                    {
+                                                        DbFile = string.Concat(AppContext.BaseDirectory, @"App_Data/", "transactions_", start, "-", end, ".db"),
+                                                        hash = hash,
+                                                        height = gCounter,
+                                                        FetchAttempts = 0
+                                                    };
+                                                    using (var failedHashDb = new LiteDatabase(string.Concat(AppContext.BaseDirectory, @"App_Data/", "failedHashes.db")))
+                                                    {
+                                                        var failedTransactions = db.GetCollection<FailedHash>("failed_txs");
+                                                        failedTransactions.EnsureIndex(x => x.height);
+                                                        failedTransactions.EnsureIndex(x => x.hash);
+                                                        failedTransactions.Insert(failedHash);
+                                                    }
                                                 }
                                             }
                                         }
