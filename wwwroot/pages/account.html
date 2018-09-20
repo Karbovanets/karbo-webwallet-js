@@ -22,12 +22,12 @@
 			<div class="body" >
 				<div class="header-title" >{{ $t("accountPage.balanceBlock.title") }}</div>
                 <div class="content">
-                    <span class="walletAmount">{{ walletAmount | piconero }}</span> KRB
+                    <span class="walletAmount">{{ walletAmount | formatMoney }}</span> KRB
                     <tempate class="amount unlocked" v-if="unlockedWalletAmount !== walletAmount">
-                        <br /><span class="walletAmount">{{ $t("accountPage.balanceBlock.unlocked") }}: {{ unlockedWalletAmount | piconero }}</span> KRB
+                        <br /><span class="walletAmount">{{ $t("accountPage.balanceBlock.unlocked") }}: {{ unlockedWalletAmount | formatMoney }}</span> KRB
                     </tempate>
                     <tempate class="" v-if="fusionCount > 0">
-                        <br /><span class="walletAmount">{{ fusionCount }} {{ $t("accountPage.balanceBlock.fusions") }}</span> KRB
+                        <br /><span class="walletAmount">{{ fusionCount }} {{ $t("accountPage.balanceBlock.fusions") }}</span>
                     </tempate>
                 </div>
 			</div>
@@ -48,7 +48,7 @@
 									</td><!--LEfT-->
 									<td class="timestamp" v-if="transaction.blockHeight > 0">{{$d(new Date(transaction.timestamp*1000), 'long')}}</td>
 									<td class="timestamp" v-else="">{{ $t("accountPage.historyBlock.pendingTxStatus") }}...</td>
-									<td :class="'amount '+(transaction.getAmount() > 0 ? 'more' : 'less')" >{{ transaction.getAmount() | piconero }}</td>
+                                    <td :class="'amount '+(transaction.getAmount() > 0 ? 'more' : 'less')">{{ transaction.getAmount() | formatMoney }}</td>
 									<td class="moreInfo">
 										<i class="fa fa-search" aria-hidden="true" @click="moreInfoOnTx(transaction)"></i>
 									</td>

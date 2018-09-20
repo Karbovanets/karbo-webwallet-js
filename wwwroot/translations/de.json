@@ -97,7 +97,8 @@
       },
       "balanceBlock": {
         "title": "Dein Guthaben",
-        "unlocked": "Entsperrt"
+        "unlocked": "Entsperrt",
+        "fusions": "Fusion transactions to unlock"
       },
       "historyBlock": {
         "title": "Transaktionshistorie",

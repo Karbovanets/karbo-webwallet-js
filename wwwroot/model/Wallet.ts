@@ -273,16 +273,6 @@ export class Wallet extends Observable {
             if (!transaction.isFullyChecked())
                 continue;
 
-            if (transaction.isFusionTx()) {
-                //Handle what we do with fusion Tx's
-                //this needs to be something like:
-                //tx's that are still locked up in fusion should display as "locked" balance, 
-                //only if it's been "cleared", then we should see it in "unlocked" balance
-            }
-
-            // if(transaction.ins.length > 0){
-            // 	amount -= transaction.fees;
-            // }
             if (transaction.isConfirmed(currentBlockHeight) || currentBlockHeight === -1)
                 for (let out of transaction.outs) {
                     amount += out.amount;
@@ -293,22 +283,24 @@ export class Wallet extends Observable {
         }
 
         for (let transaction of this.txsMem) {
-            // console.log(transaction.paymentId);
-            // for(let out of transaction.outs){
-            // 	amount += out.amount;
-            // }
             if (transaction.isConfirmed(currentBlockHeight) || currentBlockHeight === -1)
                 for (let nout of transaction.outs) {
                     amount += nout.amount;
-                    // console.log('+'+nout.amount);
                 }
 
             for (let nin of transaction.ins) {
                 amount -= nin.amount;
-                // console.log('-'+nin.amount);
             }
         }
 
+        for (let transaction of this.fusionTxs) {
+            for (let nout of transaction.outs) {
+                amount += nout.amount;
+            }
+            for (let nin of transaction.ins) {
+                amount -= nin.amount;
+            }
+        }
 
         return amount;
     }

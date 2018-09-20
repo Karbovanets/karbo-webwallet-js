@@ -97,7 +97,8 @@
       },
       "balanceBlock": {
         "title": "Votre solve",
-        "unlocked": "Disponible"
+        "unlocked": "Disponible",
+        "fusions": "Fusion transactions to unlock"
       },
       "historyBlock": {
         "title": "Historique des transactions",

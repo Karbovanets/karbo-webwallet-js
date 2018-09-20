@@ -97,7 +97,8 @@
       },
       "balanceBlock": {
         "title": "Egyenleg",
-        "unlocked": "Feloldva"
+        "unlocked": "Feloldva",
+        "fusions": "Fusion transactions to unlock"
       },
       "historyBlock": {
         "title": "Tranzakciós előzmények",

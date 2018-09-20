@@ -97,7 +97,8 @@
       },
       "balanceBlock": {
         "title": "Ваша средства",
-        "unlocked": "Откључано"
+        "unlocked": "Откључано",
+        "fusions": "Fusion transactions to unlock"
       },
       "historyBlock": {
         "title": "Историја ваших трансакција",

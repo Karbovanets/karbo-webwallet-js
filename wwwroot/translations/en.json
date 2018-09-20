@@ -95,10 +95,11 @@
 	  "synchronizingBlock": {
 		"text": "Synchronizing..."
 	  },
-	  "balanceBlock": {
-		"title": "Your balance",
-		"unlocked": "Unlocked"
-	  },
+    "balanceBlock": {
+      "title": "Your balance",
+      "unlocked": "Unlocked",
+      "fusions": "Fusion transactions to unlock"
+    },
 	  "historyBlock": {
 		"title": "Transaction history",
 		"pendingTxStatus": "Pending",
