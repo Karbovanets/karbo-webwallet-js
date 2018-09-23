@@ -37,9 +37,4 @@ namespace WebWallet.Models
         //public string type { get; set; } //type
         public string key { get; set; } //key
     }
-
-    public class CachedSignature{
-        public int first { get; set; } //first
-        public string second { get; set; } //first
-    }
 }
