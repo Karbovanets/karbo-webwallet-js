@@ -199,22 +199,37 @@ namespace WebWallet.Helpers
                                                     transactionsToInsert.Add(cachedTx);
                                                 }
                                             }
+
                                             if (transactionsToInsert.Any())
                                             {
                                                 transactions.InsertBulk(transactionsToInsert);
-                                                logger.Log(LogLevel.Information, $"Added {transactionsToInsert.Count} transactions to cache.");
-                                                var distinctTxCount = transactionsToInsert.Select(x => x.height).Distinct().Count();
-                                                if (distinctTxCount != 50 && gCounter != currentHeight)
+                                                //check to ensure that each hash we added is also found in txHashes - if there's one or more missing, then we need to re-attempt the fetch for those individuallly
+                                                var insertedHashes = transactionsToInsert.Select(x => x.hash).Distinct().ToList();
+                                                var missingHashes = txHashes.Where(x => !insertedHashes.Contains(x)).ToList();
+                                                if (missingHashes.Any())
                                                 {
-                                                    logger.Log(LogLevel.Warning, $"Potentially missing transactions at height {gCounter}, expected min 50, found {distinctTxCount}");
-                                                    // so what do we do here, go back and try re-add the individual Tx's ?
-                                                    //fetch them all individually and try insert one by one?
+                                                    foreach (var missingHash in missingHashes)
+                                                    {
+                                                        logger.LogWarning($"missing hash found {missingHash} at height {gCounter}. Adding to re-check individual hashes.");
+
+                                                        var failedHash = new FailedHash()
+                                                        {
+                                                            DbFile = string.Concat(AppContext.BaseDirectory, @"App_Data/", "transactions_", start, "-", end, ".db"),
+                                                            hash = missingHash,
+                                                            height = gCounter,
+                                                            FetchAttempts = 0
+                                                        };
+                                                        using (var failedHashDb = new LiteDatabase(string.Concat(AppContext.BaseDirectory, @"App_Data/", "failedHashes.db")))
+                                                        {
+                                                            var failedTransactions = db.GetCollection<FailedHash>("failed_txs");
+                                                            failedTransactions.EnsureIndex(x => x.height);
+                                                            failedTransactions.EnsureIndex(x => x.hash);
+                                                            failedTransactions.Insert(failedHash);
+                                                        }
+                                                    }
                                                 }
-                                                else
-                                                {
-                                                    //we've added the 50 hashes, so now clear the Tx Cache
-                                                    txHashes.Clear(); // clear the current set of hashes
-                                                }
+                                                txHashes.Clear(); // clear the current set of hashes
+                                                
                                             }
                                         }
                                         catch (Exception ex)
