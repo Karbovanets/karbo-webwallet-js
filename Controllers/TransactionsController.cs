@@ -35,7 +35,7 @@ namespace WebWallet.Controllers
 
                     try
                     {
-                        using (var db = new LiteDatabase(string.Concat(AppContext.BaseDirectory, @"App_Data\", "transactions_", start, "-", end, ".db")))
+                        using (var db = new LiteDatabase(string.Concat(AppContext.BaseDirectory, @"App_Data/", "transactions_", start, "-", end, ".db")))
                         {
                             var txDb = db.GetCollection<CachedTx>("cached_txs");
                             var txs = txDb.Find(x => hashes.Contains(x.hash)).Distinct().ToList();

@@ -46,7 +46,7 @@ namespace plenteum_webwallet.Controllers
                 {
                     var end = start + 10000 - 1;
                     
-                    using (var db = new LiteDatabase(string.Concat(AppContext.BaseDirectory, @"App_Data\", "transactions_", start, "-", end, ".db")))
+                    using (var db = new LiteDatabase(string.Concat(AppContext.BaseDirectory, @"App_Data/", "transactions_", start, "-", end, ".db")))
                     {
                         var cachedtxs = db.GetCollection<CachedTx>("cached_txs");
                         var txs = cachedtxs.Find(x => x.height >= startHeight && x.height <= endHeight).Distinct().ToList();
