@@ -105,7 +105,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "index.html",
-    "revision": "c009144952fe6d17378a8930fd3f6e20"
+    "revision": "8296f4d8b1ea8ab3d6e17bf0a2fa62a9"
   },
   {
     "url": "index.js",
@@ -201,7 +201,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "lib/numbersLab/Router.js",
-    "revision": "83d33c315fe345abc04493787df1f6b2"
+    "revision": "ab372d549e7e8a7b32da2b2b1996a206"
   },
   {
     "url": "lib/numbersLab/VueAnnotate.js",
