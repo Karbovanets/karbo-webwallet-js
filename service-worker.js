@@ -33,7 +33,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "assets/css/main.css",
-    "revision": "261d3a7cc97bcbefab1b14b22805627f"
+    "revision": "9f6a2387d01f4631863ca62f9204bcf9"
   },
   {
     "url": "assets/img/coin_white.png",
@@ -421,7 +421,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "pages/index.html",
-    "revision": "f40d78ed8af428e784429b3bef193fe3"
+    "revision": "c42d7382287dd53d53487539ba229cbe"
   },
   {
     "url": "pages/index.js",
@@ -493,15 +493,15 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "translations/de.json",
-    "revision": "b3986a06ad24964c6c432cc41b4b624e"
+    "revision": "073180e9bebf1881ba61614de9f8136d"
   },
   {
     "url": "translations/en.json",
-    "revision": "e380ad7516d185674a2339702ad81227"
+    "revision": "8a128ebe364032ef35f995bcdc28a2d1"
   },
   {
     "url": "translations/es.json",
-    "revision": "0a55578ca714ef04ce8619197faacfbf"
+    "revision": "de3921ae46173169dd1b953abd501320"
   },
   {
     "url": "translations/fa.json",
@@ -509,43 +509,43 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "translations/fr.json",
-    "revision": "d1145f94e7ca1c4c69793678b18a1b77"
+    "revision": "12c8060cf70a4321648a1e33354bf7ff"
   },
   {
     "url": "translations/gr.json",
-    "revision": "5324107276a0f33063671ddb95977b8e"
+    "revision": "8d3ca9823a3f686ecf565657b28be050"
   },
   {
     "url": "translations/hu.json",
-    "revision": "1de9e237076a58f4813f3746604bdaa4"
+    "revision": "20c7be01d968ffee75f473d9555c6bfd"
   },
   {
     "url": "translations/it.json",
-    "revision": "78dec36571c82fdf3c223b42f6121554"
+    "revision": "737b265cbf203787cc49ada3d013a019"
   },
   {
     "url": "translations/ko.json",
-    "revision": "242975592020e7ee521ec580fc673884"
+    "revision": "7e3d11372b4c26bacc69b6079b14f2e0"
   },
   {
     "url": "translations/pl.json",
-    "revision": "c27f7aff9c8566a1d981b3d7dfaabf55"
+    "revision": "77ce2bcb07665e126190ca9ec4f7ad08"
   },
   {
     "url": "translations/ru.json",
-    "revision": "f7d42b7e4fbe4d4b01bab36ad636cd51"
+    "revision": "284113f046a311f932de0d6809627676"
   },
   {
     "url": "translations/sr.json",
-    "revision": "5a12196288b049c467c477e696e9570f"
+    "revision": "4473f4efa09d11acfb349b9ea58cfec6"
   },
   {
     "url": "translations/uk.json",
-    "revision": "bbb3bf8842f5994ec85eda0889acfd85"
+    "revision": "658726076f3c82a83429658034d1eadc"
   },
   {
     "url": "translations/zh.json",
-    "revision": "e7943d8785854f1990244e9d13e675c6"
+    "revision": "b9c35890244b1774aad6d8273de40029"
   },
   {
     "url": "utils/Url.js",
