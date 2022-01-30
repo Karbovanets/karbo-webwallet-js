@@ -289,7 +289,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/MnemonicLang.js",
-    "revision": "02e69c2a99eded508bdac96715cb85cb"
+    "revision": "1890f0331734c9849be70ac51f17aea9"
   },
   {
     "url": "model/Nfc.js",
@@ -409,7 +409,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "pages/importFromMnemonic.js",
-    "revision": "868838314ee95e86eb700f99bec9ebc2"
+    "revision": "27aece65438671385c576a3ebdb1de95"
   },
   {
     "url": "pages/importFromQr.html",

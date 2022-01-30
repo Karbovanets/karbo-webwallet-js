@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Gnock
  * Copyright (c) 2018, The Masari Project
+ * Copyright (c) 2022, The Karbo Developers
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
  *
@@ -53,6 +54,7 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             _this.languages.push({ key: 'portuguese', name: 'Portuguese' });
             _this.languages.push({ key: 'russian', name: 'Russian' });
             _this.languages.push({ key: 'spanish', name: 'Spanish' });
+            _this.languages.push({ key: 'ukrainian', name: 'Ukrainian' });
             _this.language = 'auto';
             return _this;
         }
