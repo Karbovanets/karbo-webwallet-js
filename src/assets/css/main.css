@@ -776,7 +776,7 @@ body{
 .panel.inline {
 	background: transparent;
 	padding: 40px 40px 32px 40px;
-	border: 1px solid #D6DDED;
+	border: 2px solid #D6DDED;
 	box-shadow: none;-webkit-box-shadow: none;
 }
 .panel .body{}
