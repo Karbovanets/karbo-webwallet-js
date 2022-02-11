@@ -33,7 +33,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "assets/css/main.css",
-    "revision": "9f6a2387d01f4631863ca62f9204bcf9"
+    "revision": "163ab10e60f83d96d15f7ad2ab380ef5"
   },
   {
     "url": "assets/img/coin_white.png",
@@ -41,31 +41,31 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "assets/img/favicon.ico",
-    "revision": "eea7c4035a78dfc8c182cf88734eb2e5"
+    "revision": "b5d32b32cb438de0083fedb06ef60428"
   },
   {
     "url": "assets/img/icons/icon-128x128.png",
-    "revision": "3fad3322911d1b0d6290461dfc1c8e25"
+    "revision": "e8fc49dd4614ebb29b2a08364ae4cdfc"
   },
   {
     "url": "assets/img/icons/icon-144x144.png",
-    "revision": "6bf40237cdd6bb8ebac8acc7100421a6"
+    "revision": "1bb9a3b0c2c969c3313f39718a800b61"
   },
   {
     "url": "assets/img/icons/icon-152x152.png",
-    "revision": "8e224473fb46737bce5cab9776efbedd"
+    "revision": "636502da98ede8d58de006036e7c4e70"
   },
   {
     "url": "assets/img/icons/icon-192x192.png",
-    "revision": "f8fc712e5e0ff2c899b63b15e50652a8"
+    "revision": "ed394964597b47bd4fb6ff9a8eb5f8c0"
   },
   {
     "url": "assets/img/icons/icon-256x256.png",
-    "revision": "e16b9eab1132efcac3e60e120d507f7f"
+    "revision": "6b769e089eab3a93a561ff1c33a3eee4"
   },
   {
     "url": "assets/img/icons/icon-402x402.png",
-    "revision": "94eb376ad133b4bf229bee96fe81ff15"
+    "revision": "ea00abb5b2502bf7de0aafc91c4b2941"
   },
   {
     "url": "assets/img/landing/75-usersthink-stock-image.jpg",
@@ -81,19 +81,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "assets/img/logo.png",
-    "revision": "f20c663fdbe7ac21246e84606f6c1fdd"
-  },
-  {
-    "url": "assets/img/logoQrCode.jpg",
-    "revision": "0d56d4f6972bd21dedfe0ce10f24a661"
-  },
-  {
-    "url": "assets/img/logoQrCode.png",
-    "revision": "682c122db179cee3cd4e167551f3d4f6"
+    "revision": "753d2388c8d054c8e151229f7da8617f"
   },
   {
     "url": "config.js",
-    "revision": "15bab642abbd5dffcc84fc1180199136"
+    "revision": "2badfbb80c6bade7d2a14255745d3d2b"
   },
   {
     "url": "d/vue-i118n.js",
@@ -272,10 +264,6 @@ workbox.precaching.precacheAndRoute([
     "revision": "8acf6d5f8d2a68ea372d2d91d3c427ac"
   },
   {
-    "url": "model/Functions.js",
-    "revision": "9c22c2480507da70340c9b27d9c9119c"
-  },
-  {
     "url": "model/KeysRepository.js",
     "revision": "c9a201b23d69a0c9f0292a192a52da9d"
   },
@@ -313,7 +301,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/TransactionsExplorer.js",
-    "revision": "d72a1fbd17d26b15f440fd2d9231d248"
+    "revision": "4baef633068640a490e6da730be1052e"
   },
   {
     "url": "model/Translations.js",
@@ -421,7 +409,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "pages/index.html",
-    "revision": "c42d7382287dd53d53487539ba229cbe"
+    "revision": "c4658b9e594a90a5ae64a84978e567dd"
   },
   {
     "url": "pages/index.js",
@@ -445,7 +433,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "pages/receive.html",
-    "revision": "03a8854fc21dcd40a88a8d55a6eca392"
+    "revision": "1b3f094c48b3070063550a6280ed6eec"
   },
   {
     "url": "pages/receive.js",
