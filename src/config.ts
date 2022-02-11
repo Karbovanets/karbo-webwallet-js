@@ -1,9 +1,6 @@
 //export {};
 let global : any = typeof window !== 'undefined' ? window : self;
 global.config = {
-	apiUrl: [
-        "https://wallet.karbo.org/api/"
-    ],
     nodeList: [
         "https://karbo.club/services/node_web/"
     ],

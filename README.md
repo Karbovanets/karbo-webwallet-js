@@ -1,8 +1,6 @@
 # Karbo Web Wallet - Fully client-side
 This web wallet is doing everything client-side to give the best privacy to users.
-The server is currently only used to optimize the communication with the daemon and compress the blockchain.  
-
-Note: This requirement may be removed in the future once daemons evolve and return enough data.  
+It is communicating with the daemon directly and is served from Githup pages.
 
 # Security
 **No keys, seeds, or sensitive data is sent to the server**  
@@ -51,7 +49,7 @@ Read [the translations guide](TRANSLATIONS.md) to get instructions on how to do 
 - [Make a donation to Karbo](https://wallet.karbo.org/#!donate)
 
 # Forks / Other Coins
-We have been receiving multiple coin developers help to fork it. As the time required to develop this project is heavy, please consider giving a mention to this project if you fork it.
+It was forked from Masari project. We have been receiving multiple coin developers help to fork it. As the time required to develop this project is heavy, please consider giving a mention to this project if you fork it.
 
 The code is readable, it should be enough for you to use it.
 
