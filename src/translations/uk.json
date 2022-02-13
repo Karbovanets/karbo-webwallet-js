@@ -31,7 +31,8 @@
 	  "openWalletModal":{
 		"title":"Пароль гаманця",
 		"confirmText":"Відкрити",
-		"cancelText":"Скасувати"
+		"cancelText":"Скасувати",
+		"forgotPassword": "Забули пароль?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Ой...",

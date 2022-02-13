@@ -31,7 +31,8 @@
       "openWalletModal": {
         "title": "钱包密码",
         "confirmText": "打开",
-        "cancelText": "取消"
+        "cancelText": "取消",
+        "forgotPassword": "忘记密码？"
       },
       "invalidPasswordModal": {
         "title": "糟糕！",

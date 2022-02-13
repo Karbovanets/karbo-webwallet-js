@@ -31,7 +31,8 @@
 	  "openWalletModal":{
 		"title":"Tárca jelszava",
 		"confirmText":"Megnyitás",
-		"cancelText":"Mégsem"
+		"cancelText":"Mégsem",
+		"forgotPassword": "Elfelejtetted a jelszavad?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Hupsz...",

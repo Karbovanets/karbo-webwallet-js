@@ -31,7 +31,8 @@
 	  "openWalletModal":{
 		"title":"Пароль кошелька",
 		"confirmText":"Открыть",
-		"cancelText":"Отмена"
+		"cancelText":"Отмена",
+		"forgotPassword": "Забыли пароль?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Ой...",

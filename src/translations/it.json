@@ -30,7 +30,8 @@
 	  "openWalletModal":{
 		"title":"Password portafoglio",
 		"confirmText":"Apri",
-		"cancelText":"Annulla"
+		"cancelText":"Annulla",
+		"forgotPassword": "Ha dimenticato la password?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Oops...",

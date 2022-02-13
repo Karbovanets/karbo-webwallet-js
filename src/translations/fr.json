@@ -31,7 +31,8 @@
 	  "openWalletModal":{
 		"title":"Mot de passe",
 		"confirmText":"Ouvrir",
-		"cancelText":"Annuler"
+		"cancelText":"Annuler",
+		"forgotPassword": "Mot de passe oublié?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Oups...",

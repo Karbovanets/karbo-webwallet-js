@@ -30,7 +30,8 @@
     "openWalletModal":{
   	"title":"Hasło portfela",
   	"confirmText":"Otwórz",
-  	"cancelText":"przerwij"
+  	"cancelText":"Skasuj",
+    "forgotPassword": "Zapomniałeś hasła?"
   	 },
   	"invalidPasswordModal":{
   	"title":"Oops...",

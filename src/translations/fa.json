@@ -31,7 +31,8 @@
       "openWalletModal": {
         "title": "'رمز عبور کیف پول'",
         "confirmText": "تایید",
-        "cancelText": "لغو"
+        "cancelText": "لغو",
+        "forgotPassword": "رمز عبور را فراموش کرده اید؟"
       },
       "invalidPasswordModal": {
         "title": "متاسفیم",

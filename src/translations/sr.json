@@ -31,7 +31,8 @@
 	  "openWalletModal":{
 		"title":"'Лозинка новчаника'",
 		"confirmText":"Отвори",
-		"cancelText":"Откажи"
+		"cancelText":"Откажи",
+		"forgotPassword": "Заборавили сте лозинку?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Упс...",

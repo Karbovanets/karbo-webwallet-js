@@ -33,7 +33,8 @@
       "openWalletModal": {
         "title": "Contraseña de billetera",
         "confirmText": "Abrir",
-        "cancelText": "Cancelar"
+        "cancelText": "Cancelar",
+        "forgotPassword": "¿Se te olvidó tu contraseña?"
       },
       "invalidPasswordModal": {
         "title": "Oops...",

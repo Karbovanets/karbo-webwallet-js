@@ -31,7 +31,8 @@
 	  "openWalletModal":{
 		"title":"Κωδικός Πορτοφολιού",
 		"confirmText":"Άνοιγμα",
-		"cancelText":"Ακύρωση"
+		"cancelText":"Ακύρωση",
+		"forgotPassword": "Ξεχάσατε τον κωδικό?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Ουπς...",

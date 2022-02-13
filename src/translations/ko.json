@@ -31,7 +31,8 @@
       "openWalletModal": {
         "title": "비밀번호",
         "confirmText": "열기",
-        "cancelText": "취소"
+        "cancelText": "취소",
+        "forgotPassword": "비밀번호를 잊으 셨나요?"
       },
       "invalidPasswordModal": {
         "title": "비밀번호",
