@@ -871,6 +871,9 @@ body{
 .btn.green{background-color: #4cb860;color: #fff;}
 .btn.green:hover{background-color: #499c4e;color: #fff;}
 
+.btn.red{background-color: #ff0000;color: #fff;}
+.btn.red:hover{background-color: #a50000;color: #fff;}
+
 .btn:disabled,.btn.disabled{
 	cursor: default;
 	opacity: .45!important;
