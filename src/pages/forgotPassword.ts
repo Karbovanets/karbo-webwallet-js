@@ -14,7 +14,13 @@
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import {DestructableView} from "../lib/numbersLab/DestructableView";
+import {VueVar, VueWatched} from "../lib/numbersLab/VueAnnotate";
+import {WalletRepository} from "../model/WalletRepository";
+import {DependencyInjectorInstance} from "../lib/numbersLab/DependencyInjector";
+import {Wallet} from "../model/Wallet";
 import {AppState} from "../model/AppState";
+import {Storage} from "../model/Storage";
+import {Translations} from "../model/Translations";
 
 AppState.enableLeftMenu();
 
@@ -23,12 +29,25 @@ class ForgotPasswordView extends DestructableView{
 		super(container);
 		let self = this;
 	}
-
-
-	deleteWallet(){
-		localStorage.clear();
-		window.location.href = '/';
-	}
+    
+    deleteWallet() {
+        //localStorage.clear();
+		//window.location.href = '/';
+        swal({
+            title: i18n.t('settingsPage.deleteWalletModal.title'),
+            html: i18n.t('settingsPage.deleteWalletModal.content'),
+            showCancelButton: true,
+            confirmButtonText: i18n.t('settingsPage.deleteWalletModal.confirmText'),
+            cancelButtonText: i18n.t('settingsPage.deleteWalletModal.cancelText'),
+        }).then((result:any) => {
+            if (result.value) {
+                AppState.disconnect();
+                DependencyInjectorInstance().register(Wallet.name, undefined,'default');
+                WalletRepository.deleteLocalCopy();
+                window.location.href = '#index';
+            }
+        });
+    }
 }
 
 new ForgotPasswordView('#app');
