@@ -313,7 +313,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/WalletRepository.js",
-    "revision": "f911fdd53151783154e3c832cbe0f37b"
+    "revision": "3a6419f32b9fb13a74f754e6025aa844"
   },
   {
     "url": "model/WalletWatchdog.js",
