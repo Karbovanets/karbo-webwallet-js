@@ -32,7 +32,7 @@ let wallet : Wallet = DependencyInjectorInstance().getInstance(Wallet.name, 'def
 let blockchainExplorer: BlockchainExplorer = BlockchainExplorerProvider.getInstance();
 let walletWatchdog : WalletWatchdog = DependencyInjectorInstance().getInstance(WalletWatchdog.name,'default', false);
 
-class SendView extends DestructableView{
+class SettingsView extends DestructableView{
 	@VueVar(10) readSpeed !: number;
 	@VueVar(false) checkMinerTx !: boolean;
 
@@ -129,6 +129,6 @@ class SendView extends DestructableView{
 
 
 if(wallet !== null && blockchainExplorer !== null)
-	new SendView('#app');
+	new SettingsView('#app');
 else
 	window.location.href = '#index';

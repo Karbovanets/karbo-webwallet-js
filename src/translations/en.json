@@ -188,7 +188,7 @@
 	  "subtitle":"We are here to help!",
 	  "getInTouchBlock":{
 		"title":"Let's Get In Touch!",
-		"content":"Do you have ideas or feedback that could help us improve the wallet? Contact us!",
+		"content":"If you have any problems with your wallet, contact us!",
 		"discord":"Karbo Discord Channel"
 	  }
 	},
@@ -448,7 +448,7 @@
 	},
 	"privacyPolicyPage":{
 	  "title":"Privacy Policy",
-	  "subtitle":"Please read them carefully."
+	  "subtitle":"Please read carefully."
 	},
 	"importFromFilePage":{
 	  "title":"Importing wallet from a backup file",
