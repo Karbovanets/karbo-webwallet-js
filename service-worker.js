@@ -33,7 +33,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "assets/css/main.css",
-    "revision": "44328f15bd42fbfcaa379c2ca6e163c4"
+    "revision": "cf5ac476803613c45807657a4025107e"
   },
   {
     "url": "assets/img/coin_white.png",
@@ -249,7 +249,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/blockchain/BlockchainExplorerRPCDaemon.js",
-    "revision": "7de1ec969190fe9bd4a90116f912a00c"
+    "revision": "f3e9c0d34d375eadf5494bba25346ac5"
   },
   {
     "url": "model/Cn.js",
@@ -417,11 +417,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "pages/network.html",
-    "revision": "6353701976547665ee06b29c74448d76"
+    "revision": "1fdea30266d0779652847d8cc9c7fadf"
   },
   {
     "url": "pages/network.js",
-    "revision": "b789e1979c1610739ff53448f12e28ef"
+    "revision": "732cbb58c6a0261110fd25d44840f8ab"
   },
   {
     "url": "pages/privacyPolicy.html",
@@ -457,7 +457,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "pages/support.html",
-    "revision": "2b1792ba4adf2bc99c52ebca9a3b194b"
+    "revision": "e2bba0ba831f96888b59ffba3f8b75a3"
   },
   {
     "url": "pages/support.js",
@@ -481,59 +481,59 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "translations/de.json",
-    "revision": "073180e9bebf1881ba61614de9f8136d"
+    "revision": "14df39cd48f3f8f038025700e1fb440b"
   },
   {
     "url": "translations/en.json",
-    "revision": "8a128ebe364032ef35f995bcdc28a2d1"
+    "revision": "eb53db2800e9af69ba30a94431f8e830"
   },
   {
     "url": "translations/es.json",
-    "revision": "de3921ae46173169dd1b953abd501320"
+    "revision": "d3f3560495b1a836527b46f36695b7ca"
   },
   {
     "url": "translations/fa.json",
-    "revision": "aa1ef146eadabb2f4e6d3d72ccada01d"
+    "revision": "c999c3a0d6ee75bd54c214e4a69ecf47"
   },
   {
     "url": "translations/fr.json",
-    "revision": "12c8060cf70a4321648a1e33354bf7ff"
+    "revision": "7593726c906e85820a78971038596a01"
   },
   {
     "url": "translations/gr.json",
-    "revision": "8d3ca9823a3f686ecf565657b28be050"
+    "revision": "343dadea2f363717af873cf53196ca70"
   },
   {
     "url": "translations/hu.json",
-    "revision": "20c7be01d968ffee75f473d9555c6bfd"
+    "revision": "920e527f2e1afbac7c0f922a3b6d9c5e"
   },
   {
     "url": "translations/it.json",
-    "revision": "737b265cbf203787cc49ada3d013a019"
+    "revision": "d315378683be26d04b4c79c0b53b6a82"
   },
   {
     "url": "translations/ko.json",
-    "revision": "7e3d11372b4c26bacc69b6079b14f2e0"
+    "revision": "67d55ecf28d04d27b258b5f45ea13ad2"
   },
   {
     "url": "translations/pl.json",
-    "revision": "77ce2bcb07665e126190ca9ec4f7ad08"
+    "revision": "6a5ced840e944c200ba81cb28cdb3406"
   },
   {
     "url": "translations/ru.json",
-    "revision": "284113f046a311f932de0d6809627676"
+    "revision": "441f871763136e404c61eb826e1acf5b"
   },
   {
     "url": "translations/sr.json",
-    "revision": "4473f4efa09d11acfb349b9ea58cfec6"
+    "revision": "64d48db52ea78829b10284df9e6163b6"
   },
   {
     "url": "translations/uk.json",
-    "revision": "658726076f3c82a83429658034d1eadc"
+    "revision": "e3eeff95cb88002dcf9528c8f515553f"
   },
   {
     "url": "translations/zh.json",
-    "revision": "b9c35890244b1774aad6d8273de40029"
+    "revision": "853ffe445254d766a2fdfb1d42031b5a"
   },
   {
     "url": "utils/Url.js",
