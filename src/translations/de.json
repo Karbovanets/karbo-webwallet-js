@@ -31,7 +31,8 @@
 	  "openWalletModal":{
 		"title":"Wallet Passwort",
 		"confirmText":"Öffnen",
-		"cancelText":"Abbrechen"
+		"cancelText":"Abbrechen",
+		"forgotPassword": "Passwort vergessen?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Uups...",
@@ -189,6 +190,13 @@
 		"title":"Nehmen wir Kontakt auf!",
 		"content":"Wenn Sie Probleme mit Ihrer Brieftasche haben, schreiben Sie uns!",
 		"discord":"Karbo Discord Channel"
+	  }
+	},
+	"forgotPasswordPage":{
+	  "subtitle":"So stellen Sie den Zugriff auf Ihre Brieftasche wieder her",
+	  "forgotPasswordBlock":{
+		"title":"Wenn Sie das Passwort vergessen haben, können Sie es nicht zurücksetzen!",
+		"content":"Die einzige Möglichkeit, den Zugriff auf Ihre Brieftasche wiederherzustellen, besteht darin, Ihr Passwort abzurufen oder Brieftaschendaten aus dem Speicher Ihres Browsers zu löschen und die Brieftasche aus dem Backup wiederherzustellen (z. B. mnemonische Wiederherstellungsphrase).<br /> Wenn Sie Brieftaschenschlüssel oder eine Wiederherstellungsphrase haben , unten können Sie Ihre Brieftasche löschen. Dann können Sie es wiederherstellen und von Grund auf neu synchronisieren.<br/> <strong>Bitte stellen Sie sicher, dass Sie einen Wiederherstellungssatz haben, bevor Sie fortfahren!!!</strong>"
 	  }
 	},
 	"networkPage":{
