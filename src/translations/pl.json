@@ -191,6 +191,13 @@
       "discord":"Karbo Discord"
     }
   },
+  "forgotPasswordPage":{
+	  "subtitle":"Jak przywrócić dostęp do portfela",
+	  "forgotPasswordBlock":{
+		"title":"Jeśli zapomniałeś hasła, nie można go zresetować!",
+		"content":"Jedynym sposobem na przywrócenie dostępu do portfela jest przypomnienie hasła lub usunięcie danych portfela z pamięci przeglądarki i przywrócenie go z kopii zapasowej (np. mnemoniczna fraza odzyskiwania).<br /> Jeśli masz klucze do portfela lub frazę do odzyskiwania, poniżej możesz usunąć swój portfel. Wtedy będzie można go przywrócić i zsynchronizować od nowa.<br/> <strong>Przed kontynuowaniem upewnij się, że masz frazę odzyskiwania!</strong>"
+	  }
+	},
   "networkPage":{
     "title":"Statystki Sieci",
     "subtitle":"Informacja o sieci Karbowańca",

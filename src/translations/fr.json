@@ -192,6 +192,13 @@
 		"discord":"Discord Officiel de Karbo"
 	  }
 	},
+	"forgotPasswordPage":{
+	  "subtitle":"Comment restaurer l'accès à votre portefeuille",
+	  "forgotPasswordBlock":{
+		"title":"Si vous avez oublié le mot de passe, il est impossible de le réinitialiser !",
+		"content":"تنها راه برای بازگرداندن دسترسی به کیف پول شما این است که رمز عبور خود را فراخوانی کنید یا داده های کیف پول را از حافظه مرورگر خود حذف کنید و کیف پول را از نسخه پشتیبان بازیابی کنید (به عنوان مثال عبارت بازیابی حافظه).<br /> اگر کلیدهای کیف پول یا عبارت بازیابی دارید. ، در زیر می توانید کیف پول خود را حذف کنید. سپس می‌توانید آن را بازیابی و از ابتدا همگام‌سازی کنید.<br/> <strong>لطفاً قبل از ادامه، از داشتن عبارت بازیابی مطمئن شوید!!!</strong>"
+	  }
+	},
 	"networkPage":{
 	  "title":"Statistiques du réseau",
 	  "subtitle":"Détails sur le réseaux Karbo",
