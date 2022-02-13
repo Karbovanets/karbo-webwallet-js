@@ -103,6 +103,7 @@ export class AppState {
 				showCancelButton: true,
 				confirmButtonText: i18n.t('global.openWalletModal.confirmText'),
 				cancelButtonText: i18n.t('global.openWalletModal.cancelText'),
+				html:`<a href="#!forgotPassword">`+i18n.t('global.openWalletModal.forgotPassword')+`</a>`
 			}).then((result: any) => {
 				setTimeout(function () { //for async
 					if (result.value) {
