@@ -30,7 +30,8 @@
 	  "openWalletModal":{
 		"title":"Password portafoglio",
 		"confirmText":"Apri",
-		"cancelText":"Annulla"
+		"cancelText":"Annulla",
+		"forgotPassword": "Ha dimenticato la password?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Oops...",
@@ -188,6 +189,13 @@
 		"title":"Mettiamoci in contatto!",
 		"content":"Se hai problemi con il tuo portafoglio, contattaci!",
 		"discord":"Karbo Discord Channel"
+	  }
+	},
+	"forgotPasswordPage":{
+	  "subtitle":"Come ripristinare l'accesso al tuo portafoglio",
+	  "forgotPasswordBlock":{
+		"title":"Se hai dimenticato la password, è impossibile reimpostarla!",
+		"content":"L'unico modo per ripristinare l'accesso al tuo portafoglio è richiamare la tua password o eliminare i dati del portafoglio dalla memoria del browser e ripristinare il portafoglio dal backup (ad es. frase mnemonica di ripristino).<br /> Se disponi delle chiavi del portafoglio o di una frase di ripristino. , di seguito puoi eliminare il tuo portafoglio. Quindi sarai in grado di ripristinarlo e sincronizzarlo da zero.<br/> <strong>Per favore, assicurati di avere una frase di ripristino prima di procedere!!!</strong>"
 	  }
 	},
 	"networkPage":{

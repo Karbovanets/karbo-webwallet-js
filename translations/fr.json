@@ -31,7 +31,8 @@
 	  "openWalletModal":{
 		"title":"Mot de passe",
 		"confirmText":"Ouvrir",
-		"cancelText":"Annuler"
+		"cancelText":"Annuler",
+		"forgotPassword": "Mot de passe oublié?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Oups...",
@@ -189,6 +190,13 @@
 		"title":"Reston en contact !",
 		"content":"Si vous rencontrez des problèmes avec votre portefeuille, contactez-nous !",
 		"discord":"Discord Officiel de Karbo"
+	  }
+	},
+	"forgotPasswordPage":{
+	  "subtitle":"Comment restaurer l'accès à votre portefeuille",
+	  "forgotPasswordBlock":{
+		"title":"Si vous avez oublié le mot de passe, il est impossible de le réinitialiser !",
+		"content":"La seule façon de restaurer l'accès à votre portefeuille est de rappeler votre mot de passe ou de supprimer les données du portefeuille de la mémoire de votre navigateur et de restaurer le portefeuille à partir de la sauvegarde (par exemple, une phrase de récupération mnémonique).<br /> Si vous avez des clés de portefeuille ou une phrase de récupération , ci-dessous vous pouvez supprimer votre portefeuille. Ensuite, vous pourrez le restaurer et le synchroniser à partir de zéro.<br/> <strong>Veuillez vous assurer d'avoir une phrase de récupération avant de continuer !!!</strong>"
 	  }
 	},
 	"networkPage":{

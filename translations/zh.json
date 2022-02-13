@@ -31,7 +31,8 @@
       "openWalletModal": {
         "title": "钱包密码",
         "confirmText": "打开",
-        "cancelText": "取消"
+        "cancelText": "取消",
+        "forgotPassword": "忘记密码？"
       },
       "invalidPasswordModal": {
         "title": "糟糕！",
@@ -191,6 +192,13 @@
         "title": "让我们联系吧！",
         "content": "如果您的钱包有任何问题，请联系我们！",
         "discord": "卡博币 Discord频道"
+      }
+    },
+    "forgotPasswordPage":{
+      "subtitle":"如何恢复对钱包的访问",
+      "forgotPasswordBlock":{
+      "title":"如果您忘记了密码，将无法重新设置！",
+      "content":"恢复对钱包的访问的唯一方法是调用您的密码或从浏览器内存中删除钱包数据并从备份中恢复钱包（例如助记词恢复短语）。<br />如果您有钱包密钥或恢复短语 ，下面你可以删除你的钱包。 然后您就可以恢复它并从头开始同步。<br/> <strong>请在继续之前确保您有一个恢复短语！</strong> "
       }
     },
     "networkPage": {

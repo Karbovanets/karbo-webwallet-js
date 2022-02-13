@@ -31,7 +31,8 @@
 	  "openWalletModal":{
 		"title":"Tárca jelszava",
 		"confirmText":"Megnyitás",
-		"cancelText":"Mégsem"
+		"cancelText":"Mégsem",
+		"forgotPassword": "Elfelejtetted a jelszavad?"
 	  },
 	  "invalidPasswordModal":{
 		"title":"Hupsz...",
@@ -189,6 +190,13 @@
 		"title":"Lépjünk kapcsolatba!",
 		"content":"Ha bármilyen problémája van a pénztárcájával, forduljon hozzánk!",
 		"discord":"Karbo Discord-csatorna"
+	  }
+	},
+	"forgotPasswordPage":{
+	  "subtitle":"Hogyan lehet visszaállítani a hozzáférést a pénztárcájához",
+	  "forgotPasswordBlock":{
+		"title":"Ha elfelejtette a jelszót, azt lehetetlen visszaállítani!",
+		"content":"A pénztárcájához való hozzáférés visszaállításának egyetlen módja, ha előhívja jelszavát, vagy törli a pénztárca adatait a böngésző memóriájából, és visszaállítja a pénztárcát a biztonsági másolatból (pl. mnemonikus helyreállítási kifejezés).<br /> Ha rendelkezik pénztárcakulcsokkal vagy helyreállítási kifejezéssel. , lent törölheti pénztárcáját. Ezután visszaállíthatja és a semmiből szinkronizálhatja.<br/> <strong>Kérjük, győződjön meg róla, hogy rendelkezik helyreállítási kifejezéssel, mielőtt továbblép!!!</strong>"
 	  }
 	},
 	"networkPage":{

@@ -26,6 +26,7 @@ import {Translations} from "../model/Translations";
 import {BlockchainExplorerProvider} from "../providers/BlockchainExplorerProvider";
 import {BlockchainExplorer} from "../model/blockchain/BlockchainExplorer";
 import {WalletWatchdog} from "../model/WalletWatchdog";
+import {DeleteWallet} from "../model/DeleteWallet";
 
 let wallet : Wallet = DependencyInjectorInstance().getInstance(Wallet.name, 'default', false);
 let blockchainExplorer: BlockchainExplorer = BlockchainExplorerProvider.getInstance();
@@ -84,20 +85,7 @@ class SettingsView extends DestructableView{
 	}
 
 	deleteWallet() {
-		swal({
-			title: i18n.t('settingsPage.deleteWalletModal.title'),
-			html: i18n.t('settingsPage.deleteWalletModal.content'),
-			showCancelButton: true,
-			confirmButtonText: i18n.t('settingsPage.deleteWalletModal.confirmText'),
-			cancelButtonText: i18n.t('settingsPage.deleteWalletModal.cancelText'),
-		}).then((result:any) => {
-			if (result.value) {
-				AppState.disconnect();
-				DependencyInjectorInstance().register(Wallet.name, undefined,'default');
-				WalletRepository.deleteLocalCopy();
-				window.location.href = '#index';
-			}
-		});
+		DeleteWallet.deleteWallet();
 	}
 
 	@VueWatched()	readSpeedWatch(){this.updateWalletOptions();}

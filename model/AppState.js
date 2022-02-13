@@ -84,6 +84,7 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
                     showCancelButton: true,
                     confirmButtonText: i18n.t('global.openWalletModal.confirmText'),
                     cancelButtonText: i18n.t('global.openWalletModal.cancelText'),
+                    html: "<a href=\"#!forgotPassword\"><small>" + i18n.t('global.openWalletModal.forgotPassword') + "</small></a>"
                 }).then(function (result) {
                     setTimeout(function () {
                         if (result.value) {

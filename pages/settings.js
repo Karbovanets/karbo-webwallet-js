@@ -31,7 +31,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numbersLab/VueAnnotate", "../model/WalletRepository", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../model/AppState", "../model/Translations", "../providers/BlockchainExplorerProvider", "../model/WalletWatchdog"], function (require, exports, DestructableView_1, VueAnnotate_1, WalletRepository_1, DependencyInjector_1, Wallet_1, AppState_1, Translations_1, BlockchainExplorerProvider_1, WalletWatchdog_1) {
+define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../model/Translations", "../providers/BlockchainExplorerProvider", "../model/WalletWatchdog", "../model/DeleteWallet"], function (require, exports, DestructableView_1, VueAnnotate_1, DependencyInjector_1, Wallet_1, Translations_1, BlockchainExplorerProvider_1, WalletWatchdog_1, DeleteWallet_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var wallet = DependencyInjector_1.DependencyInjectorInstance().getInstance(Wallet_1.Wallet.name, 'default', false);
@@ -69,20 +69,7 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             Translations_1.Translations.loadLangTranslation(this.language);
         };
         SettingsView.prototype.deleteWallet = function () {
-            swal({
-                title: i18n.t('settingsPage.deleteWalletModal.title'),
-                html: i18n.t('settingsPage.deleteWalletModal.content'),
-                showCancelButton: true,
-                confirmButtonText: i18n.t('settingsPage.deleteWalletModal.confirmText'),
-                cancelButtonText: i18n.t('settingsPage.deleteWalletModal.cancelText'),
-            }).then(function (result) {
-                if (result.value) {
-                    AppState_1.AppState.disconnect();
-                    DependencyInjector_1.DependencyInjectorInstance().register(Wallet_1.Wallet.name, undefined, 'default');
-                    WalletRepository_1.WalletRepository.deleteLocalCopy();
-                    window.location.href = '#index';
-                }
-            });
+            DeleteWallet_1.DeleteWallet.deleteWallet();
         };
         SettingsView.prototype.readSpeedWatch = function () { this.updateWalletOptions(); };
         SettingsView.prototype.checkMinerTxWatch = function () { this.updateWalletOptions(); };

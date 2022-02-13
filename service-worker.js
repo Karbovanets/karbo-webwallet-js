@@ -241,7 +241,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/AppState.js",
-    "revision": "9e834f89e7006e2250f1b2c853419adb"
+    "revision": "74f3a421b6ac61421d3282b822cc60e4"
   },
   {
     "url": "model/blockchain/BlockchainExplorer.js",
@@ -262,6 +262,10 @@ workbox.precaching.precacheAndRoute([
   {
     "url": "model/Constants.js",
     "revision": "8acf6d5f8d2a68ea372d2d91d3c427ac"
+  },
+  {
+    "url": "model/DeleteWallet.js",
+    "revision": "f33b1e6bf774d19135489196d73c7d6b"
   },
   {
     "url": "model/KeysRepository.js",
@@ -368,6 +372,14 @@ workbox.precaching.precacheAndRoute([
     "revision": "c98a20e14d0b544d7ab944f88ae1b84f"
   },
   {
+    "url": "pages/forgotPassword.html",
+    "revision": "f004d8b005e4d7a7acf11ddf32c2b812"
+  },
+  {
+    "url": "pages/forgotPassword.js",
+    "revision": "8b6a9eeeb61d079fb98128c46a47afac"
+  },
+  {
     "url": "pages/import.html",
     "revision": "45f5c149574bd7cf2bc91794c4adee55"
   },
@@ -449,15 +461,15 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "pages/settings.html",
-    "revision": "295777f83c2f2cb501fc46aae51d5728"
+    "revision": "b7db0379cd2fc9e648c4c0b99b5dc0de"
   },
   {
     "url": "pages/settings.js",
-    "revision": "67e5dbc17e74505eac34bf87c67236d2"
+    "revision": "14b2673bbf5d02fb2374c51967ef69c1"
   },
   {
     "url": "pages/support.html",
-    "revision": "e2bba0ba831f96888b59ffba3f8b75a3"
+    "revision": "be66e8573a2fad478e29dbd6d3fbe2e2"
   },
   {
     "url": "pages/support.js",
@@ -481,59 +493,59 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "translations/de.json",
-    "revision": "14df39cd48f3f8f038025700e1fb440b"
+    "revision": "4507b2eb189209f73d41aab08058c37c"
   },
   {
     "url": "translations/en.json",
-    "revision": "eb53db2800e9af69ba30a94431f8e830"
+    "revision": "a166908be0dc5ddf3d8ed07b52023393"
   },
   {
     "url": "translations/es.json",
-    "revision": "d3f3560495b1a836527b46f36695b7ca"
+    "revision": "ba7fa498cd132598c0095bb93f192674"
   },
   {
     "url": "translations/fa.json",
-    "revision": "c999c3a0d6ee75bd54c214e4a69ecf47"
+    "revision": "18109a6705811e40cce29b2b9007ef17"
   },
   {
     "url": "translations/fr.json",
-    "revision": "7593726c906e85820a78971038596a01"
+    "revision": "500f32335efce84bbeac710522f5b04e"
   },
   {
     "url": "translations/gr.json",
-    "revision": "343dadea2f363717af873cf53196ca70"
+    "revision": "727e02864d8e7e9e72a8e2081e428c36"
   },
   {
     "url": "translations/hu.json",
-    "revision": "920e527f2e1afbac7c0f922a3b6d9c5e"
+    "revision": "ba81ec9a8e3b5bafaa5abd763b8b50a7"
   },
   {
     "url": "translations/it.json",
-    "revision": "d315378683be26d04b4c79c0b53b6a82"
+    "revision": "693be3acc47b6e57b0914111622668da"
   },
   {
     "url": "translations/ko.json",
-    "revision": "67d55ecf28d04d27b258b5f45ea13ad2"
+    "revision": "9efec8f19f721657fc0e4ff0235c41e3"
   },
   {
     "url": "translations/pl.json",
-    "revision": "6a5ced840e944c200ba81cb28cdb3406"
+    "revision": "686892702de0404b41a8287ccbf65627"
   },
   {
     "url": "translations/ru.json",
-    "revision": "441f871763136e404c61eb826e1acf5b"
+    "revision": "9b416ac5f25b46bcc723433843a05a4f"
   },
   {
     "url": "translations/sr.json",
-    "revision": "64d48db52ea78829b10284df9e6163b6"
+    "revision": "696311669a273540793bd47ef7f3ba20"
   },
   {
     "url": "translations/uk.json",
-    "revision": "e3eeff95cb88002dcf9528c8f515553f"
+    "revision": "6191bbfcb6f62ac8a8cf1fddb473bb80"
   },
   {
     "url": "translations/zh.json",
-    "revision": "853ffe445254d766a2fdfb1d42031b5a"
+    "revision": "5f1d21739d020201b44e1079dea71e2f"
   },
   {
     "url": "utils/Url.js",
