@@ -194,6 +194,13 @@
         "discord": "Canal de Karbo en Discord"
       }
     },
+    "forgotPasswordPage":{
+      "subtitle":"Cómo restaurar el acceso a su billetera",
+      "forgotPasswordBlock":{
+      "title":"Si olvidó la contraseña, ¡es imposible restablecerla!",
+      "content":"La única forma de restaurar el acceso a su billetera es recordar su contraseña o eliminar los datos de la billetera de la memoria de su navegador y restaurar la billetera desde la copia de seguridad (por ejemplo, frase de recuperación mnemotécnica).<br /> Si tiene claves de billetera o una frase de recuperación , a continuación puede eliminar su billetera. Luego podrá restaurarlo y sincronizarlo desde cero.<br/> <strong>Por favor, ¡asegúrese de tener una frase de recuperación antes de continuar!</strong>"
+      }
+    },
     "networkPage": {
       "title": "Estado de red",
       "subtitle": "Perspectivas sobre la red Karbo",
