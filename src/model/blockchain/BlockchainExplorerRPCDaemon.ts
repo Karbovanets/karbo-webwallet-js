@@ -256,7 +256,7 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
             outs_count: nbOutsNeeded
         }).then((response: {
             status: 'OK' | 'string',
-            outs: { global_amount_index: number, out_key: string }[]
+            outs: { global_index: number, public_key: string }[]
         }) => {
             
 

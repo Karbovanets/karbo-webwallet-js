@@ -2162,8 +2162,8 @@ export namespace CnTransactions{
 									   }[],
 									   mix_outs:{
 										   outs:{
-											   out_key:string,
-											   global_amount_index:number
+											   public_key:string,
+											   global_index:number
 										   }[],
 										   amount:0
 									   }[] = [],
@@ -2230,11 +2230,11 @@ export namespace CnTransactions{
 				}
 			};
 			src.amount = new JSBigInt(outputs[i].amount).toString();
-			if (mix_outs.length !== 0) {
+			if (mix_outs.length !== 0) { // if mixin
 				// Sort fake outputs by global index
 				console.log('mix outs before sort',mix_outs[i].outs);
 				mix_outs[i].outs.sort(function(a, b) {
-					return new JSBigInt(a.global_amount_index).compare(b.global_amount_index);
+					return new JSBigInt(a.global_index).compare(b.global_index);
 				});
 				j = 0;
 
@@ -2245,14 +2245,14 @@ export namespace CnTransactions{
 					console.log('chekcing mixin');
 					console.log("out: ", out);
 					console.log("output ", i, ": ", outputs[i]);
-					if (out.global_amount_index === outputs[i].global_index) {
+					if (out.global_index === outputs[i].global_index) {
 						console.log('got mixin the same as output, skipping');
 						j++;
 						continue;
 					}
 					let oe : Output = {
-						index:out.global_amount_index.toString(),
-						key:out.out_key,
+						index:out.global_index.toString(),
+						key:out.public_key,
 						commit:''
 					};
 					/*
@@ -2269,7 +2269,7 @@ export namespace CnTransactions{
 					src.outputs.push(oe);
 					j++;
 				}
-			}
+			} // end of if mixin
 			let real_oe = {
 				index:new JSBigInt(outputs[i].global_index || 0).toString(),
 				key:outputs[i].public_key,

@@ -52,8 +52,8 @@ export type RemoteNodeInformation = {
 };
 
 export type RawDaemon_Out = {
-    global_amount_index: number, 
-    out_key: string
+    global_index: number, 
+    public_key: string
 }
 
 export interface BlockchainExplorer {
