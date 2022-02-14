@@ -24,7 +24,7 @@ import {QRReader} from "../model/QRReader";
 import {AppState} from "../model/AppState";
 import {BlockchainExplorerProvider} from "../providers/BlockchainExplorerProvider";
 import {NdefMessage, Nfc} from "../model/Nfc";
-import {BlockchainExplorer} from "../model/blockchain/BlockchainExplorer";
+import {BlockchainExplorer, RawDaemon_Out} from "../model/blockchain/BlockchainExplorer";
 import {Cn} from "../model/Cn";
 import {WalletWatchdog} from "../model/WalletWatchdog";
 
@@ -245,8 +245,8 @@ class SendView extends DestructableView {
 					}
 				});
 				TransactionsExplorer.createTx([{address: destinationAddress, amount: amountToSend}], self.paymentId, wallet, blockchainHeight,
-					function (numberOuts: number): Promise<any[]> {
-						return blockchainExplorer.getRandomOuts(numberOuts);
+					function (amounts: number[], numberOuts: number): Promise<RawDaemon_Out[]> {
+						return blockchainExplorer.getRandomOuts(amounts, numberOuts);
 					}
 					, function (amount: number, feesAmount: number): Promise<void> {
 						if (amount + feesAmount > wallet.unlockedAmount(blockchainHeight)) {

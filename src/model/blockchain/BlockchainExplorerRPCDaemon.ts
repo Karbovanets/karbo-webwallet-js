@@ -13,7 +13,7 @@
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {BlockchainExplorer, NetworkInfo, RawDaemon_Transaction, RemoteNodeInformation} from "./BlockchainExplorer";
+import {BlockchainExplorer, NetworkInfo, RawDaemon_Transaction, RawDaemon_Out, RemoteNodeInformation} from "./BlockchainExplorer";
 import {Wallet} from "../Wallet";
 import {MathUtil} from "../MathUtil";
 import {CnTransactions, CnUtils} from "../Cn";
@@ -247,9 +247,37 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
         });
     }
 
-    existingOuts: any[] = [];
+    getRandomOuts(amounts: number[], nbOutsNeeded: number): Promise<RawDaemon_Out[]> {
 
-    getRandomOuts(nbOutsNeeded: number, initialCall = true): Promise<any[]> {
+        //let selectedOuts = [];
+
+        return this.makeRequest('POST', 'getrandom_outs', {
+            amounts: amounts,
+            outs_count: nbOutsNeeded
+        }).then((response: {
+            status: 'OK' | 'string',
+            outs: { global_amount_index: number, out_key: string }[]
+        }) => {
+            
+
+            if (response.status !== 'OK') throw 'invalid_getrandom_outs_answer';
+
+            if (response.outs.length > 0) {
+
+                //selectedOuts = response.outs;
+
+                console.log("Got random outs: ");
+
+                console.log(response.outs);
+
+                
+            }
+
+            return response.outs;
+        });
+
+        
+/*
         let self = this;
         if (initialCall) {
             self.existingOuts = [];
@@ -305,25 +333,24 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
                     }
 
                     for (let output_idx_in_tx = 0; output_idx_in_tx < tx.vout.length; ++output_idx_in_tx) {
-                        let rct = null;
+                        //let rct = null;
                         let globalIndex = output_idx_in_tx;
                         if (typeof tx.global_index_start !== 'undefined' && typeof tx.output_indexes !== 'undefined') {
                             globalIndex = tx.output_indexes[output_idx_in_tx];
                         }
-                        if (tx.vout[output_idx_in_tx].amount !== 0) {//check if miner tx
+                        /*if (tx.vout[output_idx_in_tx].amount !== 0) {//check if miner tx
                             rct = CnTransactions.zeroCommit(CnUtils.d2s(tx.vout[output_idx_in_tx].amount));
                         } else {
                             let rtcOutPk = tx.rct_signatures.outPk[output_idx_in_tx];
                             let rtcMask = tx.rct_signatures.ecdhInfo[output_idx_in_tx].mask;
                             let rtcAmount = tx.rct_signatures.ecdhInfo[output_idx_in_tx].amount;
                             rct = rtcOutPk + rtcMask + rtcAmount;
-                        }
+                        }* /
 
                         let newOut = {
-                            rct: rct,
+                            //rct: rct,
                             public_key: tx.vout[output_idx_in_tx].target.data.key,
                             global_index: globalIndex,
-                            // global_index: count,
                         };
                         if (typeof txCandidates[tx.height] === 'undefined') txCandidates[tx.height] = [];
                         txCandidates[tx.height].push(newOut);
@@ -344,7 +371,7 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
 
                 return selectedOuts;
             });
-        });
+        });*/
     }
 
     sendRawTx(rawTx: string) {
