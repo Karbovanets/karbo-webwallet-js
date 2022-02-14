@@ -42,6 +42,8 @@ class SendView extends DestructableView {
 	@VueVar(true) amountToSendValid !: boolean;
 	@VueVar('') paymentId !: string;
 	@VueVar(true) paymentIdValid !: boolean;
+	@VueVar(3) mixIn !: number;
+	@VueVar(true) mixinIdValid !: boolean;
 
 	@VueVar(null) domainAliasAddress !: string | null;
 	@VueVar(null) txDestinationName !: string | null;
@@ -290,7 +292,8 @@ class SendView extends DestructableView {
 								}).catch(reject);
 							}, 1);
 						});
-					}).then(function (rawTxData: { raw: { hash: string, prvkey: string, raw: string }, signed: any }) {
+					},
+					self.mixIn).then(function (rawTxData: { raw: { hash: string, prvkey: string, raw: string }, signed: any }) {
 					blockchainExplorer.sendRawTx(rawTxData.raw.raw).then(function () {
 						//save the tx private key
 						wallet.addTxPrivateKeyWithTxHash(rawTxData.raw.hash, rawTxData.raw.prvkey);
@@ -424,6 +427,16 @@ class SendView extends DestructableView {
 		}
 	}
 
+	@VueWatched()
+	mixinIsValid() {
+		try {
+			if (this.mixIn > 10 || this.mixIn < 0 || this.mixIn === 1 || this.mixIn === 2)
+			    this.mixinIdValid = false;
+
+		} catch (e) {
+			this.mixinIdValid = false;
+		}
+	}
 }
 
 
