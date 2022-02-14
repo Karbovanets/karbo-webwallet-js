@@ -603,22 +603,6 @@ export class TransactionsExplorer {
 					console.log('amounts', amounts);
 					console.log('lots_mix_outs', lotsMixOuts);
 
-					/*let mix_outs = [];
-					let iMixOutsIndexes = 0;
-					for (let amount of amounts) {
-						let localMixOuts = [];
-						for (let i = 0; i < mixin + 1; ++i) {
-							localMixOuts.push(lotsMixOuts[iMixOutsIndexes]);
-							++iMixOutsIndexes;
-						}
-						localMixOuts.sort().reverse();
-						mix_outs.push({
-							outputs: localMixOuts.slice(),
-							amount: 0
-						});
-					}
-					console.log('mix_outs', mix_outs);*/
-
 					TransactionsExplorer.createRawTx(dsts, wallet, false, usingOuts, pid_encrypt, /*mix_outs*/lotsMixOuts, mixin, neededFee, paymentId).then(function (data: { raw: { hash: string, prvkey: string, raw: string }, signed: any }) {
 						resolve(data);
 					}).catch(function (e) {
