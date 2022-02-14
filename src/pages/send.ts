@@ -430,7 +430,7 @@ class SendView extends DestructableView {
 	@VueWatched()
 	mixinIsValid() {
 		try {
-			if (this.mixIn > 10 || this.mixIn < 0 || this.mixIn === 1 || this.mixIn === 2)
+			if (this.mixIn > 10 || (this.mixIn < 3 && this.mixIn !== 0))
 			    this.mixinIdValid = false;
 
 		} catch (e) {
