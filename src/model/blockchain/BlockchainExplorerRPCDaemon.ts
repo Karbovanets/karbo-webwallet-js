@@ -248,9 +248,6 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
     }
 
     getRandomOuts(amounts: number[], nbOutsNeeded: number): Promise<RawDaemon_Out[]> {
-
-        //let selectedOuts = [];
-
         return this.makeRequest('POST', 'getrandom_outs', {
             amounts: amounts,
             outs_count: nbOutsNeeded
@@ -258,19 +255,10 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
             status: 'OK' | 'string',
             outs: { global_index: number, public_key: string }[]
         }) => {
-            
-
             if (response.status !== 'OK') throw 'invalid_getrandom_outs_answer';
-
             if (response.outs.length > 0) {
-
-                //selectedOuts = response.outs;
-
                 console.log("Got random outs: ");
-
                 console.log(response.outs);
-
-                
             }
 
             return response.outs;
