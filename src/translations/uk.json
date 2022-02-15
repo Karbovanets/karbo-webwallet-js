@@ -230,11 +230,15 @@
 		  "label":"Payment ID (не обов'язково)",
 		  "invalid":"Ідентифікатор платежу невірний. Довжина повинна бути 16 або 64 символи"
 		},
+		"mixin":{
+		  "label":"Конфіденційність",
+		  "invalid":"Міксін неправильный, має бути від 3 до 10 або нуль"
+		},
 		"sendButton":"Надіслати",
 		"cancelButton":"Скасувати"
 	  },
 	  "qrCodeScanning":{
-		"explication":"Показати QR код"
+		"explication":"Сканувати QR код"
 	  },
 	  "notEnoughMoneyModal":{
 		"title":"Ой...",
@@ -395,7 +399,7 @@
 		"importButton":"Імпортувати"
 	  },
 	  "qrScanningBlock":{
-		"title":"Покажіть QR код"
+		"title":"Наведіть на QR код"
 	  }
 	},
 	"exportPage":{

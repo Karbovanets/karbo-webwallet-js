@@ -229,6 +229,10 @@
 		  "label":"Payment ID (optional)",
 		  "invalid":"Die payment ID ist ungültig. Sie muss aus 16 oder 64 Zeichen bestehen"
 		},
+		"mixin":{
+		  "label":"Geheimhaltung",
+		  "invalid":"Das Mixin ist ungültig, sollte zwischen 3 und 10 oder null liegen"
+		},
 		"sendButton":"Senden",
 		"cancelButton":"Abbrechen"
 	  },

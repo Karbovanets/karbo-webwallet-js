@@ -228,6 +228,10 @@
 		  "label":"Payment ID (opzionale)",
 		  "invalid":"Il Payment ID è invalido. La lunghezza deve essere di 16 o 64 caratteri"
 		},
+		"mixin":{
+		  "label":"Riservatezza",
+		  "invalid":"Il mixin non è valido, dovrebbe essere compreso tra 3 e 10 o zero"
+		},
 		"sendButton":"Invia",
 		"cancelButton":"Annulla"
 	  },
