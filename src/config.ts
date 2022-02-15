@@ -2,7 +2,8 @@
 let global : any = typeof window !== 'undefined' ? window : self;
 global.config = {
     nodeList: [
-        "https://karbo.club/services/node_web/"
+        "https://karbo.club/services/node_web/",
+		"https://node.karbo.org:32448/"
     ],
 	nodeUrl: "",
 	mainnetExplorerUrl: "http://explorer.karbowanec.com/",
