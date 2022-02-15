@@ -34,7 +34,7 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
             this.checkMinerTx = false;
             this.readSpeed = 10;
             this.customNode = false;
-            this.nodeUrl = 'http://node.karbo.io:32348/';
+            this.nodeUrl = 'https://node.karbo.org:32448/';
         }
         WalletOptions.fromRaw = function (raw) {
             var options = new WalletOptions();

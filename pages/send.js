@@ -67,7 +67,7 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             this.lockedForm = false;
             this.destinationAddressUser = '';
             this.destinationAddress = '';
-            this.amountToSend = '10.5';
+            this.amountToSend = '0';
             this.destinationAddressValid = false;
             this.openAliasValid = false;
             this.qrScanning = false;
@@ -418,7 +418,7 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             VueAnnotate_1.VueVar(false)
         ], SendView.prototype, "destinationAddressValid", void 0);
         __decorate([
-            VueAnnotate_1.VueVar('10.5')
+            VueAnnotate_1.VueVar('0')
         ], SendView.prototype, "amountToSend", void 0);
         __decorate([
             VueAnnotate_1.VueVar(false)

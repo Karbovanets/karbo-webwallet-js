@@ -954,12 +954,16 @@ body{
 	display: inline-block;
 	height: 100%;*/
 	border-left: 1px solid #D9DCE7;
-	padding: 18px 8px;
+	padding: 0px 8px;
 	display: block;
-	height: auto;
+	height: 100%;
 	position: absolute;
 	top: 0;
 	right: 0;
+}
+
+.field .subfield .action .fa {
+	line-height: 48px;
 }
 
 .field.checkbox input{

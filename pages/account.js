@@ -42,6 +42,7 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
             var _this = _super.call(this, container) || this;
             _this.intervalRefresh = 0;
             var self = _this;
+            _this.ticker = config.coinSymbol;
             AppState_1.AppState.enableLeftMenu();
             _this.intervalRefresh = setInterval(function () {
                 self.refresh();
@@ -97,6 +98,9 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
         __decorate([
             VueAnnotate_1.VueVar(0)
         ], AccountView.prototype, "unlockedWalletAmount", void 0);
+        __decorate([
+            VueAnnotate_1.VueVar(0)
+        ], AccountView.prototype, "ticker", void 0);
         __decorate([
             VueAnnotate_1.VueVar(0)
         ], AccountView.prototype, "currentScanBlock", void 0);

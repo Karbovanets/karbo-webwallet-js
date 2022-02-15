@@ -118,7 +118,7 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             VueAnnotate_1.VueVar(false)
         ], SettingsView.prototype, "customNode", void 0);
         __decorate([
-            VueAnnotate_1.VueVar('http://node.karbo.io:32348/')
+            VueAnnotate_1.VueVar('https://node.karbo.org:32448/')
         ], SettingsView.prototype, "nodeUrl", void 0);
         __decorate([
             VueAnnotate_1.VueVar(0)

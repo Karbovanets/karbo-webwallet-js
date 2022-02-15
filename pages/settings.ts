@@ -37,7 +37,7 @@ class SettingsView extends DestructableView{
 	@VueVar(false) checkMinerTx !: boolean;
 
 	@VueVar(false) customNode !: boolean;
-	@VueVar('http://node.karbo.io:32348/') nodeUrl !: string;
+	@VueVar('https://node.karbo.org:32448/') nodeUrl !: string;
 
 	@VueVar(0) creationHeight !: number;
 	@VueVar(0) scanHeight !: number;

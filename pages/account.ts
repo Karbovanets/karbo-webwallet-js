@@ -28,6 +28,7 @@ class AccountView extends DestructableView{
 	@VueVar([]) transactions !: Transaction[];
 	@VueVar(0) walletAmount !: number;
 	@VueVar(0) unlockedWalletAmount !: number;
+	@VueVar(0) ticker !: string;
 
 	@VueVar(0) currentScanBlock !: number;
 	@VueVar(0) blockchainHeight !: number;
@@ -38,6 +39,9 @@ class AccountView extends DestructableView{
 	constructor(container : string){
 		super(container);
 		let self = this;
+
+		this.ticker = config.coinSymbol;
+
 		AppState.enableLeftMenu();
 		this.intervalRefresh = <any>setInterval(function(){
 			self.refresh();
