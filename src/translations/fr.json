@@ -229,6 +229,10 @@
 		  "label":"Identifiant du payment (optionnel)",
 		  "invalid":"L'identifiant du paiement est invalid. La longeur doit être de 16 ou 64 caractères"
 		},
+		"mixin":{
+		  "label":"Confidentialité",
+		  "invalid":"Le mixin est invalide, doit être compris entre 3 et 10 ou zéro"
+		},
 		"sendButton":"Envoyer",
 		"cancelButton":"Annuler"
 	  },

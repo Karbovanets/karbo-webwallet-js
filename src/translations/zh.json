@@ -232,6 +232,10 @@
           "label": "付款ID（可选）",
           "invalid": "非法的付款ID. 长度必须是64位。"
         },
+        "mixin":{
+          "label":"隐私",
+          "invalid":"mixin 无效，应为 3 到 10 或零"
+        },
         "sendButton": "发送",
         "cancelButton": "取消"
       },

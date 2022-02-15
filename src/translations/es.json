@@ -231,6 +231,10 @@
           "label": "Identificación de pago (opcional)",
           "invalid": "El ID de pago no es válido. La longitud debe ser de 16 o 64 caracteres."
         },
+        "mixin":{
+          "label":"Intimidad",
+          "invalid":"El mixin no es válido, debe ser de 3 a 10 o cero"
+        },
         "sendButton": "Enviar",
         "cancelButton": "Cancelar"
       },

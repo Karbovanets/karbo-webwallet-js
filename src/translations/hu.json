@@ -229,6 +229,10 @@
 		  "label":"Fizetési azonosító (opcionális)",
 		  "invalid":"Érvénytelen fizetési azonosító. Hosszának 16 vagy 64 karakternek kell lennie"
 		},
+		"mixin":{
+		  "label":"Magánélet",
+		  "invalid":"A mixin érvénytelen, 3 és 10 között vagy nulla lehet"
+		},
 		"sendButton":"Küldés",
 		"cancelButton":"Mégsem"
 	  },

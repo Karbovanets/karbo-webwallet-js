@@ -228,6 +228,10 @@
         "label":"Identyfikator płatności (opcjonalnie)",
         "invalid":"Identyfikator płatności jest nieprawidłowy. Długość musi wynosić 64 znaki"
       },
+      "mixin":{
+        "label":"Poufność",
+        "invalid":"Mieszanka jest nieprawidłowa, powinna wynosić od 3 do 10 lub zero"
+      },
       "sendButton":"Wyślij",
       "cancelButton":"Przerwij"
     },
