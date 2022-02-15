@@ -903,7 +903,7 @@ body{
 	font-weight: 400;
 	margin-bottom:5px;
 }
-.field input, .field .subfield, .field select{
+.field input, .field select{
 	border: 1px solid #D9DCE7;
 	border-radius: 5px;
 	font-size: 14px;
@@ -911,6 +911,11 @@ body{
 	width: 100%;
 	color: rgba(71, 78, 93, 0.7);
 	background: #FFFFFF;
+	position: relative;
+}
+
+.field .subfield{
+	position: relative;
 }
 
 .field input:read-only, .field input.readonly, .field .subfield.readonly{
@@ -925,21 +930,36 @@ body{
 	padding: 0;
 }
 .field .subfield input{
-	width: calc(100% - 41px);
+	/*width: calc(100% - 41px);
 	border:none;
 	padding: 5px;
+	display: inline-block;*/
 	display: inline-block;
+	border: 1px solid #D9DCE7;
+	border-radius: 5px;
+	font-size: 14px;
+	padding: 17px 16px 15px;
+	width: 100%;
+	color: rgba(71, 78, 93, 0.7);
+	background: #FFFFFF;
 }
 .field .subfield input.twoActions {
 	width: calc(100% - 82px);
 }
 
 .field .subfield .action{
-	width: 20px;
+	/*width: 20px;
 	border-left:1px solid #D9DCE7;
 	padding: 18px 8px;
 	display: inline-block;
-	height: 100%;
+	height: 100%;*/
+	border-left: 1px solid #D9DCE7;
+	padding: 18px 8px;
+	display: block;
+	height: auto;
+	position: absolute;
+	top: 0;
+	right: 0;
 }
 
 .field.checkbox input{
