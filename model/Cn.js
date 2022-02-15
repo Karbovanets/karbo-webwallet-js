@@ -1941,7 +1941,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
                 throw 'Wrong number of mix outs provided (' + outputs.length + ' outputs, ' + mix_outs.length + ' mix outs)';
             }
             for (i = 0; i < mix_outs.length; i++) {
-                if ((mix_outs[i].outputs || []).length < fake_outputs_count) {
+                if ((mix_outs[i].outs || []).length < fake_outputs_count) {
                     throw 'Not enough outputs to mix with';
                 }
             }
@@ -1988,17 +1988,19 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
                     }
                 };
                 src.amount = new JSBigInt(outputs[i].amount).toString();
-                if (mix_outs.length !== 0) {
+                if (mix_outs.length !== 0) { // if mixin
                     // Sort fake outputs by global index
-                    console.log('mix outs before sort', mix_outs[i].outputs);
-                    mix_outs[i].outputs.sort(function (a, b) {
+                    console.log('mix outs before sort', mix_outs[i].outs);
+                    mix_outs[i].outs.sort(function (a, b) {
                         return new JSBigInt(a.global_index).compare(b.global_index);
                     });
                     j = 0;
-                    console.log('mix outs sorted', mix_outs[i].outputs);
-                    while ((src.outputs.length < fake_outputs_count) && (j < mix_outs[i].outputs.length)) {
-                        var out = mix_outs[i].outputs[j];
-                        console.log('chekcing mixin', out, outputs[i]);
+                    console.log('mix outs sorted', mix_outs[i].outs);
+                    while ((src.outputs.length < fake_outputs_count) && (j < mix_outs[i].outs.length)) {
+                        var out = mix_outs[i].outs[j];
+                        console.log('chekcing mixin');
+                        console.log("out: ", out);
+                        console.log("output ", i, ": ", outputs[i]);
                         if (out.global_index === outputs[i].global_index) {
                             console.log('got mixin the same as output, skipping');
                             j++;
@@ -2023,7 +2025,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
                         src.outputs.push(oe);
                         j++;
                     }
-                }
+                } // end of if mixin
                 var real_oe = {
                     index: new JSBigInt(outputs[i].global_index || 0).toString(),
                     key: outputs[i].public_key,

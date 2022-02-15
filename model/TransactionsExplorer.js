@@ -460,14 +460,7 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
                     usingOuts_amount = usingOuts_amount.add(out.amount);
                     //console.log("Using output: " + out.amount + " - " + JSON.stringify(out));
                 }
-                var calculateFeeWithBytes = function (fee_per_kb, bytes, fee_multiplier) {
-                    var kB = (bytes + 1023) / 1024;
-                    return kB * fee_per_kb * fee_multiplier;
-                };
                 console.log("Selected outs:", usingOuts);
-                if (neededFee < 10000000) {
-                    neededFee = 10000000;
-                }
                 console.log('using amount of ' + usingOuts_amount + ' for sending ' + totalAmountWithoutFee + ' with fees of ' + (neededFee / Math.pow(10, config.coinUnitPlaces)) + ' KRB');
                 confirmCallback(totalAmountWithoutFee, neededFee).then(function () {
                     if (usingOuts_amount.compare(totalAmount) < 0) {
@@ -483,47 +476,33 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
                         var changeAmount = usingOuts_amount.subtract(totalAmount);
                         //add entire change for rct
                         console.log("1) Sending change of " + Cn_1.Cn.formatMoneySymbol(changeAmount)
-                            + " to " /*+ AccountService.getAddress()*/);
+                            + " to " + wallet.getPublicAddress());
                         dsts.push({
                             address: wallet.getPublicAddress(),
                             amount: changeAmount
                         });
-                    }
+                    } /*
+                    // not applicable for Karbo
                     else if (usingOuts_amount.compare(totalAmount) === 0) {
                         //create random destination to keep 2 outputs always in case of 0 change
-                        var fakeAddress = Cn_1.Cn.create_address(Cn_1.CnRandom.random_scalar()).public_addr;
+                        let fakeAddress = Cn.create_address(CnRandom.random_scalar()).public_addr;
                         console.log("Sending 0 KRB to a fake address to keep tx uniform (no change exists): " + fakeAddress);
                         dsts.push({
                             address: fakeAddress,
                             amount: 0
                         });
-                    }
+                    }*/
                     console.log('destinations', dsts);
                     var amounts = [];
                     for (var l = 0; l < usingOuts.length; l++) {
-                        amounts.push(usingOuts[l].amount.toString());
+                        amounts.push(usingOuts[l].amount);
                     }
-                    obtainMixOutsCallback(amounts.length * (mixin + 1)).then(function (lotsMixOuts) {
-                        console.log('------------------------------mix_outs', lotsMixOuts);
+                    var nbOutsNeeded = mixin + 1;
+                    obtainMixOutsCallback(amounts, nbOutsNeeded).then(function (lotsMixOuts) {
+                        console.log('------------------------------mix_outs');
                         console.log('amounts', amounts);
                         console.log('lots_mix_outs', lotsMixOuts);
-                        var mix_outs = [];
-                        var iMixOutsIndexes = 0;
-                        for (var _i = 0, amounts_1 = amounts; _i < amounts_1.length; _i++) {
-                            var amount = amounts_1[_i];
-                            var localMixOuts = [];
-                            for (var i = 0; i < mixin + 1; ++i) {
-                                localMixOuts.push(lotsMixOuts[iMixOutsIndexes]);
-                                ++iMixOutsIndexes;
-                            }
-                            localMixOuts.sort().reverse();
-                            mix_outs.push({
-                                outputs: localMixOuts.slice(),
-                                amount: 0
-                            });
-                        }
-                        console.log('mix_outs', mix_outs);
-                        TransactionsExplorer.createRawTx(dsts, wallet, false, usingOuts, pid_encrypt, mix_outs, mixin, neededFee, paymentId).then(function (data) {
+                        TransactionsExplorer.createRawTx(dsts, wallet, false, usingOuts, pid_encrypt, lotsMixOuts, mixin, neededFee, paymentId).then(function (data) {
                             resolve(data);
                         }).catch(function (e) {
                             reject(e);
