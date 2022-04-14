@@ -1,11 +1,15 @@
 //export {};
 let global : any = typeof window !== 'undefined' ? window : self;
 global.config = {
+	debug: false,  
+	apiUrl: [
+		"https://ccxapi.conceal.network/api/"
+	],
     nodeList: [
-        "https://karbo.club/services/node_web/",
+		"https://karbo.club/services/node_web/",
 		"https://node.karbo.org:32448/",
 		"https://node2.karbo.org:32448/"
-    ],
+	],
 	nodeUrl: "",
 	mainnetExplorerUrl: "http://explorer.karbowanec.com/",
 	mainnetExplorerUrlHash: "http://explorer.karbowanec.com/?hash={ID}#blockchain_transaction",
@@ -35,5 +39,19 @@ global.config = {
 	avgBlockTime: 240,
 	maxBlockNumber: 500000000,
 };
+
 let randInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
 config.nodeUrl = config.nodeList[randInt];
+
+function logDebugMsg(...data: any[]) {
+  if (config.debug) {
+    if (data.length > 1) {
+      console.log(data[0], data.slice(1));
+    } else {
+      console.log(data[0]);
+    }
+  }
+}
+
+// log debug messages if debug is set to true
+global.logDebugMsg = logDebugMsg;
