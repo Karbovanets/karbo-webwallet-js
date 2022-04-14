@@ -60,10 +60,9 @@ export class WalletWatchdog {
         this.workerProcessing = new Worker('./workers/TransferProcessingEntrypoint.js');
         this.workerProcessing.onmessage = function (data: MessageEvent) {
             let message: string | any = data.data;
-            //console.log("InitWorker message: ");
-            //console.log(message);
+            logDebugMsg("InitWorker message", message);
             if (message === 'ready') {
-                //console.info('worker ready');
+                logDebugMsg('worker ready');
                 self.signalWalletUpdate();
             } else if (message === 'readyWallet') {
                 self.workerProcessingReady = true;
@@ -90,7 +89,7 @@ export class WalletWatchdog {
 
     signalWalletUpdate() {
         let self = this;
-        //console.log('wallet update');
+        logDebugMsg('wallet update');
         this.lastBlockLoading = -1;//reset scanning
 
         if (this.wallet.options.customNode) {
@@ -273,8 +272,8 @@ export class WalletWatchdog {
             return;
         }
 
-        // console.log('checking');
         this.explorer.getHeight().then(function (height) {
+            logDebugMsg("Checking on height", height);
             if (height > self.lastMaximumHeight) {
                 self.lastMaximumHeight = height;
             } else {
@@ -297,7 +296,7 @@ export class WalletWatchdog {
                 if (endBlock > self.lastMaximumHeight) endBlock = self.lastMaximumHeight;
 
                 self.explorer.getTransactionsForBlocks(previousStartBlock, endBlock, self.wallet.options.checkMinerTx).then(function (transactions: any) {
-                    console.log("getTransactionsForBlocks", previousStartBlock, endBlock, transactions);    
+                    logDebugMsg("getTransactionsForBlocks", previousStartBlock, endBlock, transactions);    
                     //to ensure no pile explosion
                     if (transactions === 'OK') {
                         self.lastBlockLoading = endBlock;
