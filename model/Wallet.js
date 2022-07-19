@@ -279,6 +279,9 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
                 var transaction = _a[_i];
                 news.push(Transaction_1.Transaction.fromRaw(transaction.export()));
             }
+            news.sort(function (a, b) {
+                return a.timestamp - b.timestamp;
+            });
             return news;
         };
         Object.defineProperty(Wallet.prototype, "amount", {

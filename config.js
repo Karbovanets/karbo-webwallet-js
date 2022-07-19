@@ -4,7 +4,8 @@ var global = typeof window !== 'undefined' ? window : self;
 global.config = {
     nodeList: [
         "https://karbo.club/services/node_web/",
-        "https://node.karbo.org:32448/"
+        "https://node.karbo.org:32448/",
+        "https://node2.karbo.org:32448/"
     ],
     nodeUrl: "",
     mainnetExplorerUrl: "http://explorer.karbowanec.com/",
@@ -30,7 +31,7 @@ global.config = {
     defaultMixin: 3,
     idleTimeout: 30,
     idleWarningDuration: 20,
-    syncBlockCount: 50,
+    syncBlockCount: 1000,
     coinSymbol: 'KRB',
     openAliasPrefix: "krb",
     coinName: 'Karbo',

@@ -80,11 +80,12 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                             }
                             self.signalWalletUpdate();
                         }
-                        if (self.workerCurrentProcessing.length > 0) {
-                            var transactionHeight = self.workerCurrentProcessing[self.workerCurrentProcessing.length - 1].height;
+                        /*if (self.workerCurrentProcessing.length > 0) {
+                            let transactionHeight = self.workerCurrentProcessing[self.workerCurrentProcessing.length - 1].height;
                             if (typeof transactionHeight !== 'undefined')
                                 self.wallet.lastHeight = transactionHeight;
-                        }
+                        }*/
+                        // we are done processing now
                         self.workerProcessingWorking = false;
                     }
                 }
@@ -172,38 +173,46 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                 this.initWorker();
                 return;
             }
-            var transactionsToProcess = this.transactionsToProcess.splice(0, 25); //process 25 tx's at a time
+            // define the transactions we need to process
+            var transactionsToProcess = [];
+            if (this.transactionsToProcess.length > 0) {
+                transactionsToProcess = this.transactionsToProcess.shift();
+            }
+            // check if we have anything to process
             if (transactionsToProcess.length > 0) {
                 this.workerCurrentProcessing = transactionsToProcess;
+                this.workerProcessingWorking = true;
                 this.workerProcessing.postMessage({
                     type: 'process',
                     transactions: transactionsToProcess
                 });
-                //this.workerCountProcessed += this.transactionsToProcess.length;
                 ++this.workerCountProcessed;
-                this.workerProcessingWorking = true;
             }
             else {
                 clearInterval(this.intervalTransactionsProcess);
                 this.intervalTransactionsProcess = 0;
             }
         };
-        WalletWatchdog.prototype.processTransactions = function (transactions) {
+        WalletWatchdog.prototype.processTransactions = function (transactions, callback) {
             var transactionsToAdd = [];
             for (var _i = 0, transactions_2 = transactions; _i < transactions_2.length; _i++) {
                 var tr = transactions_2[_i];
-                if (typeof tr.height !== 'undefined')
-                    if (tr.height > this.wallet.lastHeight) {
+                if (typeof tr.height !== 'undefined') {
+                    if (tr.height >= this.wallet.lastHeight) {
                         transactionsToAdd.push(tr);
                     }
+                }
             }
-            this.transactionsToProcess.push.apply(this.transactionsToProcess, transactionsToAdd);
+            // add the raw transaction to the processing FIFO list
+            this.transactionsToProcess.push(transactionsToAdd);
             if (this.intervalTransactionsProcess === 0) {
                 var self_1 = this;
                 this.intervalTransactionsProcess = setInterval(function () {
                     self_1.checkTransactionsInterval();
                 }, this.wallet.options.readSpeed);
             }
+            // signal we are finished
+            callback();
         };
         WalletWatchdog.prototype.loadHistory = function () {
             if (this.stopped)
@@ -215,7 +224,7 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
             if (this.workerProcessingWorking || !this.workerProcessingReady) {
                 setTimeout(function () {
                     self.loadHistory();
-                }, 100);
+                }, 1000);
                 return;
             }
             if (this.transactionsToProcess.length > 500) {
@@ -227,8 +236,18 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
             }
             // console.log('checking');
             this.explorer.getHeight().then(function (height) {
-                if (height > self.lastMaximumHeight)
+                if (height > self.lastMaximumHeight) {
                     self.lastMaximumHeight = height;
+                }
+                else {
+                    if (self.wallet.lastHeight >= self.lastMaximumHeight) {
+                        setTimeout(function () {
+                            self.loadHistory();
+                        }, 1000);
+                        return;
+                    }
+                }
+                // we are only here if the block is actually increased from last processing
                 if (self.lastBlockLoading === -1)
                     self.lastBlockLoading = self.wallet.lastHeight;
                 if (self.lastBlockLoading !== height) {
@@ -245,17 +264,19 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                             self.wallet.lastHeight = endBlock_1;
                             setTimeout(function () {
                                 self.loadHistory();
-                            }, 1);
+                            }, 10);
                         }
                         else if (transactions.length > 0) {
                             var lastTx = transactions[transactions.length - 1];
                             if (typeof lastTx.height !== 'undefined') {
                                 self.lastBlockLoading = lastTx.height + 1;
                             }
-                            self.processTransactions(transactions);
-                            setTimeout(function () {
-                                self.loadHistory();
-                            }, 1);
+                            self.processTransactions(transactions, function () {
+                                self.wallet.lastHeight = endBlock_1;
+                                setTimeout(function () {
+                                    self.loadHistory();
+                                }, 1);
+                            });
                         }
                         else {
                             self.lastBlockLoading = endBlock_1;

@@ -33,7 +33,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "assets/css/main.css",
-    "revision": "05836be5f75e7da0b173dd07c8cfa63a"
+    "revision": "96d8e8b863361897fcaa1f146d3ded70"
   },
   {
     "url": "assets/img/coin_white.png",
@@ -85,7 +85,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "config.js",
-    "revision": "e3ccc46e8e2477f8ef6d41121c71bb31"
+    "revision": "98076e781c01c93ac7db44267b2a77bf"
   },
   {
     "url": "d/vue-i118n.js",
@@ -125,7 +125,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "lib/decoder.min.js",
-    "revision": "67a582366edae346b7aa0fb14be03348"
+    "revision": "d4b1f18a71eb23433107d044eedffaa9"
   },
   {
     "url": "lib/FileSaver.min.js",
@@ -293,11 +293,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/QRReader.js",
-    "revision": "d6398ec8645f6f0d1a56a7e83c3ef12e"
+    "revision": "f2065306ad8fab127f7040a3299af285"
   },
   {
     "url": "model/Storage.js",
-    "revision": "121f097e08b94d86f07c0f990a15f8e7"
+    "revision": "39e0693482284ed1beabf1ac048f7791"
   },
   {
     "url": "model/Transaction.js",
@@ -313,7 +313,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/Wallet.js",
-    "revision": "b022d7e11a1ed89bfdda95db9e5c8f05"
+    "revision": "e7f5714c0142c4cd7c3eeb2915920450"
   },
   {
     "url": "model/WalletRepository.js",
@@ -321,11 +321,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/WalletWatchdog.js",
-    "revision": "396d0effbc68085c6576865f040cfbaf"
+    "revision": "ca08a97b208adc17225994ab37f48797"
   },
   {
     "url": "pages/account.html",
-    "revision": "ce08e2cf9da4042f0c4f280e17734e3d"
+    "revision": "ac5ca5a74d193cd55d67387fbb9fb994"
   },
   {
     "url": "pages/account.js",
@@ -457,7 +457,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "pages/send.js",
-    "revision": "ff2f9e1901f817014db869d59b93aa5c"
+    "revision": "c3c57edf61e49efef70ed62e5295bbe5"
   },
   {
     "url": "pages/settings.html",
@@ -493,59 +493,59 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "translations/de.json",
-    "revision": "d8771924b641c2229961f42d945d7d4a"
+    "revision": "0ac37bb6a82574ea028f0c01bf833154"
   },
   {
     "url": "translations/en.json",
-    "revision": "9b2bfe09f4ab769cb6433c5cd26b62c1"
+    "revision": "28798e088798da7e713cf12ac6af4ec6"
   },
   {
     "url": "translations/es.json",
-    "revision": "5e348f26330e2c23f7c9174876693580"
+    "revision": "c2f431cfbfb3cf29f55c8f73df1a9054"
   },
   {
     "url": "translations/fa.json",
-    "revision": "e41d6ee76f5c0d13fd849a40852622af"
+    "revision": "ef4b316f41caa96f84e504ef0a569580"
   },
   {
     "url": "translations/fr.json",
-    "revision": "638757d8caea3deacebc339dc281198d"
+    "revision": "9882a1e18d20ba7bdd4fafa3bc4e09a3"
   },
   {
     "url": "translations/gr.json",
-    "revision": "6233bd10962460cfdc117044e91e37c4"
+    "revision": "c082dc5cfade2dac24bb7b4cf4d622c8"
   },
   {
     "url": "translations/hu.json",
-    "revision": "9a30eb1eacc539d20c67a4226edfea48"
+    "revision": "e3c9b846acb3fab49d96e7439880c771"
   },
   {
     "url": "translations/it.json",
-    "revision": "048089b8571838721f22e31cf5dfa5e9"
+    "revision": "70fa91014487cb65ab980797fcbb0ed2"
   },
   {
     "url": "translations/ko.json",
-    "revision": "c8d9daa0079ff63efe59eb7afd99f148"
+    "revision": "c144646053fe639a8bf8eef98e9555eb"
   },
   {
     "url": "translations/pl.json",
-    "revision": "f8b11b5571ed06ad15d8054cff723780"
+    "revision": "9f12812e65ec18ab90735bec049c0200"
   },
   {
     "url": "translations/ru.json",
-    "revision": "da29ae2ba2e14409eea933b15e7b165c"
+    "revision": "1626700d62d8c01d53910c45bd90a65c"
   },
   {
     "url": "translations/sr.json",
-    "revision": "174bb72d3fb45e547230e2e7ef52dab5"
+    "revision": "657aa462bbc2bb5baeef034e1db63b56"
   },
   {
     "url": "translations/uk.json",
-    "revision": "85bfde6c21dca7245d1175ecc7d5070a"
+    "revision": "b4993d71c0aa21ea569a2189a53a0a1d"
   },
   {
     "url": "translations/zh.json",
-    "revision": "63ca784df29a420d163529986d54dadf"
+    "revision": "13238dae6ee7996f1fac7942e1236882"
   },
   {
     "url": "utils/Url.js",

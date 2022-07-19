@@ -99,7 +99,9 @@
 	  },
 	  "balanceBlock": {
 		"title": "Egyenleg",
-		"unlocked": "Feloldva"
+		"total": "Teljes",
+		"unlocked": "Feloldva",
+		"pending": "Függőben"
 	  },
 	  "historyBlock": {
 		"title": "Tranzakciós előzmények",

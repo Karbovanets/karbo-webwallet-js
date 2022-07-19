@@ -99,7 +99,9 @@
       },
       "balanceBlock": {
         "title": "잔액",
-        "unlocked": "해제완료"
+        "total": "총",
+        "unlocked": "해제완료",
+        "pending": "보류 중"
       },
       "historyBlock": {
         "title": "트랜젝션 기록",

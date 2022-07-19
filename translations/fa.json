@@ -98,7 +98,9 @@
       },
       "balanceBlock": {
         "title": "کل حساب",
-        "unlocked": "در دسترس"
+        "total": "جمع",
+        "unlocked": "در دسترس",
+        "pending": "تایید نشده"
       },
       "historyBlock": {
         "title": "تاریخچه تراکنش ها",

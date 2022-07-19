@@ -99,7 +99,9 @@
 	  },
 	  "balanceBlock": {
 		"title": "Ваш баланс",
-		"unlocked": "Доступно"
+		"total": "Всего",
+		"unlocked": "Доступно",
+		"pending": "Ожидается"
 	  },
 	  "historyBlock": {
 		"title": "История транзакций",

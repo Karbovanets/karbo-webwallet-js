@@ -99,7 +99,9 @@
 	  },
 	  "balanceBlock": {
 		"title": "Το υπόλοιπό σας",
-		"unlocked": "Ξεκλείδωτο"
+		"total": "Σύνολο",
+		"unlocked": "Ξεκλείδωτο",
+		"pending": "Εκκρεμής"
 	  },
 	  "historyBlock": {
 		"title": "Ιστορικό συναλλαγών",
