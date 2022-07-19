@@ -75,12 +75,13 @@ export class WalletWatchdog {
                             self.wallet.addNew(Transaction.fromRaw(tx));
                         self.signalWalletUpdate();
                     }
-                    if (self.workerCurrentProcessing.length > 0) {
+                    /*if (self.workerCurrentProcessing.length > 0) {
                         let transactionHeight = self.workerCurrentProcessing[self.workerCurrentProcessing.length - 1].height;
                         if (typeof transactionHeight !== 'undefined')
                             self.wallet.lastHeight = transactionHeight;
-                    }
+                    }*/
 
+                    // we are done processing now
                     self.workerProcessingWorking = false;
                 }
             }
@@ -203,12 +204,12 @@ export class WalletWatchdog {
         // check if we have anything to process
         if (transactionsToProcess.length > 0) {
             this.workerCurrentProcessing = transactionsToProcess;
+            this.workerProcessingWorking = true;
             this.workerProcessing.postMessage({
                 type: 'process',
                 transactions: transactionsToProcess
             });
             ++this.workerCountProcessed;
-            this.workerProcessingWorking = true;
         } else {
             clearInterval(this.intervalTransactionsProcess);
             this.intervalTransactionsProcess = 0;
@@ -254,7 +255,7 @@ export class WalletWatchdog {
         if (this.workerProcessingWorking || !this.workerProcessingReady) {
             setTimeout(function () {
                 self.loadHistory();
-            }, 100);
+            }, 1000);
             return;
         }
         if (this.transactionsToProcess.length > 500) {
@@ -270,10 +271,12 @@ export class WalletWatchdog {
             if (height > self.lastMaximumHeight) {
                 self.lastMaximumHeight = height;
             } else {
-                setTimeout(function () {
-                    self.loadHistory();
-                }, 1000);
-                return;
+                if (self.wallet.lastHeight >= self.lastMaximumHeight) {
+                    setTimeout(function () {
+                        self.loadHistory();
+                    }, 1000);
+                    return;
+                }
             }
 
             // we are only here if the block is actually increased from last processing
@@ -294,7 +297,7 @@ export class WalletWatchdog {
 
                         setTimeout(function () {
                             self.loadHistory();
-                        }, 100);
+                        }, 10);
                     } else if (transactions.length > 0) {
                         let lastTx = transactions[transactions.length - 1];
                         if (typeof lastTx.height !== 'undefined') {
@@ -305,7 +308,7 @@ export class WalletWatchdog {
     
                             setTimeout(function () {
                                 self.loadHistory();
-                            }, 100);
+                            }, 1);
                         });
                     } else {
                         self.lastBlockLoading = endBlock;
