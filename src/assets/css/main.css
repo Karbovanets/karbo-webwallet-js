@@ -250,6 +250,24 @@ body.transparent #copyright{
 	font-size: 30px;
 }
 
+.balance_content {
+	display: table
+}
+  
+.wallet_amount {
+	display: table-row;
+}
+  
+.amount_cell {
+	display: table-cell;
+	padding: 0.1em;
+}
+  
+.walletAmountLabel {
+	font-size: 1.5em;
+	padding-right: 1em;
+}
+
 .transactions table{
 	width: 100%;
 	border-collapse: collapse;

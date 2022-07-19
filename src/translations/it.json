@@ -98,7 +98,9 @@
 	  },
 	  "balanceBlock": {
 		"title": "Il tuo bilancio",
-		"unlocked": "Sbloccato"
+		"total": "Totale",
+		"unlocked": "Sbloccato",
+		"pending": "In attesa"
 	  },
 	  "historyBlock": {
 		"title": "Cronologia delle transazioni",

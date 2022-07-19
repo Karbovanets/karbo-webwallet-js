@@ -98,7 +98,9 @@
       },
       "balanceBlock": {
         "title": "Stan konta",
-        "unlocked": "Odblokowany"
+        "total": "Łącznie",
+        "unlocked": "Odblokowano",
+        "pending": "W oczekiwaniu"
       },
       "historyBlock": {
         "title": "Historia transakcji",

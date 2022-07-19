@@ -99,7 +99,9 @@
 	  },
 	  "balanceBlock": {
 		"title": "Ваша средства",
-		"unlocked": "Откључано"
+		"total": "Укупно",
+		"unlocked": "Откључано",
+		"pending": "На чекању"
 	  },
 	  "historyBlock": {
 		"title": "Историја ваших трансакција",

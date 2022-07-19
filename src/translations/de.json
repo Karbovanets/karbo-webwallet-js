@@ -99,7 +99,9 @@
 	  },
 	  "balanceBlock": {
 		"title": "Dein Guthaben",
-		"unlocked": "Entsperrt"
+		"total": "Gesamt",
+		"unlocked": "Entsperrt",
+		"pending": "Ausstehend"
 	  },
 	  "historyBlock": {
 		"title": "Transaktionshistorie",

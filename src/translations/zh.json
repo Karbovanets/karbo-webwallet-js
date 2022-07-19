@@ -99,7 +99,9 @@
       },
       "balanceBlock": {
         "title": "您的余额",
-        "unlocked": "解锁"
+        "total": "全部的",
+        "unlocked": "解锁",
+        "pending": "等待中"
       },
       "historyBlock": {
         "title": "交易记录",

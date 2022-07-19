@@ -99,7 +99,9 @@
 	  },
 	  "balanceBlock": {
 		"title": "Votre solde",
-		"unlocked": "Disponible"
+		"total": "Total",
+		"unlocked": "Disponible",
+		"pending": "En attente"
 	  },
 	  "historyBlock": {
 		"title": "Historique des transactions",

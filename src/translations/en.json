@@ -99,7 +99,9 @@
 	  },
 	  "balanceBlock": {
 		"title": "Your balance",
-		"unlocked": "Unlocked"
+		"total": "Total",
+		"unlocked": "Unlocked",
+		"pending": "Pending"
 	  },
 	  "historyBlock": {
 		"title": "Transaction history",
