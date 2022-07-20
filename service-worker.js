@@ -321,7 +321,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/WalletWatchdog.js",
-    "revision": "ca08a97b208adc17225994ab37f48797"
+    "revision": "5f7bca82a594d4e0ea1f631e59b651a0"
   },
   {
     "url": "pages/account.html",
