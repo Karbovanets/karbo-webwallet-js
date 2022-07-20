@@ -83,7 +83,7 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
         };
         AccountView.prototype.refreshWallet = function () {
             this.currentScanBlock = wallet.lastHeight;
-            this.walletAmount = wallet.amount;
+            this.walletAmount = wallet.totalAmount();
             this.unlockedWalletAmount = wallet.unlockedAmount(this.currentScanBlock);
             this.transactions = wallet.txsMem.concat(wallet.getTransactionsCopy().reverse());
         };

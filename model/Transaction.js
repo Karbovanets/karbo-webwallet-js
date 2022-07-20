@@ -117,6 +117,7 @@ define(["require", "exports"], function (require, exports) {
             this.timestamp = 0;
             this.paymentId = '';
             this.fees = 0;
+            this.is_coinbase = false;
         }
         Transaction.fromRaw = function (raw) {
             var transac = new Transaction();
@@ -145,6 +146,8 @@ define(["require", "exports"], function (require, exports) {
                 transac.fees = raw.fee;
             if (typeof raw.hash !== 'undefined')
                 transac.hash = raw.hash;
+            if (typeof raw.is_coinbase !== 'undefined')
+                transac.is_coinbase = raw.is_coinbase;
             return transac;
         };
         Transaction.prototype.export = function () {
@@ -153,6 +156,7 @@ define(["require", "exports"], function (require, exports) {
                 txPubKey: this.txPubKey,
                 timestamp: this.timestamp,
                 hash: this.hash,
+                is_coinbase: this.is_coinbase,
             };
             if (this.ins.length > 0) {
                 var rins = [];
@@ -189,7 +193,7 @@ define(["require", "exports"], function (require, exports) {
             return amount;
         };
         Transaction.prototype.isCoinbase = function () {
-            return this.outs.length == 1 && this.outs[0].rtcAmount === '';
+            return this.is_coinbase;
         };
         Transaction.prototype.isConfirmed = function (blockchainHeight) {
             if (this.isCoinbase() && this.blockHeight + config.txCoinbaseMinConfirms < blockchainHeight) {

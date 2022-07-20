@@ -290,7 +290,7 @@ export class Wallet extends Observable{
 		return news;
 	}
 
-	get amount() : number{
+	totalAmount() : number{
 		return this.unlockedAmount(-1);
 	}
 

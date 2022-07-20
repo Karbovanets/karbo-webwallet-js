@@ -48,7 +48,8 @@
 							<template v-for="transaction of transactions" v-if="transaction.isFullyChecked()">
 								<tr class="transaction" :class="(transaction.blockHeight === 0 ? 'pending' : '')">
 									<td class="direction" >
-										<i v-if="transaction.ins.length == 0" class="fa fa-level-down" aria-hidden="true"></i>
+										<i v-if="transaction.is_coinbase" class="fa fa-gavel" aria-hidden="true"></i>
+										<i v-else-if="transaction.ins.length == 0" class="fa fa-level-down" aria-hidden="true"></i>
 										<i v-else="" class="fa fa-level-up" aria-hidden="true"></i>
 									</td><!--LEfT-->
 									<td class="timestamp" v-if="transaction.blockHeight > 0">{{$d(new Date(transaction.timestamp*1000), 'long')}}</td>

@@ -104,19 +104,10 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
             return extras;
         };
         TransactionsExplorer.isMinerTx = function (rawTransaction) {
-            if (!Array.isArray(rawTransaction.vout) || rawTransaction.vin.length > 0) {
-                return false;
+            if (rawTransaction.vin.length > 0 && rawTransaction.vin[0].type === 'ff') {
+                return true;
             }
-            if (!Array.isArray(rawTransaction.vout) || rawTransaction.vout.length === 0) {
-                console.error('Weird tx !', rawTransaction);
-                return false;
-            }
-            try {
-                return rawTransaction.vout[0].amount !== 0;
-            }
-            catch (err) {
-                return false;
-            }
+            return false;
         };
         TransactionsExplorer.parse = function (rawTransaction, wallet) {
             var transaction = null;
@@ -302,6 +293,7 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
                 }
                 transaction.outs = outs;
                 transaction.ins = ins;
+                transaction.is_coinbase = rawTransaction.vin[0].type === 'ff';
             }
             return transaction;
         };

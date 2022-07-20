@@ -131,21 +131,11 @@ export class TransactionsExplorer {
 	}
 
 	static isMinerTx(rawTransaction: RawDaemon_Transaction) {
-		if (!Array.isArray(rawTransaction.vout) || rawTransaction.vin.length > 0) {
-			return false;
+		if(rawTransaction.vin.length > 0 && rawTransaction.vin[0].type === 'ff') {
+			return true;
 		}
 
-		if (!Array.isArray(rawTransaction.vout) || rawTransaction.vout.length === 0) {
-			console.error('Weird tx !', rawTransaction);
-
-			return false;
-		}
-
-		try {
-			return rawTransaction.vout[0].amount !== 0;
-		} catch (err) {
-			return false;
-		}
+		return false;
 	}
 
 	static parse(rawTransaction: RawDaemon_Transaction, wallet: Wallet): Transaction | null {
@@ -350,8 +340,9 @@ export class TransactionsExplorer {
 
 			transaction.outs = outs;
 			transaction.ins = ins;
-		}
 
+			transaction.is_coinbase = rawTransaction.vin[0].type === 'ff';
+		}
 
 		return transaction;
 	}
