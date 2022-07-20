@@ -171,15 +171,15 @@ export class Transaction {
     }
 
     isCoinbase() {
-        //return this.outs.length == 1 && this.outs[0].rtcAmount === '';
-        return this.ins.length == 0;
+        return this.outs.length == 1 && this.outs[0].rtcAmount === '';
     }
 
     isConfirmed(blockchainHeight: number) {
-        let confirmations = this.blockHeight + (this.isCoinbase() ? config.txCoinbaseMinConfirms : config.txMinConfirms);
-        if (confirmations < blockchainHeight)
+        if (this.isCoinbase() && this.blockHeight + config.txCoinbaseMinConfirms < blockchainHeight) {
             return true;
-
+        } else if (!this.isCoinbase() && this.blockHeight + config.txMinConfirms < blockchainHeight) {
+            return true;
+        }
         return false;
     }
 

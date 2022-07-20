@@ -84,7 +84,7 @@ define(["require", "exports", "../WalletWatchdog"], function (require, exports, 
         };
         BlockchainExplorerRpcDaemon.prototype.getHeight = function () {
             var _this = this;
-            if (Date.now() - this.lastTimeRetrieveInfo < 10 * 1000 && this.cacheHeight !== 0) {
+            if (Date.now() - this.lastTimeRetrieveInfo < 20 * 1000 && this.cacheHeight !== 0) {
                 return Promise.resolve(this.cacheHeight);
             }
             this.lastTimeRetrieveInfo = Date.now();

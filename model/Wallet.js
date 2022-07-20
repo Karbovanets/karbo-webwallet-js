@@ -284,9 +284,13 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
             });
             return news;
         };
-        Wallet.prototype.totalAmount = function () {
-            return this.unlockedAmount(-1);
-        };
+        Object.defineProperty(Wallet.prototype, "amount", {
+            get: function () {
+                return this.unlockedAmount(-1);
+            },
+            enumerable: false,
+            configurable: true
+        });
         Wallet.prototype.unlockedAmount = function (currentBlockHeight) {
             if (currentBlockHeight === void 0) { currentBlockHeight = -1; }
             var amount = 0;

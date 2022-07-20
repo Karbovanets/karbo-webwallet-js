@@ -189,13 +189,15 @@ define(["require", "exports"], function (require, exports) {
             return amount;
         };
         Transaction.prototype.isCoinbase = function () {
-            //return this.outs.length == 1 && this.outs[0].rtcAmount === '';
-            return this.ins.length == 0;
+            return this.outs.length == 1 && this.outs[0].rtcAmount === '';
         };
         Transaction.prototype.isConfirmed = function (blockchainHeight) {
-            var confirmations = this.blockHeight + (this.isCoinbase() ? config.txCoinbaseMinConfirms : config.txMinConfirms);
-            if (confirmations < blockchainHeight)
+            if (this.isCoinbase() && this.blockHeight + config.txCoinbaseMinConfirms < blockchainHeight) {
                 return true;
+            }
+            else if (!this.isCoinbase() && this.blockHeight + config.txMinConfirms < blockchainHeight) {
+                return true;
+            }
             return false;
         };
         Transaction.prototype.isFullyChecked = function () {
