@@ -16,7 +16,7 @@ global.config = {
 	testnet: false,
     coinUnitPlaces: 12,
     coinDisplayUnitPlaces: 2,
-	txMinConfirms: 10,
+	txMinConfirms: 5,
 	txCoinbaseMinConfirms: 10,
 	addressPrefix: 111,
 	integratedAddressPrefix: 112,
@@ -25,14 +25,9 @@ global.config = {
 	subAddressPrefix: 113,
 	subAddressPrefixTestnet: 113,
 	coinFee: new JSBigInt('10000000000'),
-	feePerKB: new JSBigInt('10000000000'), //for testnet its not used, as fee is dynamic.
 	dustThreshold: new JSBigInt('100000000'),//used for choosing outputs/change - we decompose all the way down if the receiver wants now regardless of threshold
 	defaultMixin: 3, // default value mixin
-
-	idleTimeout: 30,
-	idleWarningDuration: 20,
 	syncBlockCount: 1000,
-
 	coinSymbol: 'KRB',
 	openAliasPrefix: "krb",
 	coinName: 'Karbo',

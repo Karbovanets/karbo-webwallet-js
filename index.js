@@ -265,7 +265,7 @@ define(["require", "exports", "./lib/numbersLab/Router", "./model/Mnemonic", "./
             }
             switch (event.data) {
                 case 'reload-window-update':
-                    window.location.reload(true);
+                    window.location.reload();
                     break;
                 default:
                     // NOOP

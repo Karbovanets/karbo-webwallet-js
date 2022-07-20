@@ -284,13 +284,9 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
             });
             return news;
         };
-        Object.defineProperty(Wallet.prototype, "amount", {
-            get: function () {
-                return this.unlockedAmount(-1);
-            },
-            enumerable: false,
-            configurable: true
-        });
+        Wallet.prototype.totalAmount = function () {
+            return this.unlockedAmount(-1);
+        };
         Wallet.prototype.unlockedAmount = function (currentBlockHeight) {
             if (currentBlockHeight === void 0) { currentBlockHeight = -1; }
             var amount = 0;
@@ -298,36 +294,13 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
                 var transaction = _a[_i];
                 if (!transaction.isFullyChecked())
                     continue;
-                // if(transaction.ins.length > 0){
-                // 	amount -= transaction.fees;
-                // }
-                if (transaction.isConfirmed(currentBlockHeight) || currentBlockHeight === -1)
-                    for (var _b = 0, _c = transaction.outs; _b < _c.length; _b++) {
-                        var out = _c[_b];
-                        amount += out.amount;
-                    }
-                for (var _d = 0, _e = transaction.ins; _d < _e.length; _d++) {
-                    var nin = _e[_d];
-                    amount -= nin.amount;
-                }
+                if (currentBlockHeight === -1 || transaction.isConfirmed(currentBlockHeight))
+                    amount += transaction.getAmount();
             }
-            //console.log(this.txsMem);
-            for (var _f = 0, _g = this.txsMem; _f < _g.length; _f++) {
-                var transaction = _g[_f];
-                //console.log(transaction.paymentId);
-                // for(let out of transaction.outs){
-                // 	amount += out.amount;
-                // }
-                if (transaction.isConfirmed(currentBlockHeight) || currentBlockHeight === -1)
-                    for (var _h = 0, _j = transaction.outs; _h < _j.length; _h++) {
-                        var nout = _j[_h];
-                        amount += nout.amount;
-                        //console.log('+'+nout.amount);
-                    }
-                for (var _k = 0, _l = transaction.ins; _k < _l.length; _k++) {
-                    var nin = _l[_k];
-                    amount -= nin.amount;
-                    //console.log('-'+nin.amount);
+            if (currentBlockHeight === -1) {
+                for (var _b = 0, _c = this.txsMem; _b < _c.length; _b++) {
+                    var transaction = _c[_b];
+                    amount += transaction.getAmount();
                 }
             }
             return amount;

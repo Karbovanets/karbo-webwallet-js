@@ -80,11 +80,11 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                             }
                             self.signalWalletUpdate();
                         }
-                        /*if (self.workerCurrentProcessing.length > 0) {
-                            let transactionHeight = self.workerCurrentProcessing[self.workerCurrentProcessing.length - 1].height;
-                            if (typeof transactionHeight !== 'undefined')
-                                self.wallet.lastHeight = transactionHeight;
-                        }*/
+                        //if (self.workerCurrentProcessing.length > 0) {
+                        //    let transactionHeight = self.workerCurrentProcessing[self.workerCurrentProcessing.length - 1].height;
+                        //    if (typeof transactionHeight !== 'undefined')
+                        //        self.wallet.lastHeight = transactionHeight;
+                        //}
                         // we are done processing now
                         self.workerProcessingWorking = false;
                     }
@@ -122,7 +122,7 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                 }
                 this.intervalMempool = setInterval(function () {
                     self.checkMempool();
-                }, config.avgBlockTime / 2 * 1000);
+                }, 30 * 1000);
             }
             self.checkMempool();
         };

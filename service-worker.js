@@ -85,7 +85,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "config.js",
-    "revision": "98076e781c01c93ac7db44267b2a77bf"
+    "revision": "683f5a63f5103ee1c94712ae3e725eca"
   },
   {
     "url": "d/vue-i118n.js",
@@ -101,7 +101,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "index.js",
-    "revision": "20c4e558df51036b9c5642a676d0f080"
+    "revision": "6fc60fe2e354162fad3fcf07aa3672e7"
   },
   {
     "url": "lib/base58.js",
@@ -249,7 +249,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/blockchain/BlockchainExplorerRPCDaemon.js",
-    "revision": "a6f18174084f582300c5620616a69d52"
+    "revision": "b12d05bd2c20fae68d1758f1c04a91e4"
   },
   {
     "url": "model/Cn.js",
@@ -293,7 +293,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/QRReader.js",
-    "revision": "f2065306ad8fab127f7040a3299af285"
+    "revision": "b7f2730c23ede374597861b23f37a409"
   },
   {
     "url": "model/Storage.js",
@@ -301,7 +301,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/Transaction.js",
-    "revision": "c1cf24325e30302692105ee3f5118425"
+    "revision": "be7a4000cb41748afd4ed78d1d182392"
   },
   {
     "url": "model/TransactionsExplorer.js",
@@ -313,7 +313,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/Wallet.js",
-    "revision": "e7f5714c0142c4cd7c3eeb2915920450"
+    "revision": "b5620fb3c7fbb2e9cc3b29f1b0944b86"
   },
   {
     "url": "model/WalletRepository.js",
@@ -321,15 +321,15 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "model/WalletWatchdog.js",
-    "revision": "ca08a97b208adc17225994ab37f48797"
+    "revision": "5f7bca82a594d4e0ea1f631e59b651a0"
   },
   {
     "url": "pages/account.html",
-    "revision": "ac5ca5a74d193cd55d67387fbb9fb994"
+    "revision": "202388a9e7b6fe00d63cd534af1b2196"
   },
   {
     "url": "pages/account.js",
-    "revision": "cdd1041ecfd26b5d4b00aa74bb99c3fa"
+    "revision": "6b9d1a8e9b9e47682684ce90da169712"
   },
   {
     "url": "pages/changeWalletPassword.html",
