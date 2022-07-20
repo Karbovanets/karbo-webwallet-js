@@ -22,12 +22,9 @@ declare var config : {
 	integratedAddressPrefixTestnet: number,
 	subAddressPrefix: number,
 	subAddressPrefixTestnet: number,
-	feePerKB: any,
 	dustThreshold: any,
 	defaultMixin: number, // default mixin
 	txChargeAddress: string,
-	idleTimeout: number,
-	idleWarningDuration: number,
 	syncBlockCount: number,
 	maxBlockNumber: number,
 	avgBlockTime: number,
