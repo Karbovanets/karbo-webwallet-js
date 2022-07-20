@@ -95,7 +95,7 @@ class AccountView extends DestructableView{
 
 	refreshWallet(){
 		this.currentScanBlock = wallet.lastHeight;
-		this.walletAmount = wallet.amount;
+		this.walletAmount = wallet.totalAmount();
 		this.unlockedWalletAmount = wallet.unlockedAmount(this.currentScanBlock);
 		this.transactions = wallet.txsMem.concat(wallet.getTransactionsCopy().reverse());
 	}
