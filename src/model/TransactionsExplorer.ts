@@ -350,8 +350,9 @@ export class TransactionsExplorer {
 
 			transaction.outs = outs;
 			transaction.ins = ins;
-		}
 
+			transaction.is_coinbase = rawTransaction.vin[0].type === 'ff';
+		}
 
 		return transaction;
 	}

@@ -108,6 +108,8 @@ export class Transaction {
     paymentId: string = '';
     fees: number = 0;
 
+    is_coinbase: boolean = false;
+
     static fromRaw(raw: any) {
         let transac = new Transaction();
         transac.blockHeight = raw.blockHeight;
@@ -130,6 +132,7 @@ export class Transaction {
         if (typeof raw.paymentId !== 'undefined') transac.paymentId = raw.paymentId;
         if (typeof raw.fees !== 'undefined') transac.fees = raw.fee;
         if (typeof raw.hash !== 'undefined') transac.hash = raw.hash;
+        if (typeof raw.is_coinbase !== 'undefined') transac.is_coinbase = raw.is_coinbase;
         return transac;
     }
 
@@ -139,6 +142,7 @@ export class Transaction {
             txPubKey: this.txPubKey,
             timestamp: this.timestamp,
             hash: this.hash,
+            is_coinbase: this.is_coinbase,
         };
         if (this.ins.length > 0) {
             let rins: any[] = [];
@@ -171,7 +175,7 @@ export class Transaction {
     }
 
     isCoinbase() {
-        return this.outs.length == 1 && this.outs[0].rtcAmount === '';
+        return this.is_coinbase;
     }
 
     isConfirmed(blockchainHeight: number) {
