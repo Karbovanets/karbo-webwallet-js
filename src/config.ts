@@ -1,7 +1,7 @@
 //export {};
-let global : any = typeof window !== 'undefined' ? window : self;
-global.config = {
-	debug: false,  
+let myGlobal : any = typeof window !== 'undefined' ? window : self;
+myGlobal.config = {
+	debug: false,
 	apiUrl: [
 		"https://ccxapi.conceal.network/api/"
 	],
@@ -54,4 +54,4 @@ function logDebugMsg(...data: any[]) {
 }
 
 // log debug messages if debug is set to true
-global.logDebugMsg = logDebugMsg;
+myGlobal.logDebugMsg = logDebugMsg;

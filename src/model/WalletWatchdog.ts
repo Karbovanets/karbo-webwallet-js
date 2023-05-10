@@ -112,7 +112,7 @@ export class WalletWatchdog {
         self.checkMempool();
     }
 
-    intervalMempool = 0;
+    intervalMempool: any = 0;
 
     initMempool(force: boolean = false) {
         let self = this;
@@ -166,7 +166,7 @@ export class WalletWatchdog {
     }
 
     transactionsToProcess: RawDaemon_Transaction[][] = [];
-    intervalTransactionsProcess = 0;
+    intervalTransactionsProcess: any = 0;
 
     workerProcessing !: Worker;
     workerProcessingReady = false;
@@ -259,12 +259,14 @@ export class WalletWatchdog {
 
         //don't reload until it's finished processing the last batch of transactions
         if (this.workerProcessingWorking || !this.workerProcessingReady) {
+            logDebugMsg(`Cannot process, need to wait...`, this.workerProcessingWorking, this.workerProcessingReady);
             setTimeout(function () {
                 self.loadHistory();
             }, 1000);
             return;
         }
         if (this.transactionsToProcess.length > 500) {
+            logDebugMsg(`Having more then 500 TX packets in FIFO queue`, this.transactionsToProcess.length);
             //to ensure no pile explosion
             setTimeout(function () {
                 self.loadHistory();
@@ -296,7 +298,8 @@ export class WalletWatchdog {
                 if (endBlock > self.lastMaximumHeight) endBlock = self.lastMaximumHeight;
 
                 self.explorer.getTransactionsForBlocks(previousStartBlock, endBlock, self.wallet.options.checkMinerTx).then(function (transactions: any) {
-                    logDebugMsg("getTransactionsForBlocks", previousStartBlock, endBlock, transactions);    
+                    logDebugMsg("getTransactionsForBlocks", previousStartBlock, endBlock, transactions);
+
                     //to ensure no pile explosion
                     if (transactions === 'OK') {
                         self.lastBlockLoading = endBlock;
