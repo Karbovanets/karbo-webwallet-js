@@ -79,6 +79,7 @@ export class Wallet extends Observable{
 	private transactions : Transaction[] = [];
 	txsMem : Transaction[] = [];
 	private modified = true;
+	private modifiedTS: Date = new Date();
 	creationHeight : number = 0;
 	txPrivateKeys : {[id: string]: string} = {};
 	coinAddressPrefix:any = config.addressPrefix;
@@ -86,6 +87,11 @@ export class Wallet extends Observable{
 	keys !: UserKeys;
 
 	private _options : WalletOptions = new WalletOptions();
+
+	signalChanged = () => {
+		this.modifiedTS = new Date();
+		this.modified = true;
+	}
 
 	exportToRaw() : RawWallet{
 		let transactions : any[] = [];
@@ -176,7 +182,7 @@ export class Wallet extends Observable{
 
 	set options(value: WalletOptions) {
 		this._options = value;
-		this.modified = true;
+		this.signalChanged();
 	}
 
 	getAll(forceReload = false) : Transaction[]{
@@ -216,7 +222,7 @@ export class Wallet extends Observable{
 
 			// this.saveAll();
 			this.recalculateKeyImages();
-			this.modified = true;
+			this.signalChanged();
 			this.notify();
 		}
 	}
@@ -243,6 +249,7 @@ export class Wallet extends Observable{
 
 	addTxPrivateKeyWithTxHash(txHash : string, txPrivKey : string) : void{
 		this.txPrivateKeys[txHash] = txPrivKey;
+		this.signalChanged();
 	}
 
 	getTransactionKeyImages(){
@@ -351,7 +358,7 @@ export class Wallet extends Observable{
 
 							out.keyImage = m_key_image.key_image;
 							out.ephemeralPub = m_key_image.ephemeral_pub;
-							this.modified = true;
+							this.signalChanged();
 						}
 					}
 				}
@@ -373,7 +380,7 @@ export class Wallet extends Observable{
 									this.transactions[iTx].ins[iIn].amount = ut.amount;
 									this.transactions[iTx].ins[iIn].keyImage = ut.keyImage;
 
-									this.modified = true;
+									this.signalChanged();
 									break;
 								}
 							}
@@ -393,4 +400,16 @@ export class Wallet extends Observable{
 		}
 	}
 
+  clearTransactions = () => {
+    this.txsMem = [];
+    this.transactions = [];
+    this.recalculateKeyImages();
+    this.notify();
+  }
+
+  resetScanHeight = () => {
+    this.lastHeight = this.creationHeight;
+    this.signalChanged();
+    this.notify();
+  }
 }
