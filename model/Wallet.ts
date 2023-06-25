@@ -110,6 +110,7 @@ export class Wallet extends Observable{
 	}
 
 	static loadFromRaw(raw : RawWallet) : Wallet{
+		logDebugMsg("Wallet.loadFromRaw");
 		let wallet = new Wallet();
 		wallet.transactions = [];
 		for(let rawTransac of raw.transactions){

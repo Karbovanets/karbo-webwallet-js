@@ -33,7 +33,7 @@ define(["require", "exports", "../model/WalletRepository", "../lib/numbersLab/De
             }).then(function (result) {
                 if (result.value) {
                     AppState_1.AppState.disconnect();
-                    DependencyInjector_1.DependencyInjectorInstance().register(Wallet_1.Wallet.name, undefined, 'default');
+                    (0, DependencyInjector_1.DependencyInjectorInstance)().register(Wallet_1.Wallet.name, undefined, 'default');
                     WalletRepository_1.WalletRepository.deleteLocalCopy();
                     window.location.href = '#index';
                 }

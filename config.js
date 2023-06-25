@@ -1,11 +1,15 @@
 "use strict";
 //export {};
-var global = typeof window !== 'undefined' ? window : self;
-global.config = {
+var myGlobal = typeof window !== 'undefined' ? window : self;
+myGlobal.config = {
+    debug: false,
+    apiUrl: [
+        "https://node.karbo.io:32448/"
+    ],
     nodeList: [
         "https://karbo.club/services/node_web/",
         "https://node.karbo.org:32448/",
-        "https://node2.karbo.org:32448/"
+        "https://node.karbo.io:32448/"
     ],
     nodeUrl: "",
     mainnetExplorerUrl: "http://explorer.karbowanec.com/",
@@ -38,3 +42,19 @@ global.config = {
 };
 var randInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
 config.nodeUrl = config.nodeList[randInt];
+function logDebugMsg() {
+    var data = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        data[_i] = arguments[_i];
+    }
+    if (config.debug) {
+        if (data.length > 1) {
+            console.log(data[0], data.slice(1));
+        }
+        else {
+            console.log(data[0]);
+        }
+    }
+}
+// log debug messages if debug is set to true
+myGlobal.logDebugMsg = logDebugMsg;

@@ -16,7 +16,7 @@ define(["require", "exports", "./Storage"], function (require, exports, Storage_
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Translations = void 0;
-    var Translations = /** @class */ (function () {
+    var Translations = exports.Translations = /** @class */ (function () {
         function Translations() {
         }
         Translations.getBrowserLang = function () {
@@ -71,5 +71,4 @@ define(["require", "exports", "./Storage"], function (require, exports, Storage_
         Translations.storedTranslations = {};
         return Translations;
     }());
-    exports.Translations = Translations;
 });

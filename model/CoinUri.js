@@ -16,7 +16,7 @@ define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CoinUri = void 0;
-    var CoinUri = /** @class */ (function () {
+    var CoinUri = exports.CoinUri = /** @class */ (function () {
         function CoinUri() {
         }
         CoinUri.decodeTx = function (str) {
@@ -170,5 +170,4 @@ define(["require", "exports"], function (require, exports) {
         CoinUri.coinAddressLength = 95;
         return CoinUri;
     }());
-    exports.CoinUri = CoinUri;
 });
