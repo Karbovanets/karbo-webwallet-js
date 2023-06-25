@@ -73,6 +73,23 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
         SettingsView.prototype.deleteWallet = function () {
             DeleteWallet_1.DeleteWallet.deleteWallet();
         };
+        SettingsView.prototype.resetWallet = function () {
+            swal({
+                title: i18n.t('settingsPage.resetWalletModal.title'),
+                html: i18n.t('settingsPage.resetWalletModal.content'),
+                showCancelButton: true,
+                confirmButtonText: i18n.t('settingsPage.resetWalletModal.confirmText'),
+                cancelButtonText: i18n.t('settingsPage.resetWalletModal.cancelText'),
+            }).then(function (result) {
+                if (result.value) {
+                    walletWatchdog.stop();
+                    wallet.clearTransactions();
+                    wallet.resetScanHeight();
+                    walletWatchdog.start();
+                    window.location.href = '#account';
+                }
+            });
+        };
         SettingsView.prototype.readSpeedWatch = function () { this.updateWalletOptions(); };
         SettingsView.prototype.checkMinerTxWatch = function () { this.updateWalletOptions(); };
         SettingsView.prototype.customNodeWatch = function () { this.updateWalletOptions(); };

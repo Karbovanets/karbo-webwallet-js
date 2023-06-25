@@ -34,6 +34,7 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
     exports.WalletWatchdog = void 0;
     var WalletWatchdog = /** @class */ (function () {
         function WalletWatchdog(wallet, explorer) {
+            var _this = this;
             this.intervalMempool = 0;
             this.stopped = false;
             this.transactionsToProcess = [];
@@ -44,6 +45,19 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
             this.workerCountProcessed = 0;
             this.lastBlockLoading = -1;
             this.lastMaximumHeight = 0;
+            this.start = function () {
+                // init the mempool
+                _this.initMempool();
+                // set the interval for checking the new transactions
+                _this.intervalTransactionsProcess = setInterval(function () {
+                    _this.checkTransactionsInterval();
+                }, _this.wallet.options.readSpeed);
+                // run main loop
+                _this.stopped = false;
+                _this.lastBlockLoading = -1;
+                _this.lastMaximumHeight = 0;
+                _this.loadHistory();
+            };
             this.wallet = wallet;
             this.explorer = explorer;
             this.initWorker();

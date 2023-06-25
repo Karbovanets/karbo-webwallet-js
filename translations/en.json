@@ -361,6 +361,7 @@
 	  },
 	  "changePasswordButton":"Change my wallet password",
 	  "deleteWalletButton":"Delete my wallet (local copy)",
+	  "resetWalletButton": "Reset and rescan wallet",
 	  "walletSettings":{
 		"creationHeight":{
 		  "label":"Creation height of the wallet"
@@ -375,7 +376,13 @@
 		"content":"Are you sure you REALLY want to delete your wallet ?",
 		"confirmText":"Yes I'm sure",
 		"cancelText":"Cancel"
-	  }
+	  },
+	  "resetWalletModal": {
+        "title": "Reset My Wallet (local copy)",
+        "content": "Are you sure you really want to reset your wallet?",
+        "confirmText": "Yes I'm sure",
+        "cancelText": "Cancel"
+      }
 	},
 	"importBasePage":{
 	  "parametersBlock":{

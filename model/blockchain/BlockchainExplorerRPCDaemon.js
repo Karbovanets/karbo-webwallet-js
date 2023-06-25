@@ -99,7 +99,7 @@ define(["require", "exports", "../WalletWatchdog"], function (require, exports, 
         };
         BlockchainExplorerRpcDaemon.prototype.watchdog = function (wallet) {
             var watchdog = new WalletWatchdog_1.WalletWatchdog(wallet, this);
-            watchdog.loadHistory();
+            watchdog.start();
             return watchdog;
         };
         /**

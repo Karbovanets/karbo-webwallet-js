@@ -73,12 +73,28 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
             _this.transactions = [];
             _this.txsMem = [];
             _this.modified = true;
+            _this.modifiedTS = new Date();
             _this.creationHeight = 0;
             _this.txPrivateKeys = {};
             _this.coinAddressPrefix = config.addressPrefix;
             _this._options = new WalletOptions();
+            _this.signalChanged = function () {
+                _this.modifiedTS = new Date();
+                _this.modified = true;
+            };
             _this.keyImages = [];
             _this.txOutIndexes = [];
+            _this.clearTransactions = function () {
+                _this.txsMem = [];
+                _this.transactions = [];
+                _this.recalculateKeyImages();
+                _this.notify();
+            };
+            _this.resetScanHeight = function () {
+                _this.lastHeight = _this.creationHeight;
+                _this.signalChanged();
+                _this.notify();
+            };
             return _this;
         }
         Wallet.prototype.exportToRaw = function () {
@@ -173,7 +189,7 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
             },
             set: function (value) {
                 this._options = value;
-                this.modified = true;
+                this.signalChanged();
             },
             enumerable: false,
             configurable: true
@@ -215,7 +231,7 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
                 }
                 // this.saveAll();
                 this.recalculateKeyImages();
-                this.modified = true;
+                this.signalChanged();
                 this.notify();
             }
         };
@@ -242,6 +258,7 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
         };
         Wallet.prototype.addTxPrivateKeyWithTxHash = function (txHash, txPrivKey) {
             this.txPrivateKeys[txHash] = txPrivKey;
+            this.signalChanged();
         };
         Wallet.prototype.getTransactionKeyImages = function () {
             return this.keyImages;
@@ -344,7 +361,7 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
                                 }, tx.txPubKey, out.outputIdx, derivation);
                                 out.keyImage = m_key_image.key_image;
                                 out.ephemeralPub = m_key_image.ephemeral_pub;
-                                this.modified = true;
+                                this.signalChanged();
                             }
                         }
                     }
@@ -363,7 +380,7 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
                                     if (ut.keyImage == vin.keyImage) {
                                         this.transactions[iTx].ins[iIn].amount = ut.amount;
                                         this.transactions[iTx].ins[iIn].keyImage = ut.keyImage;
-                                        this.modified = true;
+                                        this.signalChanged();
                                         break;
                                     }
                                 }
