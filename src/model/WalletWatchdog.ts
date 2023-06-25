@@ -362,5 +362,4 @@ export class WalletWatchdog {
       this.lastMaximumHeight = 0;
       this.loadHistory();
     }
-
 }
