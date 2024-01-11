@@ -2,11 +2,8 @@
 let myGlobal : any = typeof window !== 'undefined' ? window : self;
 myGlobal.config = {
 	debug: false,
-	apiUrl: [
-		"https://node.karbo.io:32448/"
-	],
     nodeList: [
-		"https://karbo.club/services/node_web/",
+		"https://karbo.club:32448/",
 		"https://node.karbo.org:32448/",
 		"https://node.karbo.io:32448/"
 	],
@@ -39,9 +36,6 @@ myGlobal.config = {
 	avgBlockTime: 240,
 	maxBlockNumber: 500000000,
 };
-
-let randInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
-config.nodeUrl = config.nodeList[randInt];
 
 function logDebugMsg(...data: any[]) {
   if (config.debug) {
