@@ -2,12 +2,15 @@
 let myGlobal : any = typeof window !== 'undefined' ? window : self;
 myGlobal.config = {
 	debug: false,
-    nodeList: [
+	nodeList: [
 		"https://karbo.club:32448/",
 		"https://node.karbo.org:32448/",
 		"https://node.karbo.io:32448/"
 	],
-	nodeUrl: "",
+	apiUrl: [
+		"https://node.karbo.io:32448/"
+	],
+	nodeUrl: "https://node.karbo.org:32448/",
 	mainnetExplorerUrl: "http://explorer.karbowanec.com/",
 	mainnetExplorerUrlHash: "http://explorer.karbowanec.com/?hash={ID}#blockchain_transaction",
 	mainnetExplorerUrlBlock: "http://explorer.karbowanec.com/?hash={ID}#blockchain_block",
@@ -15,8 +18,8 @@ myGlobal.config = {
 	testnetExplorerUrlHash: "http://testnet.karbo.org/?hash={ID}#blockchain_transaction",
 	testnetExplorerUrlBlock: "http://testnet.karbo.org/?hash={ID}#blockchain_block",
 	testnet: false,
-    coinUnitPlaces: 12,
-    coinDisplayUnitPlaces: 2,
+	coinUnitPlaces: 12,
+	coinDisplayUnitPlaces: 2,
 	txMinConfirms: 5,
 	txCoinbaseMinConfirms: 10,
 	addressPrefix: 111,
@@ -36,6 +39,9 @@ myGlobal.config = {
 	avgBlockTime: 240,
 	maxBlockNumber: 500000000,
 };
+
+let randInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
+config.nodeUrl = config.nodeList[randInt];
 
 function logDebugMsg(...data: any[]) {
   if (config.debug) {
