@@ -8,7 +8,10 @@ myGlobal.config = {
         "https://node.karbo.org:32448/",
         "https://node.karbo.io:32448/"
     ],
-    nodeUrl: "",
+    apiUrl: [
+        "https://node.karbo.io:32448/"
+    ],
+    nodeUrl: "https://node.karbo.org:32448/",
     mainnetExplorerUrl: "http://explorer.karbowanec.com/",
     mainnetExplorerUrlHash: "http://explorer.karbowanec.com/?hash={ID}#blockchain_transaction",
     mainnetExplorerUrlBlock: "http://explorer.karbowanec.com/?hash={ID}#blockchain_block",
@@ -37,6 +40,8 @@ myGlobal.config = {
     avgBlockTime: 240,
     maxBlockNumber: 500000000,
 };
+var randInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
+config.nodeUrl = config.nodeList[randInt];
 function logDebugMsg() {
     var data = [];
     for (var _i = 0; _i < arguments.length; _i++) {
