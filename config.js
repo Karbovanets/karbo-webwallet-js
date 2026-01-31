@@ -4,7 +4,6 @@ var myGlobal = typeof window !== 'undefined' ? window : self;
 myGlobal.config = {
     debug: false,
     nodeList: [
-        "https://karbo.club:32448/",
         "https://node.karbo.org:32448/",
         "https://node.karbo.io:32448/"
     ],
