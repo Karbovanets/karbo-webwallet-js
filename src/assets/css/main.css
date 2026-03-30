@@ -1129,3 +1129,171 @@ body{
 .progress .label{
 	display: block;
 }
+/*===================DARK NAVY THEME=================*/
+:root {
+	--krb-bg-950: #040a16;
+	--krb-bg-900: #091427;
+	--krb-bg-850: #102140;
+	--krb-surface-900: rgba(10, 24, 49, 0.88);
+	--krb-surface-800: #11284d;
+	--krb-surface-700: #173766;
+	--krb-text-100: #e7efff;
+	--krb-text-200: #b8c9ea;
+	--krb-text-300: #8ea6d1;
+	--krb-accent-500: #2d7dff;
+	--krb-accent-400: #5b9dff;
+	--krb-ok: #67d79e;
+	--krb-danger: #ff6f86;
+}
+
+body {
+	font-family: "Trebuchet MS", "Segoe UI", Tahoma, sans-serif;
+	background:
+		radial-gradient(circle at 12% 18%, rgba(57, 112, 191, 0.28), transparent 35%),
+		radial-gradient(circle at 88% 14%, rgba(26, 65, 125, 0.32), transparent 37%),
+		linear-gradient(160deg, var(--krb-bg-950) 0%, var(--krb-bg-900) 48%, #14294d 100%);
+	color: var(--krb-text-100);
+}
+
+#topBar,
+#menu {
+	background: linear-gradient(180deg, #112949 0%, #0b1f3b 100%);
+}
+
+#topBar a.toggleMenu,
+#menu a {
+	color: var(--krb-text-100);
+}
+
+#menu a:hover {
+	border-right: 5px solid var(--krb-accent-400);
+	background: rgba(88, 142, 230, 0.12);
+}
+
+#pageLoading {
+	background: rgba(4, 11, 22, 0.7);
+	color: var(--krb-text-100);
+}
+
+#copyright,
+#copyright a,
+#copyright .links select,
+.body-header .header-subtitle,
+.body-header .header-subtitle a {
+	color: var(--krb-text-200);
+}
+
+.body-header {
+	border-bottom: 1px solid rgba(123, 153, 204, 0.28);
+}
+
+.body-header .header-title,
+.panel .header-title,
+.step > .title,
+.transactions .transaction .timestamp,
+.transactions .transaction div {
+	color: var(--krb-text-100);
+}
+
+.panel {
+	background: var(--krb-surface-900);
+	border: 1px solid rgba(103, 135, 186, 0.26);
+	box-shadow: 0 20px 46px rgba(0, 0, 0, 0.42);
+}
+
+.panel.inline {
+	background: rgba(15, 34, 65, 0.55);
+	border-color: rgba(103, 135, 186, 0.35);
+}
+
+.panel a,
+.panel .body > .content {
+	color: var(--krb-text-200);
+}
+
+.transactions .transaction {
+	border-top: 1px solid rgba(112, 143, 198, 0.18);
+}
+
+.transactions .transaction .amount.more {
+	color: var(--krb-ok);
+}
+
+.transactions .transaction .amount.less {
+	color: var(--krb-text-200);
+}
+
+.field input,
+.field select,
+.field .subfield input,
+.receiveTab .fakeInput,
+.sendTab .destinationInput {
+	background: rgba(15, 32, 58, 0.95);
+	border: 1px solid rgba(106, 138, 189, 0.38);
+	color: var(--krb-text-100);
+}
+
+.field input:read-only,
+.field input.readonly,
+.field .subfield.readonly {
+	background: rgba(20, 36, 61, 0.95);
+}
+
+.field input::placeholder {
+	color: var(--krb-text-300);
+}
+
+.field .subfield .action,
+.receiveTab .address .copy,
+.sendTab .destinationInput .scanButton {
+	border-left: 1px solid rgba(106, 138, 189, 0.38);
+	color: var(--krb-text-200);
+}
+
+.btn {
+	background: #1b335f;
+	color: var(--krb-text-100);
+}
+
+.btn:hover {
+	background: #26467e;
+	color: #ffffff;
+}
+
+.btn.primary {
+	color: #fff;
+	background: linear-gradient(180deg, var(--krb-accent-500) 0%, #1f61d8 100%);
+}
+
+.btn.primary:hover {
+	background: linear-gradient(180deg, var(--krb-accent-400) 0%, #2b72ec 100%);
+}
+
+.btn.primary.basic {
+	border-color: var(--krb-accent-500);
+	color: var(--krb-accent-400);
+}
+
+.message {
+	background: rgba(15, 34, 64, 0.85);
+	color: var(--krb-text-100);
+	box-shadow: 0 0 0 1px rgba(111, 143, 198, 0.35) inset;
+}
+
+.message.error {
+	background-color: rgba(76, 20, 31, 0.8);
+	color: #ffd0d8;
+}
+
+.message.warning {
+	background-color: rgba(82, 58, 19, 0.8);
+	color: #ffe8c2;
+}
+
+.progress {
+	background: rgba(37, 62, 99, 0.8);
+}
+
+.progress .bar {
+	background: linear-gradient(90deg, #245bc2 0%, #2f8cff 100%);
+}

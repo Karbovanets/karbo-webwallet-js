@@ -56,3 +56,18 @@ It was forked from Masari project. We have been receiving multiple coin develope
 The code is readable, it should be enough for you to use it.
 
 
+
+# Desktop (Windows)
+
+Run desktop wallet:
+- `npm run desktop:start`
+
+Build Windows app folder (no signing required):
+- `npm run desktop:pack`
+
+Output executable:
+- `dist-desktop-packager\Karbo Wallet-win32-x64\Karbo Wallet.exe`
+
+Optional portable packaging with electron-builder:
+- `npm run desktop:dist`
+- may require Windows symlink/signing privileges on some systems.

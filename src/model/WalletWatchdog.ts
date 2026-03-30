@@ -47,16 +47,33 @@ export class WalletWatchdog {
         this.initMempool();
     }
 
+    private defaultNodeUrl: string | null = null;
+
+    private applyNodeUrl() {
+        if (this.wallet.options.customNode && this.wallet.options.nodeUrl !== '') {
+            config.nodeUrl = this.wallet.options.nodeUrl;
+            return;
+        }
+
+        if (this.defaultNodeUrl === null || config.nodeList.indexOf(this.defaultNodeUrl) === -1) {
+            let randNodeInt:number = Math.floor(Math.random() * Math.floor(config.nodeList.length));
+            this.defaultNodeUrl = config.nodeList[randNodeInt];
+        }
+
+        config.nodeUrl = this.defaultNodeUrl;
+    }
+
+    private getSyncRetryDelayMs() {
+        if (this.wallet.lastHeight < this.lastMaximumHeight) {
+            return 5 * 1000;
+        }
+
+        return 30 * 1000;
+    }
     initWorker() {
         let self = this;
 
-        if (this.wallet.options.customNode) {
-            config.nodeUrl = this.wallet.options.nodeUrl;
-        } else {
-            let randNodeInt:number = Math.floor(Math.random() * Math.floor(config.nodeList.length));
-            config.nodeUrl = config.nodeList[randNodeInt];
-        }
-
+        this.applyNodeUrl();
         this.workerProcessing = new Worker('./workers/TransferProcessingEntrypoint.js');
         this.workerProcessing.onmessage = function (data: MessageEvent) {
             let message: string | any = data.data;
@@ -92,13 +109,7 @@ export class WalletWatchdog {
         logDebugMsg('wallet update');
         this.lastBlockLoading = -1;//reset scanning
 
-        if (this.wallet.options.customNode) {
-            config.nodeUrl = this.wallet.options.nodeUrl;
-        } else {
-            let randNodeInt:number = Math.floor(Math.random() * Math.floor(config.nodeList.length));
-            config.nodeUrl = config.nodeList[randNodeInt];
-        }
-
+        this.applyNodeUrl();
         this.workerProcessing.postMessage({
             type: 'initWallet',
             wallet: this.wallet.exportToRaw()
@@ -324,15 +335,16 @@ export class WalletWatchdog {
                         self.lastBlockLoading = endBlock;
                         self.wallet.lastHeight = endBlock;
 
+                        let delay = endBlock < self.lastMaximumHeight ? 100 : 30 * 1000;
                         setTimeout(function () {
                             self.loadHistory();
-                        }, 30 * 1000);
+                        }, delay);
                     }
                 }).catch(function () {
                     logDebugMsg(`Error occured in loadHistory[1]...`);
                     setTimeout(function () {
                         self.loadHistory();
-                    }, 30 * 1000);//retry 30s later if an error occurred
+                    }, self.getSyncRetryDelayMs());//retry later if an error occurred
                 });
             } else {
                 setTimeout(function () {
@@ -343,7 +355,7 @@ export class WalletWatchdog {
             logDebugMsg(`Error occured in loadHistory[2]...`);
             setTimeout(function () {
                 self.loadHistory();
-            }, 30 * 1000);//retry 30s later if an error occurred
+            }, self.getSyncRetryDelayMs());//retry later if an error occurred
         });
     }
 

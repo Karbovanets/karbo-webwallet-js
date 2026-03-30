@@ -1,12 +1,21 @@
 {
   "compilerOptions": {
-      "module": "AMD",
-      "target": "es5",
-      "lib": ["ES5","DOM", "es2015"],
-      "sourceMap": true,
-      "moduleResolution": "node",
-      "strict":true,
-      "experimentalDecorators": true,
-      "forceConsistentCasingInFileNames": true
-  }
+    "module": "AMD",
+    "target": "es5",
+    "lib": [
+      "ES5",
+      "DOM",
+      "es2015"
+    ],
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist-desktop",
+    "dist-desktop-packager"
+  ]
 }

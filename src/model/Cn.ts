@@ -753,32 +753,6 @@ export namespace Cn{
 		return hash_to_scalar(buf);
 	}
 
-	/**
-	 * @deprecated CnNativeBride has a much faster version
-	 * @param pub
-	 * @param sec
-	 */
-	export function generate_key_derivation(pub : string, sec : string) {
-		if (pub.length !== 64 || sec.length !== 64) {
-			throw "Invalid input length";
-		}
-		let P = CnUtils.ge_scalarmult(pub, sec);
-		return CnUtils.ge_scalarmult(P, CnUtils.d2s(8)); //mul8 to ensure group
-	}
-
-	/**
-	 * @deprecated CnNativeBride has a much faster version
-	 * @param derivation
-	 * @param out_index
-	 * @param pub
-	 */
-	export function derive_public_key(derivation : string, out_index : number, pub : string) {
-		if (derivation.length !== 64 || pub.length !== 64) {
-			throw "Invalid input length!";
-		}
-		let s = CnUtils.derivation_to_scalar(derivation, out_index);
-		return CnUtils.bintohex(nacl.ll.ge_add(CnUtils.hextobin(pub), CnUtils.hextobin(CnUtils.ge_scalarmult_base(s))));
-	}
 
 	export function generate_keys(seed : string) : {sec:string, pub:string}{
 		if (seed.length !== 64) throw "Invalid input length!";
@@ -894,7 +868,7 @@ export namespace Cn{
 	export function decrypt_payment_id(payment_id8 : string, tx_public_key : string, acc_prv_view_key : string) {
 		if (payment_id8.length !== 16) throw "Invalid input length2!";
 
-		let key_derivation = Cn.generate_key_derivation(tx_public_key, acc_prv_view_key);
+		let key_derivation = CnNativeBride.generate_key_derivation(tx_public_key, acc_prv_view_key);
 
 		let pid_key = CnUtils.cn_fast_hash(key_derivation + ENCRYPTED_PAYMENT_ID_TAIL.toString(16)).slice(0, INTEGRATED_ID_SIZE * 2);
 
@@ -1454,6 +1428,47 @@ export namespace CnTransactions{
 		return CnUtils.cn_fast_hash(prefix);
 	}
 
+	export function serialize_tx_inputs(vin : Vin[]) {
+		let buf = "";
+		buf += CnUtils.encode_varint(vin.length);
+
+		for (let i = 0; i < vin.length; ++i) {
+			let input = vin[i];
+			switch (input.type) {
+				case "input_to_key":
+					buf += "02";
+					buf += CnUtils.encode_varint(input.amount);
+					buf += CnUtils.encode_varint(input.key_offsets.length);
+					for (let j = 0; j < input.key_offsets.length; ++j) {
+						buf += CnUtils.encode_varint(input.key_offsets[j]);
+					}
+					buf += input.k_image;
+					break;
+				default:
+					throw "Unhandled vin type: " + input.type;
+			}
+		}
+
+		return buf;
+	}
+
+	export function get_tx_inputs_hash(vin : Vin[]) {
+		let serializedInputs = CnTransactions.serialize_tx_inputs(vin);
+		return CnUtils.cn_fast_hash(serializedInputs);
+	}
+
+	export function generate_deterministic_tx_keys(vin : Vin[], senderViewSecretKey : string) {
+		if (senderViewSecretKey.length !== 64 || !CnUtils.valid_hex(senderViewSecretKey)) {
+			throw "Invalid sender view secret key";
+		}
+
+		let inputsHash = CnTransactions.get_tx_inputs_hash(vin);
+		let txSecretKey = Cn.hash_to_scalar(senderViewSecretKey + inputsHash);
+		return {
+			sec: txSecretKey,
+			pub: CnUtils.sec_key_to_pub(txSecretKey)
+		};
+	}
 	//xv: vector of secret keys, 1 per ring (nrings)
 	//pm: matrix of pubkeys, indexed by size first
 	//iv: vector of indexes, 1 per ring (nrings), can be a string
@@ -1904,24 +1919,7 @@ export namespace CnTransactions{
 		unlock_time : number = 0,
 		rct:boolean
 	){
-		//we move payment ID stuff here, because we need txkey to encrypt
-		let txkey = Cn.random_keypair();
-		console.log(txkey);
 		let extra = '';
-		if (payment_id) {
-			if (pid_encrypt && payment_id.length !== INTEGRATED_ID_SIZE * 2) {
-				throw "payment ID must be " + INTEGRATED_ID_SIZE + " bytes to be encrypted!";
-			}
-			console.log("Adding payment id: " + payment_id);
-			if (pid_encrypt && realDestViewKey) { //get the derivation from our passed viewkey, then hash that + tail to get encryption key
-				let pid_key = CnUtils.cn_fast_hash(Cn.generate_key_derivation(realDestViewKey, txkey.sec) + ENCRYPTED_PAYMENT_ID_TAIL.toString(16)).slice(0, INTEGRATED_ID_SIZE * 2);
-				console.log("Txkeys:", txkey, "Payment ID key:", pid_key);
-				payment_id = CnUtils.hex_xor(payment_id, pid_key);
-			}
-			let nonce = CnTransactions.get_payment_id_nonce(payment_id, pid_encrypt);
-			console.log("Extra nonce: " + nonce);
-			extra = CnTransactions.add_nonce_to_extra(extra, nonce);
-		}
 		let tx : CnTransactions.Transaction = {
 			unlock_time: unlock_time,
 			version: rct ? CURRENT_TX_VERSION : OLD_TX_VERSION,
@@ -1944,8 +1942,6 @@ export namespace CnTransactions{
 		} else {
 			tx.signatures = [];
 		}
-
-		tx.prvkey = txkey.sec;
 
 		let in_contexts = [];
 		let inputs_money = JSBigInt.ZERO;
@@ -2002,6 +1998,25 @@ export namespace CnTransactions{
 			console.log('key offsets after abs',input_to_key.key_offsets);
 			tx.vin.push(input_to_key);
 		}
+		let txkey = CnTransactions.generate_deterministic_tx_keys(tx.vin, keys.view.sec);
+		tx.prvkey = txkey.sec;
+
+		if (payment_id) {
+			if (pid_encrypt && payment_id.length !== INTEGRATED_ID_SIZE * 2) {
+				throw "payment ID must be " + INTEGRATED_ID_SIZE + " bytes to be encrypted!";
+			}
+			console.log("Adding payment id: " + payment_id);
+			if (pid_encrypt && realDestViewKey) { //get the derivation from our passed viewkey, then hash that + tail to get encryption key
+				let pid_key = CnUtils.cn_fast_hash(CnNativeBride.generate_key_derivation(realDestViewKey, txkey.sec) + ENCRYPTED_PAYMENT_ID_TAIL.toString(16)).slice(0, INTEGRATED_ID_SIZE * 2);
+				console.log("Txkeys:", txkey, "Payment ID key:", pid_key);
+				payment_id = CnUtils.hex_xor(payment_id, pid_key);
+			}
+			let nonce = CnTransactions.get_payment_id_nonce(payment_id, pid_encrypt);
+			console.log("Extra nonce: " + nonce);
+			extra = CnTransactions.add_nonce_to_extra(extra, nonce);
+		}
+		tx.extra = extra;
+
 		let outputs_money = JSBigInt.ZERO;
 		let out_index = 0;
 		let amountKeys = []; //rct only
@@ -2059,12 +2074,12 @@ export namespace CnTransactions{
 			}
 			let out_derivation;
 			if(destKeys.view === keys.view.pub) {
-				out_derivation = Cn.generate_key_derivation(txkey.pub, keys.view.sec);
+				out_derivation = CnNativeBride.generate_key_derivation(txkey.pub, keys.view.sec);
 			} else {
 				if(Cn.is_subaddress(dsts[i].address) && need_additional_txkeys)
-					out_derivation = Cn.generate_key_derivation(destKeys.view, additional_txkey.sec);
+					out_derivation = CnNativeBride.generate_key_derivation(destKeys.view, additional_txkey.sec);
 				else
-					out_derivation = Cn.generate_key_derivation(destKeys.view, txkey.sec);
+					out_derivation = CnNativeBride.generate_key_derivation(destKeys.view, txkey.sec);
 			}
 
 			if (need_additional_txkeys){
@@ -2075,7 +2090,7 @@ export namespace CnTransactions{
 			if (rct) {
 				amountKeys.push(CnUtils.derivation_to_scalar(out_derivation, out_index));
 			}
-			let out_ephemeral_pub = Cn.derive_public_key(out_derivation, out_index, destKeys.spend);
+			let out_ephemeral_pub = CnNativeBride.derive_public_key(out_derivation, out_index, destKeys.spend);
 			let out : CnTransactions.Vout = {
 				amount: dsts[i].amount,
 				target:{
@@ -2331,3 +2346,4 @@ export namespace CnTransactions{
 		return CnTransactions.construct_tx(keys, sources, dsts, fee_amount, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct);
 	}
 }
+
