@@ -1297,3 +1297,612 @@ body {
 .progress .bar {
 	background: linear-gradient(90deg, #245bc2 0%, #2f8cff 100%);
 }
+
+/*===================WALLETD-UI INSPIRED REFRESH=================*/
+:root {
+	--krb-ui-bg: #0f1720;
+	--krb-ui-bg2: #121f31;
+	--krb-ui-panel: #1a2330;
+	--krb-ui-panel-soft: #202b3b;
+	--krb-ui-border: #2b3648;
+	--krb-ui-text: #e6edf3;
+	--krb-ui-muted: #8a9bb2;
+	--krb-ui-accent: #4fa3c7;
+	--krb-ui-accent-strong: #3a8ab0;
+	--krb-ui-success: #8dffa1;
+	--krb-ui-danger: #ff7d8c;
+	--krb-ui-input: #0f1720;
+}
+
+html,
+body {
+	min-height: 100%;
+}
+
+body {
+	font-family: "Segoe UI", "Trebuchet MS", Tahoma, sans-serif;
+	line-height: 1.45;
+	background:
+		radial-gradient(circle at 8% 12%, rgba(79, 163, 199, 0.16), transparent 28%),
+		radial-gradient(circle at 90% 8%, rgba(56, 97, 166, 0.2), transparent 30%),
+		linear-gradient(165deg, #0b121c 0%, var(--krb-ui-bg) 44%, #13263f 100%);
+	color: var(--krb-ui-text);
+}
+
+::selection {
+	background: rgba(79, 163, 199, 0.45);
+	color: #ffffff;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(8, 16, 29, 0.9);
+}
+
+::-webkit-scrollbar-thumb {
+	background: #2f3d55;
+	border-radius: 999px;
+}
+
+#topBar {
+	height: 56px;
+	line-height: 56px;
+	left: 320px;
+	right: 0;
+	width: auto;
+	padding: 0 14px;
+	background: linear-gradient(90deg, #1b2636 0%, #0f1720 100%);
+	border-bottom: 1px solid var(--krb-ui-border);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
+	z-index: 60;
+	display: none;
+}
+
+body.connected:not(.menuDisabled) #topBar {
+	display: block;
+}
+
+#topBar a.toggleMenu {
+	border-radius: 8px;
+	padding: 0 10px;
+	font-size: 16px;
+	color: var(--krb-ui-text);
+}
+
+#topBar a.toggleMenu:hover {
+	background: rgba(79, 163, 199, 0.14);
+}
+
+#menu {
+	width: 320px;
+	padding: 12px;
+	border-right: 1px solid var(--krb-ui-border);
+	background: linear-gradient(180deg, #1a2330 0%, #151f2c 100%);
+	box-shadow: 10px 0 35px rgba(0, 0, 0, 0.32);
+}
+
+#menu #menu_logo {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 10px 16px 10px;
+	border-bottom: 1px solid rgba(138, 155, 178, 0.22);
+	margin-bottom: 8px;
+	font-size: 20px;
+}
+
+#menu img {
+	max-height: 30px;
+}
+
+#menu a {
+	font-size: 14px;
+	font-weight: 500;
+	border-radius: 9px;
+	padding: 10px 10px;
+	margin-bottom: 3px;
+	color: var(--krb-ui-text);
+	letter-spacing: 0.02em;
+}
+
+#menu a .icon {
+	width: 24px;
+}
+
+#menu a:hover {
+	border-right: none;
+	background: rgba(79, 163, 199, 0.15);
+}
+
+#page {
+	left: 0 !important;
+	margin-left: 0 !important;
+	padding-top: 18px;
+}
+
+body.connected:not(.menuDisabled) #page {
+	padding-top: 74px;
+}
+
+#copyright {
+	padding: 28px 16px 24px;
+	color: var(--krb-ui-muted);
+}
+
+#copyright a,
+#copyright .links select {
+	color: var(--krb-ui-muted);
+}
+
+#copyright .links select {
+	background: var(--krb-ui-panel-soft);
+	border: 1px solid var(--krb-ui-border);
+	border-radius: 8px;
+	padding: 6px 8px;
+}
+
+body.connected:not(.menuDisabled) #copyright {
+	padding-left: 336px;
+}
+
+@media screen and (min-width: 600px) {
+	body.connected:not(.menuDisabled) #page {
+		margin-left: 320px !important;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	#topBar {
+		left: 0;
+	}
+
+	body.connected:not(.menuDisabled) #page,
+	body.menuHidden #page {
+		margin-left: 0 !important;
+		padding-top: 66px;
+	}
+
+	body.connected:not(.menuDisabled) #copyright,
+	body.menuHidden #copyright {
+		padding-left: 16px;
+	}
+
+	#menu {
+		width: 280px;
+	}
+}
+
+.body-root {
+	max-width: 1120px;
+	margin: 0 auto;
+	padding: 0 20px 28px;
+	min-height: auto;
+}
+
+.body-header {
+	margin-top: 0;
+	padding-bottom: 14px;
+	border-bottom: 1px solid rgba(138, 155, 178, 0.22);
+}
+
+.body-header .header-title {
+	font-size: 30px;
+	color: var(--krb-ui-text);
+	margin-bottom: 8px;
+}
+
+.body-header .header-subtitle,
+.body-header .header-subtitle a {
+	color: var(--krb-ui-muted);
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.body-content {
+	padding-top: 18px;
+	display: grid;
+	gap: 14px;
+}
+
+.panel {
+	background: var(--krb-ui-panel);
+	border: 1px solid var(--krb-ui-border);
+	border-radius: 12px;
+	padding: 22px;
+	margin-bottom: 0;
+	box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+}
+
+.panel.inline {
+	background: rgba(26, 35, 48, 0.7);
+	border: 1px solid rgba(79, 163, 199, 0.28);
+	padding: 20px;
+}
+
+.panel.nopadding {
+	padding: 0;
+}
+
+.panel.nopadding .header-title {
+	padding: 18px 20px 0 20px;
+}
+
+.panel .header-title {
+	font-size: 18px;
+	margin-bottom: 16px;
+	color: var(--krb-ui-text);
+}
+
+.panel .body > .content {
+	color: var(--krb-ui-text);
+	line-height: 1.55;
+}
+
+.field {
+	margin-bottom: 14px;
+}
+
+.field label {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--krb-ui-muted);
+	margin-bottom: 6px;
+}
+
+.field input,
+.field select,
+.field .subfield input,
+.sendTab .destinationInput,
+.receiveTab .fakeInput {
+	font-size: 14px;
+	padding: 12px 12px;
+	border-radius: 8px;
+	background: var(--krb-ui-input);
+	border: 1px solid var(--krb-ui-border);
+	color: var(--krb-ui-text);
+}
+
+.field input:focus,
+.field select:focus,
+.field .subfield input:focus {
+	outline: none;
+	border-color: var(--krb-ui-accent);
+	box-shadow: 0 0 0 3px rgba(79, 163, 199, 0.15);
+}
+
+.field input::placeholder {
+	color: var(--krb-ui-muted);
+}
+
+.field .subfield .action {
+	width: 42px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-left: 1px solid var(--krb-ui-border);
+	color: var(--krb-ui-muted);
+}
+
+.field.action .subfield .action:first-of-type {
+	right: 0;
+}
+
+.field.action .subfield .action:nth-of-type(2) {
+	right: 42px;
+}
+
+.field .subfield input.twoActions {
+	width: calc(100% - 84px);
+}
+
+.btn {
+	padding: 9px 15px;
+	border-radius: 8px;
+	border: 1px solid var(--krb-ui-border);
+	background: var(--krb-ui-panel-soft);
+	color: var(--krb-ui-text);
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+}
+
+.btn:hover {
+	background: #30435c;
+	color: #ffffff;
+}
+
+.btn.primary {
+	background: var(--krb-ui-accent);
+	border-color: var(--krb-ui-accent);
+	color: #ffffff;
+}
+
+.btn.primary:hover {
+	background: var(--krb-ui-accent-strong);
+	border-color: var(--krb-ui-accent-strong);
+}
+
+.btn.green {
+	background: #2b7e56;
+	border-color: #2b7e56;
+}
+
+.btn.green:hover {
+	background: #2f9363;
+	border-color: #2f9363;
+}
+
+.btn.red {
+	background: #8b2f40;
+	border-color: #8b2f40;
+}
+
+.btn.red:hover {
+	background: #a6384c;
+	border-color: #a6384c;
+}
+
+.message {
+	background: #142235;
+	border: 1px solid var(--krb-ui-border);
+	border-radius: 10px;
+	box-shadow: none;
+	color: var(--krb-ui-text);
+}
+
+.message.error {
+	background: rgba(122, 35, 50, 0.34);
+	border-color: rgba(255, 125, 140, 0.45);
+	color: #ffd2d9;
+}
+
+.message.warning {
+	background: rgba(115, 84, 24, 0.34);
+	border-color: rgba(255, 205, 112, 0.46);
+	color: #ffe8c1;
+}
+
+.progress {
+	background: #122035;
+	border: 1px solid var(--krb-ui-border);
+	border-radius: 9px;
+}
+
+.progress .bar {
+	background: linear-gradient(90deg, #2f78be 0%, #4fa3c7 100%);
+	border-radius: 8px;
+}
+
+.walletAmount {
+	font-size: 32px;
+	font-weight: 700;
+}
+
+.walletAmountLabel {
+	font-size: 1.1em;
+	color: var(--krb-ui-muted);
+	padding-right: 0.7em;
+}
+
+#accountTransactions {
+	padding: 8px 16px 16px;
+}
+
+.transactions table {
+	table-layout: auto;
+}
+
+.transactions .transaction {
+	border-top: 1px solid rgba(138, 155, 178, 0.18);
+}
+
+.transactions .transaction td {
+	padding: 10px 2px;
+}
+
+.transactions .transaction .direction i {
+	background: rgba(79, 163, 199, 0.12);
+	border: 1px solid rgba(79, 163, 199, 0.3);
+	border-radius: 999px;
+	width: 34px;
+	height: 34px;
+	line-height: 32px;
+	text-align: center;
+}
+
+.transactions .transaction .timestamp {
+	font-size: 15px;
+	color: var(--krb-ui-text);
+}
+
+.transactions .transaction .amount {
+	font-size: 17px;
+	font-weight: 700;
+}
+
+.transactions .transaction .amount.more {
+	color: var(--krb-ui-success);
+}
+
+.transactions .transaction .amount.less {
+	color: var(--krb-ui-muted);
+}
+
+.transactions .transaction .moreInfo {
+	padding-right: 0;
+}
+
+.transactions .transaction .moreInfo i {
+	width: 32px;
+	height: 32px;
+	line-height: 30px;
+	text-align: center;
+	border-radius: 8px;
+	border: 1px solid var(--krb-ui-border);
+	color: var(--krb-ui-muted);
+}
+
+.transactions .transaction .moreInfo i:hover {
+	background: rgba(79, 163, 199, 0.13);
+	color: var(--krb-ui-text);
+}
+
+.paymentId {
+	font-family: monospace;
+	font-size: 12px;
+	color: var(--krb-ui-muted);
+	padding-bottom: 12px;
+}
+
+.sendTab .amountInput {
+	width: 100%;
+}
+
+.receiveTab .qrCode {
+	padding-top: 10px;
+}
+
+.receiveTab .qrCode img {
+	border-radius: 14px;
+	background: #ffffff;
+	padding: 10px;
+}
+
+.indexTab .mainBlock {
+	min-height: calc(100vh - 180px);
+	border-radius: 18px;
+	overflow: hidden;
+	border: 1px solid rgba(138, 155, 178, 0.28);
+	box-shadow: 0 24px 55px rgba(0, 0, 0, 0.36);
+	margin-bottom: 16px;
+	background-image: linear-gradient(rgba(18, 30, 48, 0.72), rgba(15, 23, 32, 0.88)), url(../img/landing/balancing.jpg);
+}
+
+.indexTab .mainBlock .actions {
+	padding: 20px 22px;
+}
+
+.indexTab .mainBlock h1 {
+	font-size: 42px;
+	margin-bottom: 10px;
+}
+
+.indexTab .mainBlock h2 {
+	color: #d5deea;
+	font-size: 18px;
+}
+
+.indexTab .mainBlock > .actions .btn {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(255, 255, 255, 0.26);
+	color: #f4f7fb;
+}
+
+.indexTab .mainBlock > .actions .btn:hover {
+	background: rgba(255, 255, 255, 0.16);
+}
+
+.indexTab .mainBlock > .actions .btn.basic {
+	background: transparent;
+	color: #ffffff;
+}
+
+.indexTab .mainBlock .callToAction .btn.primary {
+	background: var(--krb-ui-accent);
+	border-color: var(--krb-ui-accent);
+	color: #ffffff;
+}
+
+.indexTab .mainBlock .callToAction .btn.primary:hover {
+	background: var(--krb-ui-accent-strong);
+}
+
+.indexTab .notesBlock {
+	position: relative;
+	transform: none;
+	bottom: auto;
+	padding: 6px 0 18px;
+}
+
+.indexTab .notes .block {
+	height: auto;
+	min-height: 188px;
+	background: rgba(19, 31, 49, 0.72);
+	border: 1px solid rgba(138, 155, 178, 0.24);
+	border-radius: 12px;
+	backdrop-filter: blur(4px);
+}
+
+.indexTab .block i {
+	color: var(--krb-ui-accent);
+}
+
+.indexTab .block h3 {
+	font-size: 18px;
+}
+
+.indexTab .block h4 {
+	color: #d8e2f0;
+	line-height: 1.4;
+}
+
+.qrCodeScanningContainer {
+	background: rgba(3, 10, 21, 0.85);
+}
+
+.qrCodeScanningContainer h2 {
+	color: var(--krb-ui-text);
+}
+
+.qrCodeScanningContainer .close {
+	color: var(--krb-ui-text);
+	border-color: var(--krb-ui-text);
+}
+
+.qrCodeScanningContainer .close:hover {
+	background: var(--krb-ui-accent);
+	color: #ffffff;
+}
+
+.body-header,
+.panel {
+	animation: krbFadeUp 0.24s ease-out;
+}
+
+@keyframes krbFadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media screen and (max-width: 940px) {
+	.body-root {
+		padding: 0 14px 24px;
+	}
+
+	.body-header .header-title {
+		font-size: 24px;
+	}
+
+	.panel {
+		padding: 16px;
+	}
+
+	.indexTab .mainBlock {
+		min-height: 76vh;
+	}
+
+	.indexTab .mainBlock h1 {
+		font-size: 32px;
+	}
+}
