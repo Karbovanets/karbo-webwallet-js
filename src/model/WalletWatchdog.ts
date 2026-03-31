@@ -273,7 +273,7 @@ export class WalletWatchdog {
             logDebugMsg(`Cannot process, need to wait...`, this.workerProcessingWorking, this.workerProcessingReady);
             setTimeout(function () {
                 self.loadHistory();
-            }, 1000);
+            }, 250);
             return;
         }
         if (this.transactionsToProcess.length > 500) {
@@ -318,7 +318,7 @@ export class WalletWatchdog {
 
                         setTimeout(function () {
                             self.loadHistory();
-                        }, 100);
+                        }, 25);
                     } else if (transactions.length > 0) {
                         let lastTx = transactions[transactions.length - 1];
                         if (typeof lastTx.height !== 'undefined') {
@@ -329,13 +329,13 @@ export class WalletWatchdog {
     
                             setTimeout(function () {
                                 self.loadHistory();
-                            }, 100);
+                            }, 25);
                         });
                     } else {
                         self.lastBlockLoading = endBlock;
                         self.wallet.lastHeight = endBlock;
 
-                        let delay = endBlock < self.lastMaximumHeight ? 100 : 30 * 1000;
+                        let delay = endBlock < self.lastMaximumHeight ? 25 : 30 * 1000;
                         setTimeout(function () {
                             self.loadHistory();
                         }, delay);

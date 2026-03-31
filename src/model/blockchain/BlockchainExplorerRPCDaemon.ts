@@ -110,7 +110,7 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
     lastTimeRetrieveInfo = 0;
 
     getInfo(): Promise<DaemonResponseGetInfo> {
-        if (Date.now() - this.lastTimeRetrieveInfo < 20 * 1000 && this.cacheInfo !== null) {
+        if (Date.now() - this.lastTimeRetrieveInfo < 10 * 1000 && this.cacheInfo !== null) {
             return Promise.resolve(this.cacheInfo);
         }
 
@@ -123,7 +123,7 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
     }
 
     getHeight(): Promise<number> {
-        if (Date.now() - this.lastTimeRetrieveInfo < 20 * 1000 && this.cacheHeight !== 0) {
+        if (Date.now() - this.lastTimeRetrieveInfo < 10 * 1000 && this.cacheHeight !== 0) {
             return Promise.resolve(this.cacheHeight);
         }
 
