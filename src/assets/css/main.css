@@ -67,6 +67,18 @@ body.transparent{
 	display: none !important;
 }
 
+a,
+a:visited {
+	color: #7fc7ff;
+	text-decoration: none;
+}
+
+a:hover,
+a:focus {
+	color: #a8dcff;
+	text-decoration: none;
+}
+
 .onlyWhenConnected{
 	display: none !important;
 }
@@ -750,8 +762,8 @@ body.native .indexTab .mainBlock > .actions{
 body{
 	font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 	font-weight: normal;
-	font-size: 14px;
-	line-height: 1;
+	font-size: 13px;
+	line-height: 1.2;
 	-webkit-font-smoothing: antialiased;
 	-webkit-tap-highlight-color: transparent;
 }
@@ -769,27 +781,27 @@ body{
 .body-header {
 	display: table;
 	width: 100%;
-	margin-top: 36px;
-	padding-bottom: 20px;
+	margin-top: 14px;
+	padding-bottom: 10px;
 	border-bottom: 1px solid var(--border);
 }
 .body-header .header-title {
-	font-size: 26px;
+	font-size: 18px;
 	color: var(--text);
 	line-height: 1;
-	margin-bottom: 15px;
+	margin-bottom: 4px;
 }
 .body-header .header-title-icon {
 	vertical-align: top;
 	margin-right: 3px;
 }
 .body-header .header-subtitle {
-	font-size: 14px;
+	font-size: 12px;
 	color: var(--muted);
-	line-height: 26px;
+	line-height: 1.35;
 }
 .body-header .header-subtitle a {
-	font-size: 14px;
+	font-size: 12px;
 	color: var(--muted);
 	line-height: 1;
 }
@@ -1206,3 +1218,95 @@ body{
 .swal2-cancel:hover {
 	background-color: var(--hover) !important;
 }
+
+/*===================COMPACT TRANSACTIONS VIEW=================*/
+.compact-only-list .body-content {
+	padding-top: 16px;
+}
+
+.compact-only-list .panel {
+	padding: 14px 16px;
+	margin-bottom: 14px;
+}
+
+.compact-only-list .panel.inline {
+	padding: 12px 16px;
+}
+
+.compact-only-list .panel.nopadding {
+	padding: 0;
+}
+
+.compact-only-list .panel.nopadding .header-title {
+	padding: 12px 16px 0 16px;
+	font-size: 15px;
+	margin-bottom: 8px;
+}
+
+.compact-only-list #accountTransactions {
+	padding: 4px 16px 10px;
+}
+
+.transactions.compact .transaction td {
+	padding: 5px 0;
+}
+
+.transactions.compact .transaction .direction {
+	width: 5%;
+	font-size: 15px;
+	padding-left: 0;
+}
+
+.transactions.compact .transaction .timestamp {
+	width: 63%;
+	font-size: 13px;
+	line-height: 1.2;
+	color: var(--text);
+}
+
+.transactions.compact .transaction .timestamp .txTime {
+	font-size: 13px;
+	color: var(--text);
+}
+
+.transactions.compact .transaction .timestamp .txHashSmall {
+	font-family: "Consolas", "Courier New", monospace;
+	font-size: 11px;
+	line-height: 1.25;
+	color: #8eaac8;
+	word-break: break-all;
+	margin-top: 2px;
+}
+
+.transactions.compact .transaction .amount {
+	width: 24%;
+	font-size: 15px;
+	padding-right: 2px;
+}
+
+.transactions.compact .transaction .moreInfo {
+	width: 8%;
+	font-size: 15px;
+	padding-right: 4px;
+}
+
+.transactions.compact td.noTransactions {
+	font-size: 13px;
+}
+.compact-only-list .compact-overview-header {
+	margin-top: 14px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--border);
+}
+
+.compact-only-list .compact-overview-header .header-title {
+	font-size: 18px;
+	margin-bottom: 4px;
+}
+
+.compact-only-list .compact-overview-header .header-subtitle {
+	font-size: 12px;
+	line-height: 1.35;
+}
+
+
