@@ -781,9 +781,9 @@ body{
 .body-header {
 	display: table;
 	width: 100%;
-	margin-top: 14px;
+	margin-top: 24px;
 	padding-bottom: 10px;
-	border-bottom: 1px solid var(--border);
+	border-bottom: none;
 }
 .body-header .header-title {
 	font-size: 18px;
@@ -1294,9 +1294,9 @@ body{
 	font-size: 13px;
 }
 .compact-only-list .compact-overview-header {
-	margin-top: 14px;
+	margin-top: 24px;
 	padding-bottom: 10px;
-	border-bottom: 1px solid var(--border);
+	border-bottom: none;
 }
 
 .compact-only-list .compact-overview-header .header-title {

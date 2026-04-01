@@ -1,58 +1,59 @@
 {
-    "name":  "karbowebwallet",
-    "version":  "1.1.1",
-    "description":  "Fully client-side web-wallet for Karbo",
-    "scripts":  {
-                    "start":  "serve .\\src\\",
-                    "build":  "node ./node_modules/typescript/bin/tsc --project tsconfig.prod.json \u0026\u0026 node build.js \u0026\u0026 serve .\\src\\",
-                    "test":  "",
-                    "build:web":  "node ./node_modules/typescript/bin/tsc --project tsconfig.prod.json \u0026\u0026 node build.js \u0026\u0026 serve .\\src\\",
-                    "desktop:start":  "electron desktop/main.js",
-                    "desktop:dist":  "electron-builder --win portable",
-                    "desktop:dist:dir":  "electron-builder --win dir",
-                    "desktop:pack":  "electron-packager . \"Karbo Wallet\" --platform=win32 --arch=x64 --out dist-desktop-packager --overwrite --prune=true"
-                },
-    "main":  "desktop/main.js",
-    "dependencies":  {
-                         "typescript":  "^5.0.4",
-                         "workbox-build":  "^6.5.4"
-                     },
-    "devDependencies":  {
-                            "electron":  "^31.7.7",
-                            "electron-builder":  "^24.13.3",
-                            "electron-packager":  "^17.1.2"
-                        },
-    "repository":  {
-                       "type":  "git",
-                       "url":  "git+https://github.com/Karbovanets/karbo-webwallet-js.git"
-                   },
-    "author":  "Gnock,Aiwe,Alex,ExploShot",
-    "license":  "BSD-3",
-    "bugs":  {
-                 "url":  "https://github.com/Karbovanets/Karbo-webwallet-js/issues"
-             },
-    "homepage":  "https://github.com/Karbovanets/Karbo-webwallet-js#readme",
-    "build":  {
-                  "appId":  "org.karbo.wallet",
-                  "productName":  "Karbo Wallet",
-                  "directories":  {
-                                      "output":  "dist-desktop"
-                                  },
-                  "files":  [
-                                "desktop/**/*",
-                                "src/**/*",
-                                "package.json"
-                            ],
-                  "asar":  true,
-                  "win":  {
-                              "target":  [
-                                             {
-                                                 "target":  "portable",
-                                                 "arch":  [
-                                                              "x64"
-                                                          ]
-                                             }
-                                         ]
-                          }
-              }
+    "name": "karbowebwallet",
+    "version": "1.2.0",
+    "description": "Fully client-side web-wallet for Karbo",
+    "scripts": {
+        "start": "serve .\\src\\",
+        "build": "node ./node_modules/typescript/bin/tsc --project tsconfig.prod.json && node build.js && serve .\\src\\",
+        "test": "",
+        "build:web": "node ./node_modules/typescript/bin/tsc --project tsconfig.prod.json && node build.js && serve .\\src\\",
+        "desktop:start": "electron desktop/main.js",
+        "desktop:dist": "electron-builder --win portable",
+        "desktop:dist:dir": "electron-builder --win dir",
+        "desktop:pack": "electron-packager . \"Karbo Wallet\" --platform=win32 --arch=x64 --out dist-desktop-packager --overwrite --prune=true"
+    },
+    "main": "desktop/main.js",
+    "dependencies": {
+        "typescript": "^5.0.4",
+        "workbox-build": "^6.5.4"
+    },
+    "devDependencies": {
+        "electron": "^31.7.7",
+        "electron-builder": "^24.13.3",
+        "electron-packager": "^17.1.2",
+        "serve": "^14.2.6"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Karbovanets/karbo-webwallet-js.git"
+    },
+    "author": "Gnock,Aiwe,Alex,ExploShot",
+    "license": "BSD-3",
+    "bugs": {
+        "url": "https://github.com/Karbovanets/Karbo-webwallet-js/issues"
+    },
+    "homepage": "https://github.com/Karbovanets/Karbo-webwallet-js#readme",
+    "build": {
+        "appId": "org.karbo.wallet",
+        "productName": "Karbo Wallet",
+        "directories": {
+            "output": "dist-desktop"
+        },
+        "files": [
+            "desktop/**/*",
+            "src/**/*",
+            "package.json"
+        ],
+        "asar": true,
+        "win": {
+            "target": [
+                {
+                    "target": "portable",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ]
+        }
+    }
 }
