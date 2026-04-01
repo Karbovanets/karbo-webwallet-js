@@ -37,7 +37,7 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
         return WalletWorker;
     }());
     exports.WalletWorker = WalletWorker;
-    var AppState = exports.AppState = /** @class */ (function () {
+    var AppState = /** @class */ (function () {
         function AppState() {
         }
         AppState.openWallet = function (wallet, password) {
@@ -84,7 +84,7 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
                     showCancelButton: true,
                     confirmButtonText: i18n.t('global.openWalletModal.confirmText'),
                     cancelButtonText: i18n.t('global.openWalletModal.cancelText'),
-                    html: "<a href=\"#!forgotPassword\"><small>" + i18n.t('global.openWalletModal.forgotPassword') + "</small></a>"
+                    html: "<a href=\"#!forgotPassword\" class=\"swal-forgot-password-link\"><small>" + i18n.t('global.openWalletModal.forgotPassword') + "</small></a>"
                 }).then(function (result) {
                     setTimeout(function () {
                         if (result.value) {
@@ -170,4 +170,5 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
         AppState.leftMenuEnabled = false;
         return AppState;
     }());
+    exports.AppState = AppState;
 });

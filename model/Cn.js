@@ -71,7 +71,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
         EC_SCALAR: 32,
         EC_POINT: 32,
         KEY_IMAGE: 32,
-        GE_DSMP: 160 * 8,
+        GE_DSMP: 160 * 8, // ge_cached * 8
         SIGNATURE: 64 // ec_scalar * 2
     };
     var CnVars;
@@ -121,7 +121,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             "746d1dccfed2f0ff1e13c51e2d50d5324375fbd5bf7ca82a8931828d801d43ab", "cb98110d4a6bb97d22feadbc6c0d8930c5f8fc508b2fc5b35328d26b88db19ae",
             "60b626a033b55f27d7676c4095eababc7a2c7ede2624b472e97f64f96b8cfc0e", "e5b52bc927468df71893eb8197ef820cf76cb0aaf6e8e4fe93ad62d803983104",
             "056541ae5da9961be2b0a5e895e5c5ba153cbb62dd561a427bad0ffd41923199", "f8fef05a3fa5c9f3eba41638b247b711a99f960fe73aa2f90136aeb20329b888"];
-    })(CnVars = exports.CnVars || (exports.CnVars = {}));
+    })(CnVars || (exports.CnVars = CnVars = {}));
     var CnRandom;
     (function (CnRandom) {
         // Generate a 256-bit / 64-char / 32-byte crypto random
@@ -145,7 +145,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return CnNativeBride.sc_reduce32(CnRandom.rand_32());
         }
         CnRandom.random_scalar = random_scalar;
-    })(CnRandom = exports.CnRandom || (exports.CnRandom = {}));
+    })(CnRandom || (exports.CnRandom = CnRandom = {}));
     var CnUtils;
     (function (CnUtils) {
         function hextobin(hex) {
@@ -411,7 +411,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             };
         }
         CnUtils.encode_rct_ecdh = encode_rct_ecdh;
-    })(CnUtils = exports.CnUtils || (exports.CnUtils = {}));
+    })(CnUtils || (exports.CnUtils = CnUtils = {}));
     var CnNativeBride;
     (function (CnNativeBride) {
         function sc_reduce32(hex) {
@@ -724,7 +724,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return CnUtils.bintohex(res);
         }
         CnNativeBride.derive_public_key = derive_public_key;
-    })(CnNativeBride = exports.CnNativeBride || (exports.CnNativeBride = {}));
+    })(CnNativeBride || (exports.CnNativeBride = CnNativeBride = {}));
     var Cn;
     (function (Cn) {
         function hash_to_scalar(buf) {
@@ -744,33 +744,6 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return hash_to_scalar(buf);
         }
         Cn.array_hash_to_scalar = array_hash_to_scalar;
-        /**
-         * @deprecated CnNativeBride has a much faster version
-         * @param pub
-         * @param sec
-         */
-        function generate_key_derivation(pub, sec) {
-            if (pub.length !== 64 || sec.length !== 64) {
-                throw "Invalid input length";
-            }
-            var P = CnUtils.ge_scalarmult(pub, sec);
-            return CnUtils.ge_scalarmult(P, CnUtils.d2s(8)); //mul8 to ensure group
-        }
-        Cn.generate_key_derivation = generate_key_derivation;
-        /**
-         * @deprecated CnNativeBride has a much faster version
-         * @param derivation
-         * @param out_index
-         * @param pub
-         */
-        function derive_public_key(derivation, out_index, pub) {
-            if (derivation.length !== 64 || pub.length !== 64) {
-                throw "Invalid input length!";
-            }
-            var s = CnUtils.derivation_to_scalar(derivation, out_index);
-            return CnUtils.bintohex(nacl.ll.ge_add(CnUtils.hextobin(pub), CnUtils.hextobin(CnUtils.ge_scalarmult_base(s))));
-        }
-        Cn.derive_public_key = derive_public_key;
         function generate_keys(seed) {
             if (seed.length !== 64)
                 throw "Invalid input length!";
@@ -871,7 +844,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
         function decrypt_payment_id(payment_id8, tx_public_key, acc_prv_view_key) {
             if (payment_id8.length !== 16)
                 throw "Invalid input length2!";
-            var key_derivation = Cn.generate_key_derivation(tx_public_key, acc_prv_view_key);
+            var key_derivation = CnNativeBride.generate_key_derivation(tx_public_key, acc_prv_view_key);
             var pid_key = CnUtils.cn_fast_hash(key_derivation + ENCRYPTED_PAYMENT_ID_TAIL.toString(16)).slice(0, INTEGRATED_ID_SIZE * 2);
             var decrypted_payment_id = CnUtils.hex_xor(payment_id8, pid_key);
             return decrypted_payment_id;
@@ -917,7 +890,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return Cn.formatMoney(units) + ' ' + config.coinSymbol;
         }
         Cn.formatMoneySymbol = formatMoneySymbol;
-    })(Cn = exports.Cn || (exports.Cn = {}));
+    })(Cn || (exports.Cn = Cn = {}));
     var CnTransactions;
     (function (CnTransactions) {
         function commit(amount, mask) {
@@ -1279,6 +1252,45 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return CnUtils.cn_fast_hash(prefix);
         }
         CnTransactions.get_tx_prefix_hash = get_tx_prefix_hash;
+        function serialize_tx_inputs(vin) {
+            var buf = "";
+            buf += CnUtils.encode_varint(vin.length);
+            for (var i = 0; i < vin.length; ++i) {
+                var input = vin[i];
+                switch (input.type) {
+                    case "input_to_key":
+                        buf += "02";
+                        buf += CnUtils.encode_varint(input.amount);
+                        buf += CnUtils.encode_varint(input.key_offsets.length);
+                        for (var j = 0; j < input.key_offsets.length; ++j) {
+                            buf += CnUtils.encode_varint(input.key_offsets[j]);
+                        }
+                        buf += input.k_image;
+                        break;
+                    default:
+                        throw "Unhandled vin type: " + input.type;
+                }
+            }
+            return buf;
+        }
+        CnTransactions.serialize_tx_inputs = serialize_tx_inputs;
+        function get_tx_inputs_hash(vin) {
+            var serializedInputs = CnTransactions.serialize_tx_inputs(vin);
+            return CnUtils.cn_fast_hash(serializedInputs);
+        }
+        CnTransactions.get_tx_inputs_hash = get_tx_inputs_hash;
+        function generate_deterministic_tx_keys(vin, senderViewSecretKey) {
+            if (senderViewSecretKey.length !== 64 || !CnUtils.valid_hex(senderViewSecretKey)) {
+                throw "Invalid sender view secret key";
+            }
+            var inputsHash = CnTransactions.get_tx_inputs_hash(vin);
+            var txSecretKey = Cn.hash_to_scalar(senderViewSecretKey + inputsHash);
+            return {
+                sec: txSecretKey,
+                pub: CnUtils.sec_key_to_pub(txSecretKey)
+            };
+        }
+        CnTransactions.generate_deterministic_tx_keys = generate_deterministic_tx_keys;
         //xv: vector of secret keys, 1 per ring (nrings)
         //pm: matrix of pubkeys, indexed by size first
         //iv: vector of indexes, 1 per ring (nrings), can be a string
@@ -1704,24 +1716,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
         CnTransactions.genRct = genRct;
         function construct_tx(keys, sources, dsts, fee_amount /*JSBigInt*/, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct) {
             if (unlock_time === void 0) { unlock_time = 0; }
-            //we move payment ID stuff here, because we need txkey to encrypt
-            var txkey = Cn.random_keypair();
-            console.log(txkey);
             var extra = '';
-            if (payment_id) {
-                if (pid_encrypt && payment_id.length !== INTEGRATED_ID_SIZE * 2) {
-                    throw "payment ID must be " + INTEGRATED_ID_SIZE + " bytes to be encrypted!";
-                }
-                console.log("Adding payment id: " + payment_id);
-                if (pid_encrypt && realDestViewKey) { //get the derivation from our passed viewkey, then hash that + tail to get encryption key
-                    var pid_key = CnUtils.cn_fast_hash(Cn.generate_key_derivation(realDestViewKey, txkey.sec) + ENCRYPTED_PAYMENT_ID_TAIL.toString(16)).slice(0, INTEGRATED_ID_SIZE * 2);
-                    console.log("Txkeys:", txkey, "Payment ID key:", pid_key);
-                    payment_id = CnUtils.hex_xor(payment_id, pid_key);
-                }
-                var nonce = CnTransactions.get_payment_id_nonce(payment_id, pid_encrypt);
-                console.log("Extra nonce: " + nonce);
-                extra = CnTransactions.add_nonce_to_extra(extra, nonce);
-            }
             var tx = {
                 unlock_time: unlock_time,
                 version: rct ? CURRENT_TX_VERSION : OLD_TX_VERSION,
@@ -1744,7 +1739,6 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             else {
                 tx.signatures = [];
             }
-            tx.prvkey = txkey.sec;
             var in_contexts = [];
             var inputs_money = JSBigInt.ZERO;
             var i, j;
@@ -1796,6 +1790,23 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
                 console.log('key offsets after abs', input_to_key.key_offsets);
                 tx.vin.push(input_to_key);
             }
+            var txkey = CnTransactions.generate_deterministic_tx_keys(tx.vin, keys.view.sec);
+            tx.prvkey = txkey.sec;
+            if (payment_id) {
+                if (pid_encrypt && payment_id.length !== INTEGRATED_ID_SIZE * 2) {
+                    throw "payment ID must be " + INTEGRATED_ID_SIZE + " bytes to be encrypted!";
+                }
+                console.log("Adding payment id: " + payment_id);
+                if (pid_encrypt && realDestViewKey) { //get the derivation from our passed viewkey, then hash that + tail to get encryption key
+                    var pid_key = CnUtils.cn_fast_hash(CnNativeBride.generate_key_derivation(realDestViewKey, txkey.sec) + ENCRYPTED_PAYMENT_ID_TAIL.toString(16)).slice(0, INTEGRATED_ID_SIZE * 2);
+                    console.log("Txkeys:", txkey, "Payment ID key:", pid_key);
+                    payment_id = CnUtils.hex_xor(payment_id, pid_key);
+                }
+                var nonce = CnTransactions.get_payment_id_nonce(payment_id, pid_encrypt);
+                console.log("Extra nonce: " + nonce);
+                extra = CnTransactions.add_nonce_to_extra(extra, nonce);
+            }
+            tx.extra = extra;
             var outputs_money = JSBigInt.ZERO;
             var out_index = 0;
             var amountKeys = []; //rct only
@@ -1843,13 +1854,13 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
                 }
                 var out_derivation = void 0;
                 if (destKeys.view === keys.view.pub) {
-                    out_derivation = Cn.generate_key_derivation(txkey.pub, keys.view.sec);
+                    out_derivation = CnNativeBride.generate_key_derivation(txkey.pub, keys.view.sec);
                 }
                 else {
                     if (Cn.is_subaddress(dsts[i].address) && need_additional_txkeys)
-                        out_derivation = Cn.generate_key_derivation(destKeys.view, additional_txkey.sec);
+                        out_derivation = CnNativeBride.generate_key_derivation(destKeys.view, additional_txkey.sec);
                     else
-                        out_derivation = Cn.generate_key_derivation(destKeys.view, txkey.sec);
+                        out_derivation = CnNativeBride.generate_key_derivation(destKeys.view, txkey.sec);
                 }
                 if (need_additional_txkeys) {
                     additional_tx_public_keys.push(additional_txkey.pub);
@@ -1858,7 +1869,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
                 if (rct) {
                     amountKeys.push(CnUtils.derivation_to_scalar(out_derivation, out_index));
                 }
-                var out_ephemeral_pub = Cn.derive_public_key(out_derivation, out_index, destKeys.spend);
+                var out_ephemeral_pub = CnNativeBride.derive_public_key(out_derivation, out_index, destKeys.spend);
                 var out = {
                     amount: dsts[i].amount,
                     target: {
@@ -2088,5 +2099,5 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return CnTransactions.construct_tx(keys, sources, dsts, fee_amount, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct);
         }
         CnTransactions.create_transaction = create_transaction;
-    })(CnTransactions = exports.CnTransactions || (exports.CnTransactions = {}));
+    })(CnTransactions || (exports.CnTransactions = CnTransactions = {}));
 });

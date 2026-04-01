@@ -72,7 +72,7 @@ define(["require", "exports", "../WalletWatchdog"], function (require, exports, 
         };
         BlockchainExplorerRpcDaemon.prototype.getInfo = function () {
             var _this = this;
-            if (Date.now() - this.lastTimeRetrieveInfo < 20 * 1000 && this.cacheInfo !== null) {
+            if (Date.now() - this.lastTimeRetrieveInfo < 10 * 1000 && this.cacheInfo !== null) {
                 return Promise.resolve(this.cacheInfo);
             }
             this.lastTimeRetrieveInfo = Date.now();
@@ -84,7 +84,7 @@ define(["require", "exports", "../WalletWatchdog"], function (require, exports, 
         };
         BlockchainExplorerRpcDaemon.prototype.getHeight = function () {
             var _this = this;
-            if (Date.now() - this.lastTimeRetrieveInfo < 20 * 1000 && this.cacheHeight !== 0) {
+            if (Date.now() - this.lastTimeRetrieveInfo < 10 * 1000 && this.cacheHeight !== 0) {
                 return Promise.resolve(this.cacheHeight);
             }
             this.lastTimeRetrieveInfo = Date.now();
@@ -227,7 +227,7 @@ define(["require", "exports", "../WalletWatchdog"], function (require, exports, 
             return this.makeRpcRequest('getlastblockheader').then(function (raw) {
                 //console.log(raw);
                 return {
-                    'node': config.nodeUrl,
+                    'node': config.nodeUrl, //.split(':')[1].replace(/[-[\]\/{}()*+?\\^$|#\s]/g, ''),
                     'major_version': raw.block_header['major_version'],
                     'hash': raw.block_header['hash'],
                     'reward': raw.block_header['reward'],

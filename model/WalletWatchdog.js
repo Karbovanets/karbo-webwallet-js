@@ -35,6 +35,7 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
     var WalletWatchdog = /** @class */ (function () {
         function WalletWatchdog(wallet, explorer) {
             var _this = this;
+            this.defaultNodeUrl = null;
             this.intervalMempool = 0;
             this.stopped = false;
             this.transactionsToProcess = [];
@@ -63,15 +64,26 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
             this.initWorker();
             this.initMempool();
         }
+        WalletWatchdog.prototype.applyNodeUrl = function () {
+            if (this.wallet.options.customNode && this.wallet.options.nodeUrl !== '') {
+                config.nodeUrl = this.wallet.options.nodeUrl;
+                return;
+            }
+            if (this.defaultNodeUrl === null || config.nodeList.indexOf(this.defaultNodeUrl) === -1) {
+                var randNodeInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
+                this.defaultNodeUrl = config.nodeList[randNodeInt];
+            }
+            config.nodeUrl = this.defaultNodeUrl;
+        };
+        WalletWatchdog.prototype.getSyncRetryDelayMs = function () {
+            if (this.wallet.lastHeight < this.lastMaximumHeight) {
+                return 5 * 1000;
+            }
+            return 30 * 1000;
+        };
         WalletWatchdog.prototype.initWorker = function () {
             var self = this;
-            if (this.wallet.options.customNode) {
-                config.nodeUrl = this.wallet.options.nodeUrl;
-            }
-            else {
-                var randNodeInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
-                config.nodeUrl = config.nodeList[randNodeInt];
-            }
+            this.applyNodeUrl();
             this.workerProcessing = new Worker('./workers/TransferProcessingEntrypoint.js');
             this.workerProcessing.onmessage = function (data) {
                 var message = data.data;
@@ -108,13 +120,7 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
             var self = this;
             logDebugMsg('wallet update');
             this.lastBlockLoading = -1; //reset scanning
-            if (this.wallet.options.customNode) {
-                config.nodeUrl = this.wallet.options.nodeUrl;
-            }
-            else {
-                var randNodeInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
-                config.nodeUrl = config.nodeList[randNodeInt];
-            }
+            this.applyNodeUrl();
             this.workerProcessing.postMessage({
                 type: 'initWallet',
                 wallet: this.wallet.exportToRaw()
@@ -243,7 +249,7 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                 logDebugMsg("Cannot process, need to wait...", this.workerProcessingWorking, this.workerProcessingReady);
                 setTimeout(function () {
                     self.loadHistory();
-                }, 1000);
+                }, 250);
                 return;
             }
             if (this.transactionsToProcess.length > 500) {
@@ -285,7 +291,7 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                             self.wallet.lastHeight = endBlock_1;
                             setTimeout(function () {
                                 self.loadHistory();
-                            }, 100);
+                            }, 25);
                         }
                         else if (transactions.length > 0) {
                             var lastTx = transactions[transactions.length - 1];
@@ -296,21 +302,22 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                                 self.wallet.lastHeight = endBlock_1;
                                 setTimeout(function () {
                                     self.loadHistory();
-                                }, 100);
+                                }, 25);
                             });
                         }
                         else {
                             self.lastBlockLoading = endBlock_1;
                             self.wallet.lastHeight = endBlock_1;
+                            var delay = endBlock_1 < self.lastMaximumHeight ? 25 : 30 * 1000;
                             setTimeout(function () {
                                 self.loadHistory();
-                            }, 30 * 1000);
+                            }, delay);
                         }
                     }).catch(function () {
                         logDebugMsg("Error occured in loadHistory[1]...");
                         setTimeout(function () {
                             self.loadHistory();
-                        }, 30 * 1000); //retry 30s later if an error occurred
+                        }, self.getSyncRetryDelayMs()); //retry later if an error occurred
                     });
                 }
                 else {
@@ -322,7 +329,7 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                 logDebugMsg("Error occured in loadHistory[2]...");
                 setTimeout(function () {
                     self.loadHistory();
-                }, 30 * 1000); //retry 30s later if an error occurred
+                }, self.getSyncRetryDelayMs()); //retry later if an error occurred
             });
         };
         return WalletWatchdog;
