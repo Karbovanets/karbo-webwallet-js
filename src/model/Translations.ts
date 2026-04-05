@@ -56,8 +56,17 @@ export class Translations{
 				i18n.setDateTimeFormat(lang, data.date);
 			if (typeof data.number !== 'undefined')
 				i18n.setNumberFormat(lang, data.number);
-			if (typeof data.messages !== 'undefined')
-				i18n.setLocaleMessage(lang, data.messages);
+			if (typeof data.messages !== 'undefined' || typeof data.website !== 'undefined') {
+				let localeMessages : any = {};
+				if (typeof data.messages !== 'undefined') {
+					for (let key in data.messages)
+						if (data.messages.hasOwnProperty(key))
+							localeMessages[key] = data.messages[key];
+				}
+				if (typeof data.website !== 'undefined')
+					localeMessages.website = data.website;
+				i18n.setLocaleMessage(lang, localeMessages);
+			}
 
 			i18n.locale = lang;
 

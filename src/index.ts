@@ -76,6 +76,18 @@ function updateActiveNav() {
 }
 
 //========================================================
+//=================Top Header Vue binding=================
+//========================================================
+
+@VueClass()
+class TopHeaderView extends Vue{
+	constructor(containerName:any,vueData:any=null){
+		super(vueData);
+	}
+}
+let topHeaderView = new TopHeaderView('#topHeader');
+
+//========================================================
 //=================Copyright / Language===================
 //========================================================
 
