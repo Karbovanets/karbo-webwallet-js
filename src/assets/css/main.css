@@ -486,7 +486,7 @@ body.native .hideOnNonNative { display: initial !important; }
 	transition: all 0.3s ease;
 }
 .qrCodeScanningContainer.native { background: transparent !important; }
-.qrCodeScanningContainer.hidden { top: 100vh; display: block !important; }
+.qrCodeScanningContainer.hidden { top: 200vh; display: block !important; }
 .qrCodeScanningContainer .close {
 	position: absolute;
 	right: 1rem; top: 1rem;
