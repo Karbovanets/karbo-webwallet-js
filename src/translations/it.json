@@ -13,7 +13,9 @@
 	  "donate": "Dona",
 	  "settings": "Impostazioni",
 	  "disconnect": "Disconnetti",
-	  "network": "Statistiche del network"
+	  "network": "Statistiche del network",
+	  "mining": "Mining",
+	  "transactions": "Cronologia"
 	},
 	"global": {
 	  "loading": "Caricamento",

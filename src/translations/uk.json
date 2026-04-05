@@ -14,7 +14,8 @@
 	  "settings": "Налаштування",
 	  "disconnect": "Відключитися",
 	  "network": "Статистика мережі",
-	  "mining": "Майнінг"
+	  "mining": "Майнінг",
+	  "transactions": "Історія"
 	},
 	"global": {
 	  "loading": "Триває завантаження",

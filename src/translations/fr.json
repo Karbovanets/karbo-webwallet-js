@@ -14,7 +14,8 @@
 	  "settings": "Paramètres",
 	  "disconnect": "Déconnection",
 	  "network": "Stats du réseau",
-	  "mining": "Minage"
+	  "mining": "Minage",
+	  "transactions": "Historique"
 	},
 	"global": {
 	  "loading": "Chargement",

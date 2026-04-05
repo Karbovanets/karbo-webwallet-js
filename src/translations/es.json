@@ -16,7 +16,8 @@
       "settings": "Ajustes",
       "disconnect": "Desconectar",
       "network": "Estado de red",
-      "mining": "Minería"
+      "mining": "Minería",
+      "transactions": "Historial"
     },
     "global": {
       "loading": "Cargando",

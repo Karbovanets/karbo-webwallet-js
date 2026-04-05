@@ -14,7 +14,8 @@
 	  "settings": "Settings",
 	  "disconnect": "Disconnect",
 	  "network": "Network Stats",
-	  "mining": "Mining"
+	  "mining": "Mining",
+	  "transactions": "History"
 	},
 	"global": {
 	  "loading": "Loading",

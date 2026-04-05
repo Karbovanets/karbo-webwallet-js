@@ -14,7 +14,8 @@
 	  "settings": "Einstellungen",
 	  "disconnect": "Ausloggen",
 	  "network": "Netzwerkstatus",
-	  "mining": "Minen"
+	  "mining": "Minen",
+	  "transactions": "Verlauf"
 	},
 	"global": {
 	  "loading": "wird geladen",

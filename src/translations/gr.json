@@ -14,7 +14,8 @@
 	  "settings": "Ρυθμίσεις",
 	  "disconnect": "Αποσύνδεση",
 	  "network": "Στατιστικά Δικτύου",
-	  "mining": "Mining"
+	  "mining": "Mining",
+	  "transactions": "Ιστορικό"
 	},
 	"global": {
 	  "loading": "Φόρτωση",

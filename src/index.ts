@@ -46,110 +46,38 @@ Storage.getItem('user-lang', browserUserLang).then(function(userLang : string){
 	});
 });
 
-
 //========================================================
-//====================Generic design======================
+//===========Bottom Navigation active state===============
 //========================================================
 
-@VueClass()
-class MenuView extends Vue{
-	isMenuHidden : boolean = false;
-
-	constructor(containerName:any,vueData:any=null){
-		super(vueData);
-		this.isMenuHidden = $('body').hasClass('menuHidden');
-		if($('body').hasClass('menuDisabled'))
-			this.isMenuHidden = true;
-		this.update();
+function updateActiveNav() {
+	let hash = window.location.hash;
+	let page = 'index';
+	if (hash.indexOf('#!') !== -1) {
+		page = hash.substr(2);
+	} else if (hash.indexOf('#') !== -1) {
+		page = hash.substr(1);
+	}
+	// Remove query params
+	if (page.indexOf('?') !== -1) {
+		page = page.substr(0, page.indexOf('?'));
 	}
 
-	toggle(){
-		if($('body').hasClass('menuDisabled'))
-			this.isMenuHidden = true;
-		else
-			this.isMenuHidden = !this.isMenuHidden;
-
-		this.update();
-	}
-	update(){
-		if(this.isMenuHidden)
-			$('body').addClass('menuHidden');
-		else
-			$('body').removeClass('menuHidden');
-	}
-}
-let menuView = new MenuView('#menu');
-
-$('#menu a').on('click',function(event:Event){
-	menuView.toggle();
-});
-$('#menu').on('click',function(event:Event){
-	event.stopPropagation();
-});
-
-$('#topBar .toggleMenu').on('click',function(event:Event){
-	menuView.toggle();
-	event.stopPropagation();
-	return false;
-});
-
-$(window).click(function() {
-	menuView.isMenuHidden = true;
-	$('body').addClass('menuHidden');
-});
-
-//mobile swipe
-let pageWidth = window.innerWidth || document.body.clientWidth;
-let treshold = Math.max(1,Math.floor(0.01 * (pageWidth)));
-let touchstartX = 0;
-let touchstartY = 0;
-let touchendX = 0;
-let touchendY = 0;
-
-const limit = Math.tan(45 * 1.5 / 180 * Math.PI);
-const gestureZone : HTMLElement= $('body')[0];
-
-gestureZone.addEventListener('touchstart', function(event : TouchEvent) {
-	touchstartX = event.changedTouches[0].screenX;
-	touchstartY = event.changedTouches[0].screenY;
-}, false);
-
-gestureZone.addEventListener('touchend', function(event : TouchEvent) {
-	touchendX = event.changedTouches[0].screenX;
-	touchendY = event.changedTouches[0].screenY;
-	handleGesture(event);
-}, false);
-
-function handleGesture(e : Event) {
-	let x = touchendX - touchstartX;
-	let y = touchendY - touchstartY;
-	let xy = Math.abs(x / y);
-	let yx = Math.abs(y / x);
-	if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
-		if (yx <= limit) {
-			if (x < 0) {
-				//left
-				if(!menuView.isMenuHidden)
-					menuView.toggle();
-			} else {
-				//right
-				if(menuView.isMenuHidden)
-					menuView.toggle();
-			}
+	let navItems = document.querySelectorAll('#bottomNav .nav-item');
+	for (let i = 0; i < navItems.length; i++) {
+		let item = navItems[i] as HTMLElement;
+		let itemPage = item.getAttribute('data-page') || '';
+		if (itemPage === page) {
+			item.classList.add('active');
+		} else {
+			item.classList.remove('active');
 		}
-		if (xy <= limit) {
-			if (y < 0) {
-				//top
-			} else {
-				//bottom
-			}
-		}
-	} else {
-		//tap
 	}
 }
 
-
+//========================================================
+//=================Copyright / Language===================
+//========================================================
 
 @VueClass()
 class CopyrightView extends Vue{
@@ -171,6 +99,18 @@ class CopyrightView extends Vue{
 	}
 }
 let copyrightView = new CopyrightView('#copyright');
+
+//========================================================
+//=================Bottom Nav Vue binding=================
+//========================================================
+
+@VueClass()
+class BottomNavView extends Vue{
+	constructor(containerName:any,vueData:any=null){
+		super(vueData);
+	}
+}
+let bottomNavView = new BottomNavView('#bottomNav');
 
 //========================================================
 //==================Loading the right page================
@@ -214,32 +154,17 @@ promiseLoadingReady.then(function(){
 	let router = new Router('./','../../');
 	window.onhashchange = function () {
 		router.changePageFromHash();
+		updateActiveNav();
 	};
+	updateActiveNav();
 });
 
 //========================================================
 //==================Service worker for web================
 //========================================================
-//only install the service on web platforms and not native
-
-console.log(`%c                                            
- .d8888b.  888                       888    
-d88P  Y88b 888                       888    
-Y88b.      888                       888    This is a browser feature intended for 
- "Y888b.   888888  .d88b.  88888b.   888    developers. If someone told you to copy-paste 
-    "Y88b. 888    d88""88b 888 "88b  888    something here to enable a feature 
-      "888 888    888  888 888  888  Y8P    or "hack" someone\'s account, it is a 
-Y88b  d88P Y88b.  Y88..88P 888 d88P         scam and will give them access to your 
- "Y8888P"   "Y888  "Y88P"  88888P"   888    Karbo Wallet!
-                           888              
-                           888              
-                           888              
-
-IA Self-XSS scam tricks you into compromising your wallet by claiming to provide a way to log into someone else's wallet, or some other kind of reward, after pasting a special code or link into your web browser.`, "font-family:monospace")
 
 if (!isCordovaApp && 'serviceWorker' in navigator) {
 	const showRefreshUI = function(registration : any){
-		//console.log(registration);
 		swal({
 			type:'info',
 			title:i18n.t('global.newVersionModal.title'),
@@ -256,15 +181,12 @@ if (!isCordovaApp && 'serviceWorker' in navigator) {
 
 	const onNewServiceWorker = function(registration:any, callback : Function){
 		if (registration.waiting) {
-			// SW is waiting to activate. Can occur if multiple clients open and
-			// one of the clients is refreshed.
 			return callback();
 		}
 
 		const listenInstalledStateChange = () => {
 			registration.installing.addEventListener('statechange', (event : Event) => {
 				if ((<any>event.target).state === 'installed') {
-					// A new service worker is available, inform the user
 					callback();
 				}
 			});
@@ -274,8 +196,6 @@ if (!isCordovaApp && 'serviceWorker' in navigator) {
 			return listenInstalledStateChange();
 		}
 
-		// We are currently controlled so a new SW may be found...
-		// Add a listener in case a new SW is found,
 		registration.addEventListener('updatefound', listenInstalledStateChange);
 	};
 
@@ -289,20 +209,15 @@ if (!isCordovaApp && 'serviceWorker' in navigator) {
 				window.location.reload();
 				break;
 			default:
-				// NOOP
 				break;
 		}
 	});
 
 	navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
-		// Track updates to the Service Worker.
 		if (!navigator.serviceWorker.controller) {
-			// The window client isn't currently controlled so it's a new service
-			// worker that will activate immediately
 			return;
 		}
 
-		//console.log('on new service worker');
 		onNewServiceWorker(registration, () => {
 			showRefreshUI(registration);
 		});
