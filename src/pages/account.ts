@@ -89,6 +89,18 @@ class AccountView extends DestructableView{
 		return fractionMatch !== null ? fractionMatch[1] : '';
 	}
 
+	displayUnlockedWalletAmount(): number{
+		return Math.max(0, Math.min(this.walletAmount, this.unlockedWalletAmount));
+	}
+
+	displayPendingWalletAmount(): number{
+		return Math.max(0, this.walletAmount - this.displayUnlockedWalletAmount());
+	}
+
+	hasBalanceDetails(): boolean{
+		return this.displayPendingWalletAmount() > 0;
+	}
+
 	copyAddress(){
 		let el = document.createElement('textarea');
 		el.value = this.address;
