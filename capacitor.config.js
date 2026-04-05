@@ -6,10 +6,17 @@ define(["require", "exports"], function (require, exports) {
         appName: 'Karbo Wallet',
         webDir: 'src',
         android: {
-            allowMixedContent: true
+            allowMixedContent: true,
+            backgroundColor: '#111827'
         },
         server: {
             androidScheme: 'https'
+        },
+        plugins: {
+            StatusBar: {
+                style: 'DARK',
+                backgroundColor: '#111827'
+            }
         }
     };
     exports.default = config;
