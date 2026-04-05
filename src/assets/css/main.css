@@ -81,7 +81,7 @@ body.native .hideOnNonNative { display: initial !important; }
 	align-items: center;
 	gap: 0.5rem;
 	color: var(--color-text) !important;
-	font-size: 1.25rem;
+	font-size: 1rem;
 	font-weight: 600;
 }
 .topHeader-logo img {
@@ -108,9 +108,40 @@ body.native .hideOnNonNative { display: initial !important; }
 	background: var(--color-surface-lighter);
 }
 .syncStatus {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: 999px;
+	border: 1px solid transparent;
 	font-size: 11px;
-	color: var(--color-text-muted);
+	font-weight: 600;
+	line-height: 1;
+	white-space: nowrap;
 	margin-right: 0.25rem;
+}
+.syncStatus::before {
+	content: '';
+	width: 0.4rem;
+	height: 0.4rem;
+	border-radius: 50%;
+	background: currentColor;
+	flex: 0 0 auto;
+}
+.syncStatus.status-disconnected {
+	color: #fca5a5;
+	background: rgba(239, 68, 68, 0.14);
+	border-color: rgba(239, 68, 68, 0.28);
+}
+.syncStatus.status-syncing {
+	color: #fcd34d;
+	background: rgba(245, 158, 11, 0.14);
+	border-color: rgba(245, 158, 11, 0.28);
+}
+.syncStatus.status-synced {
+	color: #6ee7b7;
+	background: rgba(16, 185, 129, 0.14);
+	border-color: rgba(16, 185, 129, 0.28);
 }
 
 /* =================== BOTTOM NAVIGATION =================== */

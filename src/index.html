@@ -50,7 +50,7 @@
 			<span id="websiteTitle">{{ $t("website.title") }}</span>
 		</a>
 		<div class="topHeader-right">
-			<span class="syncStatus onlyWhenConnected" id="syncStatus"></span>
+			<span class="syncStatus" id="syncStatus" :class="syncStatusClass" :title="syncStatusTitle">{{ syncStatusText }}</span>
 			<a href="#!settings" class="topHeader-btn onlyWhenConnected" :title="$t('menu.settings')"><i class="fa fa-cog" aria-hidden="true"></i></a>
 			<a href="#!export" class="topHeader-btn onlyWhenConnected" :title="$t('menu.export')"><i class="fa fa-download" aria-hidden="true"></i></a>
 			<a href="#!disconnect" class="topHeader-btn onlyWhenConnected" :title="$t('menu.disconnect')"><i class="fa fa-sign-out" aria-hidden="true"></i></a>

@@ -14,12 +14,15 @@
  */
 
 import {Router} from "./lib/numbersLab/Router";
+import {DependencyInjectorInstance} from "./lib/numbersLab/DependencyInjector";
 import {Mnemonic} from "./model/Mnemonic";
 import {DestructableView} from "./lib/numbersLab/DestructableView";
 import {VueClass, VueVar, VueWatched} from "./lib/numbersLab/VueAnnotate";
+import {Wallet} from "./model/Wallet";
 import {Storage} from "./model/Storage";
 import {Translations} from "./model/Translations";
 import {Transaction} from "./model/Transaction";
+import {WalletWatchdog} from "./model/WalletWatchdog";
 
 //========================================================
 //bridge for cnUtil with the new mnemonic class
@@ -81,8 +84,58 @@ function updateActiveNav() {
 
 @VueClass()
 class TopHeaderView extends Vue{
+	@VueVar('Disconnected') syncStatusText !: string;
+	@VueVar('status-disconnected') syncStatusClass !: string;
+	@VueVar('Disconnected') syncStatusTitle !: string;
+
+	intervalRefresh : number = 0;
+
 	constructor(containerName:any,vueData:any=null){
 		super(vueData);
+
+		this.refreshSyncStatus();
+		this.intervalRefresh = <any>setInterval(() => {
+			this.refreshSyncStatus();
+		}, 1000);
+	}
+
+	private setSyncStatus(text:string, className:string, title:string){
+		this.syncStatusText = text;
+		this.syncStatusClass = className;
+		this.syncStatusTitle = title;
+	}
+
+	refreshSyncStatus(){
+		let wallet : Wallet = DependencyInjectorInstance().getInstance(Wallet.name, 'default', false);
+		let walletWatchdog : WalletWatchdog = DependencyInjectorInstance().getInstance(WalletWatchdog.name, 'default', false);
+
+		if(wallet === null || walletWatchdog === null || walletWatchdog.stopped){
+			this.setSyncStatus('Disconnected', 'status-disconnected', 'No wallet connected');
+			return;
+		}
+
+		let currentHeight = wallet.lastHeight;
+		let maximumHeight = walletWatchdog.lastMaximumHeight;
+
+		if(maximumHeight <= 0){
+			this.setSyncStatus('Connecting', 'status-syncing', 'Connecting to node');
+			return;
+		}
+
+		if(currentHeight > maximumHeight)
+			currentHeight = maximumHeight;
+
+		if(currentHeight + 2 < maximumHeight){
+			let progress = Math.floor(((currentHeight + 1) / maximumHeight) * 1000) / 10;
+			if(progress < 0) progress = 0;
+			if(progress > 99.9) progress = 99.9;
+
+			let displayHeight = currentHeight + 1;
+			this.setSyncStatus('Sync ' + progress + '%', 'status-syncing', 'Syncing ' + displayHeight + '/' + maximumHeight);
+			return;
+		}
+
+		this.setSyncStatus('Synced', 'status-synced', 'Wallet is synchronized');
 	}
 }
 let topHeaderView = new TopHeaderView('#topHeader');
