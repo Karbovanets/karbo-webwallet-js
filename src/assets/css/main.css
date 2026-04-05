@@ -181,7 +181,7 @@ body.native .hideOnNonNative { display: initial !important; }
 /* =================== APP SHELL & PAGE =================== */
 #appShell {
 	padding-top: var(--header-height);
-	min-height: 100vh;
+	/*min-height: 100vh;*/
 }
 .connected #appShell {
 	padding-bottom: var(--nav-height);
@@ -556,7 +556,7 @@ body.native .hideOnNonNative { display: initial !important; }
 
 /* =================== INDEX / HOME PAGE =================== */
 .indexTab .mainBlock {
-	min-height: calc(100vh - var(--header-height));
+	/*min-height: calc(100vh - var(--header-height));*/
 	display: flex;
 	flex-direction: column;
 	align-items: center;

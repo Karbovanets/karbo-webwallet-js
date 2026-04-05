@@ -80,7 +80,7 @@
 	},
 	"homepage": {
 	  "mainTitle": "Bienvenue dans Portefeuille pour Karbo",
-	  "tagLine": "Le moyen le plus simple d'utiliser Karbo, n'importe où, n'importe quand",
+	  "tagLine": "Un portefeuille Karbo côté client et non dépositaire.",
 	  "actions": {
 		"loadWallet": "Charger mon portefeuille",
 		"importWallet": "Importer un portefeuille",

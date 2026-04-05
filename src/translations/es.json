@@ -82,7 +82,7 @@
     },
     "homepage": {
       "mainTitle": "Bienvenido a Karbo Cartera",
-      "tagLine": "La forma más sencilla de usar Karbo - en cualquier lugar y en cualquier momento",
+      "tagLine": "Una billetera de Karbo del lado del cliente y sin custodia.",
       "actions": {
         "loadWallet": "Cargar mi cartera",
         "importWallet": "Importar una cartera",

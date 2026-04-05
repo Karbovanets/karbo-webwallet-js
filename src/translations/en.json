@@ -80,7 +80,7 @@
 	},
 	"homepage": {
 	  "mainTitle": "Welcome to Karbo Wallet",
-	  "tagLine": "The simplest way to use Karbo – anywhere and any time",
+	  "tagLine": "A client-side, non-custodial wallet for Karbo.",
 	  "actions": {
 		"loadWallet": "Load my wallet",
 		"importWallet": "Import a wallet",

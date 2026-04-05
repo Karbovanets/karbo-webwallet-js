@@ -80,7 +80,7 @@
 	},
 	"homepage": {
 	  "mainTitle": "Benvenuto in Portafoglio per Karbo",
-	  "tagLine": "Il modo più semplice per usare Karbo - ovunque e in qualsiasi momento",
+	  "tagLine": "Un wallet Karbo lato client e non custodial.",
 	  "actions": {
 		"loadWallet": "Carica il mio portafoglio",
 		"importWallet": "Importa un portafoglio",

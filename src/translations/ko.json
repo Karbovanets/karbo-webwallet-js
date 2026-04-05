@@ -80,7 +80,7 @@
     },
     "homepage": {
       "mainTitle": "카르보 에 오신 것을 환영합니다",
-      "tagLine": "카르보 코인을 사용하기 가장 간단한 방법 어디서든. 언제든. 모든 장치에서.",
+      "tagLine": "클라이언트 측에서 동작하는 비수탁형 Karbo 지갑.",
       "actions": {
         "loadWallet": "지갑 불러오기",
         "importWallet": "지갑 가져오기",
