@@ -7,6 +7,7 @@
 	"menu": {
 	  "home": "Огляд",
 	  "account": "Огляд",
+	  "overview": "Огляд",
 	  "send": "Надіслати",
 	  "receive": "Отримати",
 	  "export": "Експорт",
@@ -59,6 +60,7 @@
 	  "termsOfUse": "Умови використання",
 	  "privacyPolicy": "Політика конфіденційності",
 	  "support": "Допомога",
+	  "help": "Допомога",
 	  "donate": "Пожертвувати",
 	  "network": "Мережа",
 	  "miningPool": "Майнінг",
@@ -95,6 +97,8 @@
 	"accountPage": {
 	  "title": "Рахунок",
 	  "subtitle": "Огляд вашого облікового запису та історія транзакцій",
+	  "recentTransactions": "Останні транзакції",
+	  "allTransactions": "Усі транзакції",
 	  "synchronizingBlock": {
 		"text": "Синхронізація..."
 	  },
@@ -311,7 +315,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Місткість тега недостатня"
-	  }
+	  },
+	  "copyNotice": "Адресу скопійовано!"
 	},
 	"miningPage":{
 	  "title":"Інформація про майнінг",

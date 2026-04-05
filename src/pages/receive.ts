@@ -100,12 +100,10 @@ class AccountView extends DestructableView{
 	generateQrCode(){
 		let el = kjua({
 			text: this.getAddressEncoded(),
-			image:document.getElementById('qrCodeLogo'),
 			size:300,
-			mode:'image',
-			mSize: 10,
-			mPosX: 50,
-			mPosY: 50,
+			fill: '#e2e8f0',
+			back: '#1e293b',
+			rounded: 80,
 		});
 		$('#qrCodeContainer').html(el);
 	}
@@ -122,6 +120,16 @@ class AccountView extends DestructableView{
 
 	setInClipboard(inputId : string = 'rawAddress'){
 		setTextInClipboard(inputId);
+	}
+
+	copyAddress(){
+		setTextInClipboard('rawAddress');
+		swal({
+			type: 'success',
+			title: i18n.t('receivePage.copyNotice'),
+			timer: 1500,
+			showConfirmButton: false,
+		});
 	}
 
 	writeOnNfc(){

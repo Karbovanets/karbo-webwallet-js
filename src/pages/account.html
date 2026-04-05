@@ -47,8 +47,8 @@
 	<!-- Recent Transactions -->
 	<div class="card" style="margin-top:0.75rem;">
 		<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
-			<div class="card-title" style="margin-bottom:0;">{{ $t("accountPage.historyBlock.title") }}</div>
-			<a href="#!transactions" style="font-size:0.75rem;">{{ $t("accountPage.historyBlock.title") }} &rarr;</a>
+			<div class="card-title" style="margin-bottom:0;">{{ $t("accountPage.recentTransactions") }}</div>
+			<a href="#!transactions" style="font-size:0.75rem;">{{ $t("accountPage.allTransactions") }} &rarr;</a>
 		</div>
 		<div class="transactions compact">
 			<table>
@@ -62,6 +62,7 @@
 						<td class="timestamp">
 							<div class="txTime" v-if="transaction.blockHeight > 0">{{$d(new Date(transaction.timestamp*1000), 'long')}}</div>
 							<div class="txTime" v-else="">{{ $t("accountPage.historyBlock.pendingTxStatus") }}...</div>
+							<div class="txHashSmall" v-if="transaction.hash !== ''">{{transaction.hash.substring(0, 12)}}...</div>
 						</td>
 						<td :class="'amount '+(transaction.getAmount() > 0 ? 'more' : 'less')">{{ transaction.getAmount() / currencyDivider }}</td>
 						<td class="moreInfo">

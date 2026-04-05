@@ -7,6 +7,7 @@
 	"menu": {
     "home": "Home",
     "account": "Konto",
+    "overview": "Przegląd",
     "send": "Wyślij",
   	"receive": "Odbierz",
   	"export": "Export",
@@ -59,6 +60,7 @@
 	  "termsOfUse": "Warunki korzystania",
 	  "privacyPolicy": "Polityka prywatności",
 	  "support": "Wsparcie",
+	  "help": "Pomoc",
 	  "donate": "Dotacja",
 	  "network": "Statystyki Sieci",
 	  "miningPool": "Kopalnia",
@@ -95,6 +97,8 @@
     "accountPage": {
         "title": "Konto",
         "subtitle": "Przegląd Twojego konta i historia transakcji",
+        "recentTransactions": "Ostatnie transakcje",
+        "allTransactions": "Wszystkie transakcje",
         "synchronizingBlock": {
         "text": "Synchronizuję..."
       },
@@ -310,7 +314,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Niewystarczająca pojemność tagu"
-	  }
+	  },
+	  "copyNotice": "Adres skopiowany!"
 	},
   "miningPage":{
   	  "title":"Kop bezpośrednio w przeglądarce",

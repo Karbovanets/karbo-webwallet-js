@@ -7,6 +7,7 @@
     "menu": {
       "home": "홈",
       "account": "계정",
+      "overview": "개요",
       "send": "보내기",
       "receive": "받기",
       "export": "내보내기",
@@ -59,6 +60,7 @@
       "termsOfUse": "이용약관",
       "privacyPolicy": "개인정보정책",
       "support": "도움받기",
+      "help": "도움말",
       "donate": "기부",
       "network": "네트워크 통계",
       "miningPool": "채굴",
@@ -95,6 +97,8 @@
     "accountPage": {
       "title": "계정",
       "subtitle": "계정 정보 및 트랜젝션 기록",
+      "recentTransactions": "최근 거래",
+      "allTransactions": "모든 거래",
       "synchronizingBlock": {
         "text": "동기화중..."
       },
@@ -313,7 +317,8 @@
       },
       "nfcErrorModal": {
         "titleInsufficientCapacity": "태그의 용량이 충분하지 않습니다."
-      }
+      },
+      "copyNotice": "주소가 복사되었습니다!"
     },
     "miningPage": {
       "title": "브라우져에서 채굴하기",

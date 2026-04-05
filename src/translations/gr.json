@@ -7,6 +7,7 @@
 	"menu": {
 	  "home": "Αρχική",
 	  "account": "Λογαριασμός",
+	  "overview": "Επισκόπηση",
 	  "send": "Αποστολή",
 	  "receive": "Λήψη",
 	  "export": "Εξαγωγή",
@@ -59,6 +60,7 @@
 	  "termsOfUse": "Όροι χρήσης",
 	  "privacyPolicy": "Πολιτική Απορρήτου",
 	  "support": "Υποστήριξη",
+	  "help": "Βοήθεια",
 	  "donate": "Δωρεά",
 	  "network": "Στατιστικά Δικτύου",
 	  "miningPool": "Mining Pool",
@@ -95,6 +97,8 @@
 	"accountPage": {
 	  "title": "Λογαριασμός",
 	  "subtitle": "Επισκόπηση του λογαριασμού σας και ιστορικό συναλλαγών",
+	  "recentTransactions": "Πρόσφατες συναλλαγές",
+	  "allTransactions": "Όλες οι συναλλαγές",
 	  "synchronizingBlock": {
 		"text": "Συγχρονισμός..."
 	  },
@@ -310,7 +314,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Ανεπαρκής χωρητικότητα Tag"
-	  }
+	  },
+	  "copyNotice": "Η διεύθυνση αντιγράφηκε!"
 	},
 	"miningPage":{
 	  "title":"Κάντε mining μέσω του φυλλομετρητή σας",

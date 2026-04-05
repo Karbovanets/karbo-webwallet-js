@@ -15,7 +15,8 @@
 	  "disconnect": "Disconnect",
 	  "network": "Network Stats",
 	  "mining": "Mining",
-	  "transactions": "History"
+	  "transactions": "History",
+	  "overview": "Overview"
 	},
 	"global": {
 	  "loading": "Loading",
@@ -59,6 +60,7 @@
 	  "termsOfUse": "Terms of Use",
 	  "privacyPolicy": "Privacy Policy",
 	  "support": "Support",
+	  "help": "Help",
 	  "donate": "Donate",
 	  "network": "Network Stats",
 	  "miningPool": "Mining Pool",
@@ -95,6 +97,8 @@
 	"accountPage": {
 	  "title": "Account",
 	  "subtitle": "Your account overview and transaction history",
+	  "recentTransactions": "Recent transactions",
+	  "allTransactions": "All transactions",
 	  "synchronizingBlock": {
 		"text": "Synchronizing..."
 	  },
@@ -311,7 +315,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Tag capacity insufficient"
-	  }
+	  },
+	  "copyNotice": "Address copied!"
 	},
 	"miningPage":{
 	  "title":"Mine directly in your browser",

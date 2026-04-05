@@ -16,9 +16,9 @@
 	<div class="card">
 		<div class="card-title">{{ $t("receivePage.receiveBlock.address.title") }}</div>
 		<div class="field">
-			<div class="subfield readonly">
-				<input type="text" v-model="rawAddress" id="rawAddress" readonly="readonly" style="font-size:0.75rem;font-family:monospace;"/>
-				<span class="action" @click="setInClipboard()"><i class="fa fa-copy"></i></span>
+			<div class="subfield readonly" style="position:relative;">
+				<input type="text" v-model="rawAddress" id="rawAddress" readonly="readonly" style="font-size:0.75rem;font-family:monospace;padding-right:2.5rem;"/>
+				<span class="action" @click="copyAddress()"><i class="fa fa-copy"></i></span>
 			</div>
 		</div>
 	</div>

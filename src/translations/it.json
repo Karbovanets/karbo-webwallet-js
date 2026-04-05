@@ -7,6 +7,7 @@
 	"menu": {
 	  "home": "Home",
 	  "account": "Account",
+	  "overview": "Panoramica",
 	  "send": "Invia",
 	  "receive": "Ricevi",
 	  "export": "Esporta",
@@ -59,6 +60,7 @@
 	  "termsOfUse": "Termini di utilizzo",
 	  "privacyPolicy": "politica sulla riservatezza",
 	  "support": "Supporto",
+	  "help": "Aiuto",
 	  "donate": "Dona",
 	  "network": "Statistiche del network",
 	  "miningPool": "Mining Pool",
@@ -95,6 +97,8 @@
 	"accountPage": {
 	  "title": "Account",
 	  "subtitle": "Panoramica del tuo account e cronologia delle transazioni",
+	  "recentTransactions": "Transazioni recenti",
+	  "allTransactions": "Tutte le transazioni",
 	  "synchronizingBlock": {
 		"text": "Sincronizzazione... "
 	  },
@@ -310,7 +314,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Tag capacity insufficient"
-	  }
+	  },
+	  "copyNotice": "Indirizzo copiato!"
 	},
 	"miningPage":{
 	  "title":"Mina direttamente nel tuo browser",
