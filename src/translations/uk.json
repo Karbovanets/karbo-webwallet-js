@@ -18,6 +18,18 @@
 	  "mining": "Майнінг",
 	  "transactions": "Історія"
 	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Відключено",
+		"disconnectedTitle": "Гаманець не підключено",
+		"connecting": "Підключення",
+		"connectingTitle": "Підключення до вузла",
+		"syncing": "Синхр. {progress}%",
+		"syncingTitle": "Синхронізація {current}/{total}",
+		"synced": "Синхрон.",
+		"syncedTitle": "Гаманець синхронізовано"
+	  }
+	},
 	"global": {
 	  "loading": "Триває завантаження",
 	  "disableSecurity":"Відключити цю пересторогу, я розумію ризик",

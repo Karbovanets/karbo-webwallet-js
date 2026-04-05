@@ -18,6 +18,18 @@
 	  "transactions": "History",
 	  "overview": "Overview"
 	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Disconnected",
+		"disconnectedTitle": "No wallet connected",
+		"connecting": "Connecting",
+		"connectingTitle": "Connecting to node",
+		"syncing": "Sync {progress}%",
+		"syncingTitle": "Syncing {current}/{total}",
+		"synced": "Synced",
+		"syncedTitle": "Wallet is synchronized"
+	  }
+	},
 	"global": {
 	  "loading": "Loading",
 	  "disableSecurity":"Disable this security, I understand the risk",

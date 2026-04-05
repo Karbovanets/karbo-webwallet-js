@@ -18,6 +18,18 @@
 	  "mining": "Mining",
 	  "transactions": "Cronologia"
 	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Disconnesso",
+		"disconnectedTitle": "Nessun wallet connesso",
+		"connecting": "Connessione",
+		"connectingTitle": "Connessione al nodo",
+		"syncing": "Sinc. {progress}%",
+		"syncingTitle": "Sincronizzazione {current}/{total}",
+		"synced": "Sincro",
+		"syncedTitle": "Il wallet è sincronizzato"
+	  }
+	},
 	"global": {
 	  "loading": "Caricamento",
 	  "disableSecurity":"Disabilita questa sicurezza, comprendo i rischi",

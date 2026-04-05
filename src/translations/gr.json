@@ -18,6 +18,18 @@
 	  "mining": "Mining",
 	  "transactions": "Ιστορικό"
 	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Αποσυνδεδεμένο",
+		"disconnectedTitle": "Δεν έχει συνδεθεί πορτοφόλι",
+		"connecting": "Σύνδεση",
+		"connectingTitle": "Σύνδεση στον κόμβο",
+		"syncing": "Συγχρ. {progress}%",
+		"syncingTitle": "Συγχρονισμός {current}/{total}",
+		"synced": "Συγχρον.",
+		"syncedTitle": "Το πορτοφόλι έχει συγχρονιστεί"
+	  }
+	},
 	"global": {
 	  "loading": "Φόρτωση",
 	  "disableSecurity":"Κατάργησε την ασφάλεια, κατανοώ τον κίνδυνο",

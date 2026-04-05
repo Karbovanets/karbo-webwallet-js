@@ -20,6 +20,18 @@
       "mining": "Minería",
       "transactions": "Historial"
     },
+    "topHeader": {
+      "syncStatus": {
+        "disconnected": "Desconectado",
+        "disconnectedTitle": "No hay billetera conectada",
+        "connecting": "Conectando",
+        "connectingTitle": "Conectando al nodo",
+        "syncing": "Sinc. {progress}%",
+        "syncingTitle": "Sincronizando {current}/{total}",
+        "synced": "Sincronizado",
+        "syncedTitle": "La billetera está sincronizada"
+      }
+    },
     "global": {
       "loading": "Cargando",
       "disableSecurity": "Deshabilitar esta seguridad, entiendo el riesgo.",

@@ -18,6 +18,18 @@
 	  "mining": "Minage",
 	  "transactions": "Historique"
 	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Déconnecté",
+		"disconnectedTitle": "Aucun portefeuille connecté",
+		"connecting": "Connexion",
+		"connectingTitle": "Connexion au nœud",
+		"syncing": "Sync {progress}%",
+		"syncingTitle": "Synchronisation {current}/{total}",
+		"synced": "Synchro",
+		"syncedTitle": "Le portefeuille est synchronisé"
+	  }
+	},
 	"global": {
 	  "loading": "Chargement",
 	  "disableSecurity":"Désactiver cette sécurité. Je comprend les risques",

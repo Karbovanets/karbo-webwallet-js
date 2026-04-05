@@ -105,12 +105,20 @@ class TopHeaderView extends Vue{
 		this.syncStatusTitle = title;
 	}
 
+	private translateTopHeaderStatus(key:string, params:any = {}): string{
+		return '' + i18n.t('topHeader.syncStatus.'+key, params);
+	}
+
 	refreshSyncStatus(){
 		let wallet : Wallet = DependencyInjectorInstance().getInstance(Wallet.name, 'default', false);
 		let walletWatchdog : WalletWatchdog = DependencyInjectorInstance().getInstance(WalletWatchdog.name, 'default', false);
 
 		if(wallet === null || walletWatchdog === null || walletWatchdog.stopped){
-			this.setSyncStatus('Disconnected', 'status-disconnected', 'No wallet connected');
+			this.setSyncStatus(
+				this.translateTopHeaderStatus('disconnected'),
+				'status-disconnected',
+				this.translateTopHeaderStatus('disconnectedTitle')
+			);
 			return;
 		}
 
@@ -118,7 +126,11 @@ class TopHeaderView extends Vue{
 		let maximumHeight = walletWatchdog.lastMaximumHeight;
 
 		if(maximumHeight <= 0){
-			this.setSyncStatus('Connecting', 'status-syncing', 'Connecting to node');
+			this.setSyncStatus(
+				this.translateTopHeaderStatus('connecting'),
+				'status-syncing',
+				this.translateTopHeaderStatus('connectingTitle')
+			);
 			return;
 		}
 
@@ -131,11 +143,19 @@ class TopHeaderView extends Vue{
 			if(progress > 99.9) progress = 99.9;
 
 			let displayHeight = currentHeight + 1;
-			this.setSyncStatus('Sync ' + progress + '%', 'status-syncing', 'Syncing ' + displayHeight + '/' + maximumHeight);
+			this.setSyncStatus(
+				this.translateTopHeaderStatus('syncing', {progress: progress}),
+				'status-syncing',
+				this.translateTopHeaderStatus('syncingTitle', {current: displayHeight, total: maximumHeight})
+			);
 			return;
 		}
 
-		this.setSyncStatus('Synced', 'status-synced', 'Wallet is synchronized');
+		this.setSyncStatus(
+			this.translateTopHeaderStatus('synced'),
+			'status-synced',
+			this.translateTopHeaderStatus('syncedTitle')
+		);
 	}
 }
 let topHeaderView = new TopHeaderView('#topHeader');

@@ -17,8 +17,20 @@
   	"network": "Statystyki sieci",
   	"mining": "Mining",
   	"transactions": "Historia"
-	},
-  "global": {
+    },
+    "topHeader": {
+      "syncStatus": {
+        "disconnected": "Rozłączony",
+        "disconnectedTitle": "Brak podłączonego portfela",
+        "connecting": "Łączenie",
+        "connectingTitle": "Łączenie z węzłem",
+        "syncing": "Synch. {progress}%",
+        "syncingTitle": "Synchronizacja {current}/{total}",
+        "synced": "Synchron.",
+        "syncedTitle": "Portfel jest zsynchronizowany"
+      }
+    },
+    "global": {
     "loading": "Wgrywanie",
     "disableSecurity":"Wyłącz to zabezpiecznie, rozumiem ryzyko",
     "passwordInvalidRequirements":"Hasło musi mieć co najmniej 8 znaków - 1 wielką literę, 1 małą literę, jedną cyfrę i jeden znak specjalny",

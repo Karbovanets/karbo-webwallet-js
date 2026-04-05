@@ -18,6 +18,18 @@
       "mining": "채굴",
       "transactions": "거래 내역"
     },
+    "topHeader": {
+      "syncStatus": {
+        "disconnected": "연결 안 됨",
+        "disconnectedTitle": "연결된 지갑이 없습니다",
+        "connecting": "연결 중",
+        "connectingTitle": "노드에 연결 중",
+        "syncing": "동기화 {progress}%",
+        "syncingTitle": "동기화 중 {current}/{total}",
+        "synced": "동기화됨",
+        "syncedTitle": "지갑이 동기화되었습니다"
+      }
+    },
     "global": {
       "loading": "로드중",
       "disableSecurity": "보안을 해제하며, 사용자는 그에 따른 위험을 인지합니다.",

@@ -18,6 +18,18 @@
 	  "mining": "Minen",
 	  "transactions": "Verlauf"
 	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Getrennt",
+		"disconnectedTitle": "Keine Wallet verbunden",
+		"connecting": "Verbinden",
+		"connectingTitle": "Verbindung zum Node wird hergestellt",
+		"syncing": "Sync {progress}%",
+		"syncingTitle": "Synchronisiere {current}/{total}",
+		"synced": "Synchron",
+		"syncedTitle": "Wallet ist synchronisiert"
+	  }
+	},
 	"global": {
 	  "loading": "wird geladen",
 	  "disableSecurity":"Sicherheit verringern, ich verstehe das Risiko",
