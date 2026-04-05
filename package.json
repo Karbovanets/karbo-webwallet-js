@@ -10,10 +10,16 @@
         "desktop:start": "electron desktop/main.js",
         "desktop:dist": "electron-builder --win portable",
         "desktop:dist:dir": "electron-builder --win dir",
-        "desktop:pack": "electron-packager . \"Karbo Wallet\" --platform=win32 --arch=x64 --out dist-desktop-packager --overwrite --prune=true"
+        "desktop:pack": "electron-packager . \"Karbo Wallet\" --platform=win32 --arch=x64 --out dist-desktop-packager --overwrite --prune=true",
+        "android:sync": "npx cap sync android",
+        "android:open": "npx cap open android",
+        "android:build": "node node_modules/typescript/bin/tsc --project tsconfig.prod.json && npx cap sync android"
     },
     "main": "desktop/main.js",
     "dependencies": {
+        "@capacitor/android": "^8.3.0",
+        "@capacitor/cli": "^8.3.0",
+        "@capacitor/core": "^8.3.0",
         "typescript": "^5.0.4",
         "workbox-build": "^6.5.4"
     },

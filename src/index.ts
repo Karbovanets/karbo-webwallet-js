@@ -204,34 +204,40 @@ let bottomNavView = new BottomNavView('#bottomNav');
 let isCordovaApp = document.URL.indexOf('http://') === -1
 	&& document.URL.indexOf('https://') === -1;
 
+let isCapacitorApp = !!(window as any).Capacitor;
+let isNativeApp = isCordovaApp || isCapacitorApp;
+
 let promiseLoadingReady : Promise<void>;
 
 window.native = false;
-if(isCordovaApp){
+if(isNativeApp){
 	window.native = true;
 	$('body').addClass('native');
 
-	let promiseLoadingReadyResolve : null|Function = null;
-	let promiseLoadingReadyReject : null|Function = null;
-	promiseLoadingReady = new Promise<void>(function(resolve, reject){
-		promiseLoadingReadyResolve = resolve;
-		promiseLoadingReadyReject = reject;
-	});
-	let cordovaJs = document.createElement('script');
-	cordovaJs.type = 'text/javascript';
-	cordovaJs.src = 'cordova.js';
-	document.body.appendChild(cordovaJs);
+	if(isCordovaApp){
+		let promiseLoadingReadyResolve : null|Function = null;
+		let promiseLoadingReadyReject : null|Function = null;
+		promiseLoadingReady = new Promise<void>(function(resolve, reject){
+			promiseLoadingReadyResolve = resolve;
+			promiseLoadingReadyReject = reject;
+		});
+		let cordovaJs = document.createElement('script');
+		cordovaJs.type = 'text/javascript';
+		cordovaJs.src = 'cordova.js';
+		document.body.appendChild(cordovaJs);
 
-	let timeoutCordovaLoad = setTimeout(function(){
-		if(promiseLoadingReadyResolve)
-			promiseLoadingReadyResolve();
-	}, 10*1000);
-	document.addEventListener('deviceready', function(){
-		if(promiseLoadingReadyResolve)
-			promiseLoadingReadyResolve();
-		clearInterval(timeoutCordovaLoad);
-	}, false);
-
+		let timeoutCordovaLoad = setTimeout(function(){
+			if(promiseLoadingReadyResolve)
+				promiseLoadingReadyResolve();
+		}, 10*1000);
+		document.addEventListener('deviceready', function(){
+			if(promiseLoadingReadyResolve)
+				promiseLoadingReadyResolve();
+			clearInterval(timeoutCordovaLoad);
+		}, false);
+	}else{
+		promiseLoadingReady = Promise.resolve();
+	}
 }else
 	promiseLoadingReady = Promise.resolve();
 
@@ -248,7 +254,7 @@ promiseLoadingReady.then(function(){
 //==================Service worker for web================
 //========================================================
 
-if (!isCordovaApp && 'serviceWorker' in navigator) {
+if (!isNativeApp && 'serviceWorker' in navigator) {
 	const showRefreshUI = function(registration : any){
 		swal({
 			type:'info',

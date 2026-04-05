@@ -15,6 +15,8 @@
   "exclude": [
     "node_modules",
     "dist-desktop",
-    "dist-desktop-packager"
+    "dist-desktop-packager",
+    "android",
+    "ios"
   ]
 }
