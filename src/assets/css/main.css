@@ -323,11 +323,15 @@ body.native .hideOnNonNative { display: initial !important; }
 	color: var(--color-text);
 	line-height: 1.2;
 }
+.balance-amount .balance-fraction {
+	font-size: 0.58em;
+	font-weight: 400;
+	color: var(--color-text-muted);
+}
 .balance-amount .ticker {
 	font-size: 1rem;
 	font-weight: 500;
 	color: var(--color-text-muted);
-	margin-left: 0.25rem;
 }
 .balance-label {
 	font-size: 0.75rem;

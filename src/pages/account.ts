@@ -20,6 +20,7 @@ import {DestructableView} from "../lib/numbersLab/DestructableView";
 import {Constants} from "../model/Constants";
 import {AppState} from "../model/AppState";
 import {Transaction, TransactionIn} from "../model/Transaction";
+import {Cn} from "../model/Cn";
 
 let wallet : Wallet = DependencyInjectorInstance().getInstance(Wallet.name,'default', false);
 let blockchainExplorer = DependencyInjectorInstance().getInstance(Constants.BLOCKCHAIN_EXPLORER);
@@ -64,6 +65,28 @@ class AccountView extends DestructableView{
 		});
 
 		this.refreshWallet();
+	}
+
+	private formatBalanceAmount(value:number): string{
+		return Cn.formatMoney(value);
+	}
+
+	formatNativeBalance(value:number): string{
+		return this.formatBalanceAmount(value);
+	}
+
+	getBalanceWholePart(value:number): string{
+		let formattedAmount = this.formatBalanceAmount(value);
+		let fractionMatch = formattedAmount.match(/(\.\d+)$/);
+		if(fractionMatch !== null)
+			return formattedAmount.substr(0, formattedAmount.length - fractionMatch[1].length);
+		return formattedAmount;
+	}
+
+	getBalanceFractionPart(value:number): string{
+		let formattedAmount = this.formatBalanceAmount(value);
+		let fractionMatch = formattedAmount.match(/(\.\d+)$/);
+		return fractionMatch !== null ? fractionMatch[1] : '';
 	}
 
 	copyAddress(){

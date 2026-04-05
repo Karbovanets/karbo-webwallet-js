@@ -13,16 +13,17 @@
 	<div class="card" style="text-align:center;padding:1.5rem 1.25rem;">
 		<div class="balance-label">{{ $t("accountPage.balanceBlock.title") }}</div>
 		<div class="balance-amount">
-			{{ $n(walletAmount / currencyDivider) }} <span class="ticker">{{ticker}}</span>
+			<span>{{ getBalanceWholePart(walletAmount) }}</span><span v-if="getBalanceFractionPart(walletAmount) !== ''" class="balance-fraction">{{ getBalanceFractionPart(walletAmount) }}</span>
+			<span class="ticker">{{ticker}}</span>
 		</div>
 		<div v-if="unlockedWalletAmount !== walletAmount" style="margin-top:0.75rem;">
 			<div class="balance-row">
 				<span class="label">{{ $t("accountPage.balanceBlock.pending") }}</span>
-				<span class="value">{{ $n((walletAmount - unlockedWalletAmount) / currencyDivider) }} {{ticker}}</span>
+				<span class="value">{{ formatNativeBalance(walletAmount - unlockedWalletAmount) }} {{ticker}}</span>
 			</div>
 			<div class="balance-row">
 				<span class="label">{{ $t("accountPage.balanceBlock.unlocked") }}</span>
-				<span class="value">{{ $n(unlockedWalletAmount / currencyDivider) }} {{ticker}}</span>
+				<span class="value">{{ formatNativeBalance(unlockedWalletAmount) }} {{ticker}}</span>
 			</div>
 		</div>
 	</div>
