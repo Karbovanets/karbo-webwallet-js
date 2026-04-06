@@ -20,6 +20,8 @@
 	--color-shadow: rgba(0, 0, 0, 0.3);
 	--nav-height: 64px;
 	--header-height: 52px;
+	--sidebar-width: 0px;
+	--page-max-width: 32rem;
 }
 
 /* =================== RESET & BASE =================== */
@@ -69,6 +71,7 @@ body.native .hideOnNonNative { display: initial !important; }
 }
 .topHeader-inner {
 	max-width: 32rem;
+	width: 100%;
 	margin: 0 auto;
 	height: 100%;
 	display: flex;
@@ -181,14 +184,15 @@ body.native .hideOnNonNative { display: initial !important; }
 /* =================== APP SHELL & PAGE =================== */
 #appShell {
 	padding-top: var(--header-height);
-	/*min-height: 100vh;*/
+	min-height: 100vh;
 }
 .connected #appShell {
 	padding-bottom: var(--nav-height);
 }
 
 #page {
-	max-width: 32rem;
+	max-width: var(--page-max-width);
+	width: 100%;
 	margin: 0 auto;
 	padding: 0;
 }
@@ -998,3 +1002,118 @@ body.native .hideOnNonNative { display: initial !important; }
 .transactions.compact .transaction .amount { width: 29%; font-size: 0.875rem; padding-right: 2px; }
 .transactions.compact .transaction .moreInfo { width: 8%; font-size: 0.875rem; padding-right: 4px; }
 .transactions.compact td.noTransactions { font-size: 0.8125rem; }
+
+@media screen and (min-width: 1024px) {
+	:root {
+		--header-height: 64px;
+		--nav-height: 0px;
+		--sidebar-width: 16.5rem;
+		--page-max-width: 96rem;
+	}
+
+	#topHeader {
+		background: rgba(31, 41, 55, 0.95);
+		backdrop-filter: blur(10px);
+	}
+
+	.topHeader-inner {
+		max-width: none;
+		padding: 0 1.5rem 0 1.75rem;
+	}
+
+	.topHeader-logo {
+		gap: 0.75rem;
+		font-size: 1.125rem;
+	}
+
+	.topHeader-logo img {
+		height: 32px;
+		width: 32px;
+	}
+
+	.topHeader-right {
+		gap: 0.5rem;
+	}
+
+	.topHeader-btn {
+		width: 40px;
+		height: 40px;
+		border: 1px solid var(--color-border);
+		background: rgba(55, 65, 81, 0.35);
+	}
+
+	.syncStatus {
+		margin-right: 0.5rem;
+		padding: 0.45rem 0.8rem;
+		font-size: 0.75rem;
+	}
+
+	body.connected #appShell {
+		padding-left: var(--sidebar-width);
+		padding-bottom: 0;
+	}
+
+	body.connected #bottomNav {
+		top: var(--header-height);
+		bottom: 0;
+		left: 0;
+		right: auto;
+		width: var(--sidebar-width);
+		height: auto;
+		padding: 1rem 0.75rem;
+		flex-direction: column;
+		justify-content: flex-start;
+		gap: 0.25rem;
+		border-top: 0;
+		border-right: 1px solid var(--color-border);
+		box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.02);
+	}
+
+	body.connected #bottomNav .nav-item {
+		flex: 0 0 auto;
+		max-width: none;
+		width: 100%;
+		padding: 0.9rem 1rem;
+		border-radius: 0.9rem;
+		flex-direction: row;
+		justify-content: flex-start;
+		gap: 0.9rem;
+		font-size: 0.95rem;
+		font-weight: 600;
+	}
+
+	body.connected #bottomNav .nav-item i {
+		width: 1.25rem;
+		font-size: 1.1rem;
+		text-align: center;
+	}
+
+	body.connected #bottomNav .nav-item:hover,
+	body.connected #bottomNav .nav-item.active {
+		color: var(--color-text);
+		background: rgba(59, 130, 246, 0.16);
+	}
+
+	body.connected #bottomNav .nav-item.active {
+		box-shadow: inset 3px 0 0 var(--color-primary-light);
+	}
+
+
+	body.connected .body-root {
+		min-height: calc(100vh - var(--header-height));
+		padding: 1.5rem 2rem 2rem;
+	}
+
+	body.connected .body-header {
+		margin-bottom: 1.25rem;
+	}
+
+	body.connected .card,
+	body.connected .panel {
+		border-radius: 1rem;
+	}
+
+	.copyright-inner {
+		max-width: var(--page-max-width);
+	}
+}
