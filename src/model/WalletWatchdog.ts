@@ -148,21 +148,22 @@ export class WalletWatchdog {
         this.stopped = true;
     }
 
-    checkMempool(): boolean {
+    checkMempool(force: boolean = false): boolean {
         let self = this;
-        if (this.lastMaximumHeight - this.lastBlockLoading > 1) { //only check memory pool if the user is up to date to ensure outs & ins will be found in the wallet
+        if (!force && this.lastMaximumHeight - this.lastBlockLoading > 1) { //only check memory pool if the user is up to date to ensure outs & ins will be found in the wallet
             return false;
         }
 
-        this.wallet.txsMem = [];
         this.explorer.getTransactionPool().then(function (pool: any) {
+            let txsMem: Transaction[] = [];
             if (typeof pool !== 'undefined')
                 for (let rawTx of pool) {
                     let tx = TransactionsExplorer.parse(rawTx, self.wallet);
                     if (tx !== null) {
-                        self.wallet.txsMem.push(tx);
+                        txsMem.push(tx);
                     }
                 }
+            self.wallet.txsMem = txsMem;
         }).catch(function () {
         });
         return true;
