@@ -63,7 +63,7 @@
 						<td class="timestamp">
 							<div class="txTime" v-if="transaction.blockHeight > 0">{{$d(new Date(transaction.timestamp*1000), 'long')}}</div>
 							<div class="txTime" v-else="">{{ $t("accountPage.historyBlock.pendingTxStatus") }}...</div>
-							<div class="txHashSmall" v-if="transaction.hash !== ''">{{transaction.hash.substring(0, 12)}}...</div>
+							<div class="txHashSmall" v-if="transaction.hash !== ''" :title="transaction.hash">{{transaction.hash}}</div>
 						</td>
 						<td :class="'amount '+(transaction.getAmount() > 0 ? 'more' : 'less')">{{ transaction.getAmount() / currencyDivider }}</td>
 						<td class="moreInfo">

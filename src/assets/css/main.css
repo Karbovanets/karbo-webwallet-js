@@ -181,6 +181,33 @@ body.native .hideOnNonNative { display: initial !important; }
 	color: var(--color-primary-light);
 }
 
+/* ============== BOTTOM NAVIGATION TRANSITION ============= */
+
+#bottomNav {
+	transition:
+		top 0.28s ease,
+		right 0.28s ease,
+		bottom 0.28s ease,
+		left 0.28s ease,
+		width 0.28s ease,
+		height 0.28s ease,
+		padding 0.28s ease,
+		background-color 0.28s ease,
+		border-color 0.28s ease,
+		box-shadow 0.28s ease;
+}
+
+#appShell {
+	transition: padding-left 0.28s ease, padding-bottom 0.28s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#bottomNav,
+	#appShell {
+		transition: none;
+	}
+}
+
 /* =================== APP SHELL & PAGE =================== */
 #appShell {
 	padding-top: var(--header-height);
@@ -434,8 +461,11 @@ body.native .hideOnNonNative { display: initial !important; }
 	font-family: 'Consolas', 'Courier New', monospace;
 	font-size: 0.6875rem;
 	color: var(--color-text-muted);
-	word-break: break-all;
 	margin-top: 2px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-break: normal;
 }
 .transactions .transaction .amount {
 	width: 29%;
@@ -1018,7 +1048,7 @@ body.native .hideOnNonNative { display: initial !important; }
 
 	.topHeader-inner {
 		max-width: none;
-		padding: 0 1.5rem 0 1.75rem;
+		padding: 0 2rem 0 1.75rem;
 	}
 
 	.topHeader-logo {
@@ -1113,6 +1143,12 @@ body.native .hideOnNonNative { display: initial !important; }
 		border-radius: 1rem;
 	}
 
+	.transactions .transaction .timestamp .txHashSmall {
+		overflow: visible;
+		text-overflow: clip;
+		white-space: normal;
+		overflow-wrap: anywhere;
+	}
 	.copyright-inner {
 		max-width: var(--page-max-width);
 	}
