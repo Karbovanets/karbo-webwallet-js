@@ -1,4 +1,4 @@
-name: Desktop Release
+﻿name: Desktop Release
 
 on:
   push:
@@ -70,7 +70,7 @@ jobs:
 
       - name: Collect release assets
         run: |
-          node -e "const fs=require('fs'); const path=require('path'); const source='dist-desktop'; const target='release-assets'; fs.mkdirSync(target,{recursive:true}); for (const entry of fs.readdirSync(source,{withFileTypes:true})) { if (entry.isFile()) { fs.copyFileSync(path.join(source, entry.name), path.join(target, entry.name)); } }"
+          node -e "const fs=require('fs'); const path=require('path'); const source='dist-desktop'; const target='release-assets'; const allowed=/\\.(exe|AppImage|dmg|zip)$/i; fs.mkdirSync(target,{recursive:true}); for (const entry of fs.readdirSync(source,{withFileTypes:true})) { if (entry.isFile() && allowed.test(entry.name)) { fs.copyFileSync(path.join(source, entry.name), path.join(target, entry.name)); } }"
 
       - name: Upload release assets
         uses: actions/upload-artifact@v4
