@@ -7,6 +7,7 @@
 	"menu": {
 	  "home": "Accueil",
 	  "account": "Compte",
+	  "overview": "Aperçu",
 	  "send": "Envoyer",
 	  "receive": "Recevoir",
 	  "export": "Exporter",
@@ -14,7 +15,20 @@
 	  "settings": "Paramètres",
 	  "disconnect": "Déconnection",
 	  "network": "Stats du réseau",
-	  "mining": "Minage"
+	  "mining": "Minage",
+	  "transactions": "Historique"
+	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Déconnecté",
+		"disconnectedTitle": "Aucun portefeuille connecté",
+		"connecting": "Connexion",
+		"connectingTitle": "Connexion au nœud",
+		"syncing": "Sync {progress}%",
+		"syncingTitle": "Synchronisation {current}/{total}",
+		"synced": "Synchro",
+		"syncedTitle": "Le portefeuille est synchronisé"
+	  }
 	},
 	"global": {
 	  "loading": "Chargement",
@@ -58,6 +72,7 @@
 	  "termsOfUse": "Conditions générales d'utilisation",
 	  "privacyPolicy": "Politique de confidentialité",
 	  "support": "Support",
+	  "help": "Aide",
 	  "donate": "Contribuer",
 	  "network": "Stats du réseau",
 	  "miningPool": "Pool de minage",
@@ -65,7 +80,7 @@
 	},
 	"homepage": {
 	  "mainTitle": "Bienvenue dans Portefeuille pour Karbo",
-	  "tagLine": "Le moyen le plus simple d'utiliser Karbo, n'importe où, n'importe quand",
+	  "tagLine": "Un portefeuille Karbo côté client et non dépositaire.",
 	  "actions": {
 		"loadWallet": "Charger mon portefeuille",
 		"importWallet": "Importer un portefeuille",
@@ -94,6 +109,8 @@
 	"accountPage": {
 	  "title": "Mon compte",
 	  "subtitle": "Apperçu de votre compte et de l'historique des transactions",
+	  "recentTransactions": "Transactions récentes",
+	  "allTransactions": "Toutes les transactions",
 	  "synchronizingBlock": {
 		"text": "Synchronisation en cours "
 	  },
@@ -309,7 +326,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Tag capacity insufficient"
-	  }
+	  },
+	  "copyNotice": "Adresse copiée!"
 	},
 	"miningPage":{
 	  "title":"Miner directement depuis votre navigateur",

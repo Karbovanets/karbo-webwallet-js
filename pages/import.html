@@ -1,23 +1,16 @@
 <div id="app" class="body-root" v-cloak="">
-	<div class="body-header" >
-		<div class="header-title">
-			{{ $t("importPage.title") }}
-		</div>
-		<div class="header-subtitle" >
-			{{ $t("importPage.subtitle") }}
-		</div>
+	<div class="body-header">
+		<div class="header-title">{{ $t("importPage.title") }}</div>
+		<div class="header-subtitle">{{ $t("importPage.subtitle") }}</div>
 	</div>
-	<div class="body-content" >
-		<div class="panel">
-			<div class="body" >
-				<div class="header-title" >{{ $t("importPage.chooseMethod") }}</div>
-				<div class="content tc" >
-					<a href="#!importFromKeys" class="btn" >{{ $t("importPage.fromKeys") }}</a>
-					<a href="#!importFromFile" class="btn" >{{ $t("importPage.fromFile") }}</a>
-					<a href="#!importFromMnemonic" class="btn" >{{ $t("importPage.fromMnemonic") }}</a>
-					<a href="#!importFromQr" class="btn" >{{ $t("importPage.fromQr") }}</a>
-				</div>
-			</div>
+
+	<div class="card">
+		<div class="card-title">{{ $t("importPage.chooseMethod") }}</div>
+		<div style="display:flex;flex-direction:column;gap:0.5rem;">
+			<a href="#!importFromMnemonic" class="btn" style="width:100%;"><i class="fa fa-pencil" style="margin-right:0.5rem;"></i>{{ $t("importPage.fromMnemonic") }}</a>
+			<a href="#!importFromKeys" class="btn" style="width:100%;"><i class="fa fa-key" style="margin-right:0.5rem;"></i>{{ $t("importPage.fromKeys") }}</a>
+			<a href="#!importFromFile" class="btn" style="width:100%;"><i class="fa fa-file" style="margin-right:0.5rem;"></i>{{ $t("importPage.fromFile") }}</a>
+			<a href="#!importFromQr" class="btn" style="width:100%;"><i class="fa fa-qrcode" style="margin-right:0.5rem;"></i>{{ $t("importPage.fromQr") }}</a>
 		</div>
 	</div>
 </div>

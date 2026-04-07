@@ -151,21 +151,23 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
             clearInterval(this.intervalMempool);
             this.stopped = true;
         };
-        WalletWatchdog.prototype.checkMempool = function () {
+        WalletWatchdog.prototype.checkMempool = function (force) {
+            if (force === void 0) { force = false; }
             var self = this;
-            if (this.lastMaximumHeight - this.lastBlockLoading > 1) { //only check memory pool if the user is up to date to ensure outs & ins will be found in the wallet
+            if (!force && this.lastMaximumHeight - this.lastBlockLoading > 1) { //only check memory pool if the user is up to date to ensure outs & ins will be found in the wallet
                 return false;
             }
-            this.wallet.txsMem = [];
             this.explorer.getTransactionPool().then(function (pool) {
+                var txsMem = [];
                 if (typeof pool !== 'undefined')
                     for (var _i = 0, pool_1 = pool; _i < pool_1.length; _i++) {
                         var rawTx = pool_1[_i];
                         var tx = TransactionsExplorer_1.TransactionsExplorer.parse(rawTx, self.wallet);
                         if (tx !== null) {
-                            self.wallet.txsMem.push(tx);
+                            txsMem.push(tx);
                         }
                     }
+                self.wallet.txsMem = txsMem;
             }).catch(function () {
             });
             return true;

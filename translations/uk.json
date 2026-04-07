@@ -7,6 +7,7 @@
 	"menu": {
 	  "home": "Огляд",
 	  "account": "Огляд",
+	  "overview": "Огляд",
 	  "send": "Надіслати",
 	  "receive": "Отримати",
 	  "export": "Експорт",
@@ -14,7 +15,20 @@
 	  "settings": "Налаштування",
 	  "disconnect": "Відключитися",
 	  "network": "Статистика мережі",
-	  "mining": "Майнінг"
+	  "mining": "Майнінг",
+	  "transactions": "Історія"
+	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Відключено",
+		"disconnectedTitle": "Гаманець не підключено",
+		"connecting": "Підключення",
+		"connectingTitle": "Підключення до вузла",
+		"syncing": "Синхр. {progress}%",
+		"syncingTitle": "Синхронізація {current}/{total}",
+		"synced": "Синхрон.",
+		"syncedTitle": "Гаманець синхронізовано"
+	  }
 	},
 	"global": {
 	  "loading": "Триває завантаження",
@@ -58,6 +72,7 @@
 	  "termsOfUse": "Умови використання",
 	  "privacyPolicy": "Політика конфіденційності",
 	  "support": "Допомога",
+	  "help": "Допомога",
 	  "donate": "Пожертвувати",
 	  "network": "Мережа",
 	  "miningPool": "Майнінг",
@@ -65,7 +80,7 @@
 	},
 	"homepage": {
 	  "mainTitle": "Ласкаво просимо в гаманець Карбованця",
-	  "tagLine": "Найпростіший спосіб використання карбованців – в будь-який час, в будь-якому місці",
+	  "tagLine": "Некостодіальний гаманець Карбованця, що працює на стороні клієнта.",
 	  "actions": {
 		"loadWallet": "Завантажити мій гаманець",
 		"importWallet": "Імпортувати гаманець",
@@ -94,6 +109,8 @@
 	"accountPage": {
 	  "title": "Рахунок",
 	  "subtitle": "Огляд вашого облікового запису та історія транзакцій",
+	  "recentTransactions": "Останні транзакції",
+	  "allTransactions": "Усі транзакції",
 	  "synchronizingBlock": {
 		"text": "Синхронізація..."
 	  },
@@ -310,7 +327,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Місткість тега недостатня"
-	  }
+	  },
+	  "copyNotice": "Адресу скопійовано!"
 	},
 	"miningPage":{
 	  "title":"Інформація про майнінг",

@@ -305,22 +305,50 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
             return news;
         };
         Wallet.prototype.totalAmount = function () {
-            return this.unlockedAmount(-1);
-        };
-        Wallet.prototype.unlockedAmount = function (currentBlockHeight) {
-            if (currentBlockHeight === void 0) { currentBlockHeight = -1; }
             var amount = 0;
             for (var _i = 0, _a = this.transactions; _i < _a.length; _i++) {
                 var transaction = _a[_i];
                 if (!transaction.isFullyChecked())
                     continue;
-                if (currentBlockHeight === -1 || transaction.isConfirmed(currentBlockHeight))
-                    amount += transaction.getAmount();
+                amount += transaction.getAmount();
             }
-            if (currentBlockHeight === -1) {
-                for (var _b = 0, _c = this.txsMem; _b < _c.length; _b++) {
-                    var transaction = _c[_b];
-                    amount += transaction.getAmount();
+            for (var _b = 0, _c = this.txsMem; _b < _c.length; _b++) {
+                var transaction = _c[_b];
+                if (!transaction.isFullyChecked())
+                    continue;
+                amount += transaction.getAmount();
+            }
+            return amount;
+        };
+        Wallet.prototype.spentKeyImages = function () {
+            var spentKeyImages = {};
+            for (var _i = 0, _a = this.transactions.concat(this.txsMem); _i < _a.length; _i++) {
+                var transaction = _a[_i];
+                if (!transaction.isFullyChecked())
+                    continue;
+                for (var _b = 0, _c = transaction.ins; _b < _c.length; _b++) {
+                    var input = _c[_b];
+                    if (input.keyImage !== '')
+                        spentKeyImages[input.keyImage] = true;
+                }
+            }
+            return spentKeyImages;
+        };
+        Wallet.prototype.unlockedAmount = function (currentBlockHeight) {
+            if (currentBlockHeight === void 0) { currentBlockHeight = -1; }
+            var amount = 0;
+            var spentKeyImages = this.spentKeyImages();
+            for (var _i = 0, _a = this.transactions; _i < _a.length; _i++) {
+                var transaction = _a[_i];
+                if (!transaction.isFullyChecked())
+                    continue;
+                if (currentBlockHeight !== -1 && !transaction.isConfirmed(currentBlockHeight))
+                    continue;
+                for (var _b = 0, _c = transaction.outs; _b < _c.length; _b++) {
+                    var out = _c[_b];
+                    if (out.keyImage !== '' && spentKeyImages[out.keyImage])
+                        continue;
+                    amount += out.amount;
                 }
             }
             return amount;

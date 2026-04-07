@@ -7,6 +7,7 @@
     "menu": {
       "home": "Inicio",
       "account": "Cuenta",
+      "overview": "Resumen",
       "send": "Enviar",
       "receive": "Recibir",
       "export": "Exportar",
@@ -16,7 +17,20 @@
       "settings": "Ajustes",
       "disconnect": "Desconectar",
       "network": "Estado de red",
-      "mining": "Minería"
+      "mining": "Minería",
+      "transactions": "Historial"
+    },
+    "topHeader": {
+      "syncStatus": {
+        "disconnected": "Desconectado",
+        "disconnectedTitle": "No hay billetera conectada",
+        "connecting": "Conectando",
+        "connectingTitle": "Conectando al nodo",
+        "syncing": "Sinc. {progress}%",
+        "syncingTitle": "Sincronizando {current}/{total}",
+        "synced": "Sincronizado",
+        "syncedTitle": "La billetera está sincronizada"
+      }
     },
     "global": {
       "loading": "Cargando",
@@ -60,6 +74,7 @@
       "termsOfUse": "Términos de Uso",
       "privacyPolicy": "Política de privacidad",
       "support": "Soporte",
+      "help": "Ayuda",
       "donate": "Donar",
       "network": "Estado de red",
       "miningPool": "Pool de minería",
@@ -67,7 +82,7 @@
     },
     "homepage": {
       "mainTitle": "Bienvenido a Karbo Cartera",
-      "tagLine": "La forma más sencilla de usar Karbo - en cualquier lugar y en cualquier momento",
+      "tagLine": "Una billetera de Karbo del lado del cliente y sin custodia.",
       "actions": {
         "loadWallet": "Cargar mi cartera",
         "importWallet": "Importar una cartera",
@@ -96,6 +111,8 @@
     "accountPage": {
       "title": "Cuenta",
       "subtitle": "Resumen de su cuenta e historial de transacciones",
+      "recentTransactions": "Transacciones recientes",
+      "allTransactions": "Todas las transacciones",
       "synchronizingBlock": {
         "text": "Sincronizando..."
       },
@@ -311,7 +328,8 @@
       },
       "nfcErrorModal": {
         "titleInsufficientCapacity": "Capacidad de etiqueta insuficiente"
-      }
+      },
+      "copyNotice": "Dirección copiada!"
     },
     "miningPage": {
       "title": "Minar directamente en tu navegador",

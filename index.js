@@ -33,7 +33,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "./lib/numbersLab/Router", "./model/Mnemonic", "./lib/numbersLab/VueAnnotate", "./model/Storage", "./model/Translations"], function (require, exports, Router_1, Mnemonic_1, VueAnnotate_1, Storage_1, Translations_1) {
+define(["require", "exports", "./lib/numbersLab/Router", "./lib/numbersLab/DependencyInjector", "./model/Mnemonic", "./lib/numbersLab/VueAnnotate", "./model/Wallet", "./model/Storage", "./model/Translations", "./model/WalletWatchdog"], function (require, exports, Router_1, DependencyInjector_1, Mnemonic_1, VueAnnotate_1, Wallet_1, Storage_1, Translations_1, WalletWatchdog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     //========================================================
@@ -58,103 +58,102 @@ define(["require", "exports", "./lib/numbersLab/Router", "./model/Mnemonic", "./
         });
     });
     //========================================================
-    //====================Generic design======================
+    //===========Bottom Navigation active state===============
     //========================================================
-    var MenuView = /** @class */ (function (_super) {
-        __extends(MenuView, _super);
-        function MenuView(containerName, vueData) {
-            if (vueData === void 0) { vueData = null; }
-            var _this = _super.call(this, vueData) || this;
-            _this.isMenuHidden = false;
-            _this.isMenuHidden = $('body').hasClass('menuHidden');
-            if ($('body').hasClass('menuDisabled'))
-                _this.isMenuHidden = true;
-            _this.update();
-            return _this;
+    function updateActiveNav() {
+        var hash = window.location.hash;
+        var page = 'index';
+        if (hash.indexOf('#!') !== -1) {
+            page = hash.substr(2);
         }
-        MenuView.prototype.toggle = function () {
-            if ($('body').hasClass('menuDisabled'))
-                this.isMenuHidden = true;
-            else
-                this.isMenuHidden = !this.isMenuHidden;
-            this.update();
-        };
-        MenuView.prototype.update = function () {
-            if (this.isMenuHidden)
-                $('body').addClass('menuHidden');
-            else
-                $('body').removeClass('menuHidden');
-        };
-        MenuView = __decorate([
-            (0, VueAnnotate_1.VueClass)()
-        ], MenuView);
-        return MenuView;
-    }(Vue));
-    var menuView = new MenuView('#menu');
-    $('#menu a').on('click', function (event) {
-        menuView.toggle();
-    });
-    $('#menu').on('click', function (event) {
-        event.stopPropagation();
-    });
-    $('#topBar .toggleMenu').on('click', function (event) {
-        menuView.toggle();
-        event.stopPropagation();
-        return false;
-    });
-    $(window).click(function () {
-        menuView.isMenuHidden = true;
-        $('body').addClass('menuHidden');
-    });
-    //mobile swipe
-    var pageWidth = window.innerWidth || document.body.clientWidth;
-    var treshold = Math.max(1, Math.floor(0.01 * (pageWidth)));
-    var touchstartX = 0;
-    var touchstartY = 0;
-    var touchendX = 0;
-    var touchendY = 0;
-    var limit = Math.tan(45 * 1.5 / 180 * Math.PI);
-    var gestureZone = $('body')[0];
-    gestureZone.addEventListener('touchstart', function (event) {
-        touchstartX = event.changedTouches[0].screenX;
-        touchstartY = event.changedTouches[0].screenY;
-    }, false);
-    gestureZone.addEventListener('touchend', function (event) {
-        touchendX = event.changedTouches[0].screenX;
-        touchendY = event.changedTouches[0].screenY;
-        handleGesture(event);
-    }, false);
-    function handleGesture(e) {
-        var x = touchendX - touchstartX;
-        var y = touchendY - touchstartY;
-        var xy = Math.abs(x / y);
-        var yx = Math.abs(y / x);
-        if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
-            if (yx <= limit) {
-                if (x < 0) {
-                    //left
-                    if (!menuView.isMenuHidden)
-                        menuView.toggle();
-                }
-                else {
-                    //right
-                    if (menuView.isMenuHidden)
-                        menuView.toggle();
-                }
-            }
-            if (xy <= limit) {
-                if (y < 0) {
-                    //top
-                }
-                else {
-                    //bottom
-                }
-            }
+        else if (hash.indexOf('#') !== -1) {
+            page = hash.substr(1);
         }
-        else {
-            //tap
+        // Remove query params
+        if (page.indexOf('?') !== -1) {
+            page = page.substr(0, page.indexOf('?'));
+        }
+        var navItems = document.querySelectorAll('#bottomNav .nav-item');
+        for (var i = 0; i < navItems.length; i++) {
+            var item = navItems[i];
+            var itemPage = item.getAttribute('data-page') || '';
+            if (itemPage === page) {
+                item.classList.add('active');
+            }
+            else {
+                item.classList.remove('active');
+            }
         }
     }
+    //========================================================
+    //=================Top Header Vue binding=================
+    //========================================================
+    var TopHeaderView = /** @class */ (function (_super) {
+        __extends(TopHeaderView, _super);
+        function TopHeaderView(containerName, vueData) {
+            if (vueData === void 0) { vueData = null; }
+            var _this = _super.call(this, vueData) || this;
+            _this.intervalRefresh = 0;
+            _this.refreshSyncStatus();
+            _this.intervalRefresh = setInterval(function () {
+                _this.refreshSyncStatus();
+            }, 1000);
+            return _this;
+        }
+        TopHeaderView.prototype.setSyncStatus = function (text, className, title) {
+            this.syncStatusText = text;
+            this.syncStatusClass = className;
+            this.syncStatusTitle = title;
+        };
+        TopHeaderView.prototype.translateTopHeaderStatus = function (key, params) {
+            if (params === void 0) { params = {}; }
+            return '' + i18n.t('topHeader.syncStatus.' + key, params);
+        };
+        TopHeaderView.prototype.refreshSyncStatus = function () {
+            var wallet = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Wallet_1.Wallet.name, 'default', false);
+            var walletWatchdog = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(WalletWatchdog_1.WalletWatchdog.name, 'default', false);
+            if (wallet === null || walletWatchdog === null || walletWatchdog.stopped) {
+                this.setSyncStatus(this.translateTopHeaderStatus('disconnected'), 'status-disconnected', this.translateTopHeaderStatus('disconnectedTitle'));
+                return;
+            }
+            var currentHeight = wallet.lastHeight;
+            var maximumHeight = walletWatchdog.lastMaximumHeight;
+            if (maximumHeight <= 0) {
+                this.setSyncStatus(this.translateTopHeaderStatus('connecting'), 'status-syncing', this.translateTopHeaderStatus('connectingTitle'));
+                return;
+            }
+            if (currentHeight > maximumHeight)
+                currentHeight = maximumHeight;
+            if (currentHeight + 2 < maximumHeight) {
+                var progress = Math.floor(((currentHeight + 1) / maximumHeight) * 1000) / 10;
+                if (progress < 0)
+                    progress = 0;
+                if (progress > 99.9)
+                    progress = 99.9;
+                var displayHeight = currentHeight + 1;
+                this.setSyncStatus(this.translateTopHeaderStatus('syncing', { progress: progress }), 'status-syncing', this.translateTopHeaderStatus('syncingTitle', { current: displayHeight, total: maximumHeight }));
+                return;
+            }
+            this.setSyncStatus(this.translateTopHeaderStatus('synced'), 'status-synced', this.translateTopHeaderStatus('syncedTitle'));
+        };
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('Disconnected')
+        ], TopHeaderView.prototype, "syncStatusText", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('status-disconnected')
+        ], TopHeaderView.prototype, "syncStatusClass", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('Disconnected')
+        ], TopHeaderView.prototype, "syncStatusTitle", void 0);
+        TopHeaderView = __decorate([
+            (0, VueAnnotate_1.VueClass)()
+        ], TopHeaderView);
+        return TopHeaderView;
+    }(Vue));
+    var topHeaderView = new TopHeaderView('#topHeader');
+    //========================================================
+    //=================Copyright / Language===================
+    //========================================================
     var CopyrightView = /** @class */ (function (_super) {
         __extends(CopyrightView, _super);
         function CopyrightView(containerName, vueData) {
@@ -182,34 +181,56 @@ define(["require", "exports", "./lib/numbersLab/Router", "./model/Mnemonic", "./
     }(Vue));
     var copyrightView = new CopyrightView('#copyright');
     //========================================================
+    //=================Bottom Nav Vue binding=================
+    //========================================================
+    var BottomNavView = /** @class */ (function (_super) {
+        __extends(BottomNavView, _super);
+        function BottomNavView(containerName, vueData) {
+            if (vueData === void 0) { vueData = null; }
+            return _super.call(this, vueData) || this;
+        }
+        BottomNavView = __decorate([
+            (0, VueAnnotate_1.VueClass)()
+        ], BottomNavView);
+        return BottomNavView;
+    }(Vue));
+    var bottomNavView = new BottomNavView('#bottomNav');
+    //========================================================
     //==================Loading the right page================
     //========================================================
     var isCordovaApp = document.URL.indexOf('http://') === -1
         && document.URL.indexOf('https://') === -1;
+    var isCapacitorApp = !!window.Capacitor;
+    var isNativeApp = isCordovaApp || isCapacitorApp;
     var promiseLoadingReady;
     window.native = false;
-    if (isCordovaApp) {
+    if (isNativeApp) {
         window.native = true;
         $('body').addClass('native');
-        var promiseLoadingReadyResolve_1 = null;
-        var promiseLoadingReadyReject_1 = null;
-        promiseLoadingReady = new Promise(function (resolve, reject) {
-            promiseLoadingReadyResolve_1 = resolve;
-            promiseLoadingReadyReject_1 = reject;
-        });
-        var cordovaJs = document.createElement('script');
-        cordovaJs.type = 'text/javascript';
-        cordovaJs.src = 'cordova.js';
-        document.body.appendChild(cordovaJs);
-        var timeoutCordovaLoad_1 = setTimeout(function () {
-            if (promiseLoadingReadyResolve_1)
-                promiseLoadingReadyResolve_1();
-        }, 10 * 1000);
-        document.addEventListener('deviceready', function () {
-            if (promiseLoadingReadyResolve_1)
-                promiseLoadingReadyResolve_1();
-            clearInterval(timeoutCordovaLoad_1);
-        }, false);
+        if (isCordovaApp) {
+            var promiseLoadingReadyResolve_1 = null;
+            var promiseLoadingReadyReject_1 = null;
+            promiseLoadingReady = new Promise(function (resolve, reject) {
+                promiseLoadingReadyResolve_1 = resolve;
+                promiseLoadingReadyReject_1 = reject;
+            });
+            var cordovaJs = document.createElement('script');
+            cordovaJs.type = 'text/javascript';
+            cordovaJs.src = 'cordova.js';
+            document.body.appendChild(cordovaJs);
+            var timeoutCordovaLoad_1 = setTimeout(function () {
+                if (promiseLoadingReadyResolve_1)
+                    promiseLoadingReadyResolve_1();
+            }, 10 * 1000);
+            document.addEventListener('deviceready', function () {
+                if (promiseLoadingReadyResolve_1)
+                    promiseLoadingReadyResolve_1();
+                clearInterval(timeoutCordovaLoad_1);
+            }, false);
+        }
+        else {
+            promiseLoadingReady = Promise.resolve();
+        }
     }
     else
         promiseLoadingReady = Promise.resolve();
@@ -217,16 +238,15 @@ define(["require", "exports", "./lib/numbersLab/Router", "./model/Mnemonic", "./
         var router = new Router_1.Router('./', '../../');
         window.onhashchange = function () {
             router.changePageFromHash();
+            updateActiveNav();
         };
+        updateActiveNav();
     });
     //========================================================
     //==================Service worker for web================
     //========================================================
-    //only install the service on web platforms and not native
-    console.log("%c                                            \n .d8888b.  888                       888    \nd88P  Y88b 888                       888    \nY88b.      888                       888    This is a browser feature intended for \n \"Y888b.   888888  .d88b.  88888b.   888    developers. If someone told you to copy-paste \n    \"Y88b. 888    d88\"\"88b 888 \"88b  888    something here to enable a feature \n      \"888 888    888  888 888  888  Y8P    or \"hack\" someone's account, it is a \nY88b  d88P Y88b.  Y88..88P 888 d88P         scam and will give them access to your \n \"Y8888P\"   \"Y888  \"Y88P\"  88888P\"   888    Karbo Wallet!\n                           888              \n                           888              \n                           888              \n\nIA Self-XSS scam tricks you into compromising your wallet by claiming to provide a way to log into someone else's wallet, or some other kind of reward, after pasting a special code or link into your web browser.", "font-family:monospace");
-    if (!isCordovaApp && 'serviceWorker' in navigator) {
+    if (!isNativeApp && 'serviceWorker' in navigator) {
         var showRefreshUI_1 = function (registration) {
-            //console.log(registration);
             swal({
                 type: 'info',
                 title: i18n.t('global.newVersionModal.title'),
@@ -242,14 +262,11 @@ define(["require", "exports", "./lib/numbersLab/Router", "./model/Mnemonic", "./
         };
         var onNewServiceWorker_1 = function (registration, callback) {
             if (registration.waiting) {
-                // SW is waiting to activate. Can occur if multiple clients open and
-                // one of the clients is refreshed.
                 return callback();
             }
             var listenInstalledStateChange = function () {
                 registration.installing.addEventListener('statechange', function (event) {
                     if (event.target.state === 'installed') {
-                        // A new service worker is available, inform the user
                         callback();
                     }
                 });
@@ -257,8 +274,6 @@ define(["require", "exports", "./lib/numbersLab/Router", "./model/Mnemonic", "./
             if (registration.installing) {
                 return listenInstalledStateChange();
             }
-            // We are currently controlled so a new SW may be found...
-            // Add a listener in case a new SW is found,
             registration.addEventListener('updatefound', listenInstalledStateChange);
         };
         navigator.serviceWorker.addEventListener('message', function (event) {
@@ -270,18 +285,13 @@ define(["require", "exports", "./lib/numbersLab/Router", "./model/Mnemonic", "./
                     window.location.reload();
                     break;
                 default:
-                    // NOOP
                     break;
             }
         });
         navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
-            // Track updates to the Service Worker.
             if (!navigator.serviceWorker.controller) {
-                // The window client isn't currently controlled so it's a new service
-                // worker that will activate immediately
                 return;
             }
-            //console.log('on new service worker');
             onNewServiceWorker_1(registration, function () {
                 showRefreshUI_1(registration);
             });

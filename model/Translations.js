@@ -53,8 +53,17 @@ define(["require", "exports", "./Storage"], function (require, exports, Storage_
                     i18n.setDateTimeFormat(lang, data.date);
                 if (typeof data.number !== 'undefined')
                     i18n.setNumberFormat(lang, data.number);
-                if (typeof data.messages !== 'undefined')
-                    i18n.setLocaleMessage(lang, data.messages);
+                if (typeof data.messages !== 'undefined' || typeof data.website !== 'undefined') {
+                    var localeMessages = {};
+                    if (typeof data.messages !== 'undefined') {
+                        for (var key in data.messages)
+                            if (data.messages.hasOwnProperty(key))
+                                localeMessages[key] = data.messages[key];
+                    }
+                    if (typeof data.website !== 'undefined')
+                        localeMessages.website = data.website;
+                    i18n.setLocaleMessage(lang, localeMessages);
+                }
                 i18n.locale = lang;
                 $('title').html(data.website.title);
                 $('meta[property="og:title"]').attr('content', data.website.title);

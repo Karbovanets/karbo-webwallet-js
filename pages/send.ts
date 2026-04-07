@@ -302,10 +302,17 @@ class SendView extends DestructableView {
 						//save the tx private key
 						wallet.addTxPrivateKeyWithTxHash(rawTxData.raw.hash, rawTxData.raw.prvkey);
 
-						//force a mempool check so the user is up to date
+						// Retry the mempool refresh a few times because some nodes accept
+						// the tx before they expose it through the pool endpoint.
 						let watchdog: WalletWatchdog = DependencyInjectorInstance().getInstance(WalletWatchdog.name);
-						if (watchdog !== null)
-							watchdog.checkMempool();
+						if (watchdog !== null) {
+							watchdog.checkMempool(true);
+							[1500, 5000, 15000].forEach(function(delay: number) {
+								setTimeout(function() {
+									watchdog.checkMempool(true);
+								}, delay);
+							});
+						}
 
 						let promise = Promise.resolve();
 						if (

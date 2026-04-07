@@ -33,7 +33,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../lib/numbersLab/DestructableView", "../model/Constants", "../model/AppState"], function (require, exports, VueAnnotate_1, DependencyInjector_1, Wallet_1, DestructableView_1, Constants_1, AppState_1) {
+define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../lib/numbersLab/DestructableView", "../model/Constants", "../model/AppState", "../model/Cn"], function (require, exports, VueAnnotate_1, DependencyInjector_1, Wallet_1, DestructableView_1, Constants_1, AppState_1, Cn_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var wallet = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Wallet_1.Wallet.name, 'default', false);
@@ -45,6 +45,7 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
             _this.intervalRefresh = 0;
             var self = _this;
             _this.ticker = config.coinSymbol;
+            _this.address = wallet.getPublicAddress();
             AppState_1.AppState.enableLeftMenu();
             _this.intervalRefresh = setInterval(function () {
                 self.refresh();
@@ -62,6 +63,50 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
                 self.blockchainHeight = height;
             });
             this.refreshWallet();
+        };
+        AccountView.prototype.formatBalanceAmount = function (value) {
+            return Cn_1.Cn.formatMoney(value);
+        };
+        AccountView.prototype.formatNativeBalance = function (value) {
+            return this.formatBalanceAmount(value);
+        };
+        AccountView.prototype.getBalanceWholePart = function (value) {
+            var formattedAmount = this.formatBalanceAmount(value);
+            var fractionMatch = formattedAmount.match(/(\.\d+)$/);
+            if (fractionMatch !== null)
+                return formattedAmount.substr(0, formattedAmount.length - fractionMatch[1].length);
+            return formattedAmount;
+        };
+        AccountView.prototype.getBalanceFractionPart = function (value) {
+            var formattedAmount = this.formatBalanceAmount(value);
+            var fractionMatch = formattedAmount.match(/(\.\d+)$/);
+            return fractionMatch !== null ? fractionMatch[1] : '';
+        };
+        AccountView.prototype.displayUnlockedWalletAmount = function () {
+            return Math.max(0, Math.min(this.walletAmount, this.unlockedWalletAmount));
+        };
+        AccountView.prototype.displayPendingWalletAmount = function () {
+            return Math.max(0, this.walletAmount - this.displayUnlockedWalletAmount());
+        };
+        AccountView.prototype.hasBalanceDetails = function () {
+            return this.displayPendingWalletAmount() > 0;
+        };
+        AccountView.prototype.copyAddress = function () {
+            var el = document.createElement('textarea');
+            el.value = this.address;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            swal({
+                type: 'success',
+                title: i18n.t('receivePage.copyNotice'),
+                timer: 1500,
+                showConfirmButton: false,
+            });
         };
         AccountView.prototype.moreInfoOnTx = function (transaction) {
             var explorerUrlHash = config.testnet ? config.testnetExplorerUrlHash : config.mainnetExplorerUrlHash;
@@ -88,10 +133,15 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
             this.walletAmount = wallet.totalAmount();
             this.unlockedWalletAmount = wallet.unlockedAmount(this.currentScanBlock);
             this.transactions = wallet.txsMem.concat(wallet.getTransactionsCopy().reverse());
+            // Show only the 5 most recent transactions on dashboard
+            this.recentTransactions = this.transactions.slice(0, 5);
         };
         __decorate([
             (0, VueAnnotate_1.VueVar)([])
         ], AccountView.prototype, "transactions", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)([])
+        ], AccountView.prototype, "recentTransactions", void 0);
         __decorate([
             (0, VueAnnotate_1.VueVar)(0)
         ], AccountView.prototype, "walletAmount", void 0);
@@ -101,6 +151,9 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
         __decorate([
             (0, VueAnnotate_1.VueVar)(0)
         ], AccountView.prototype, "ticker", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('')
+        ], AccountView.prototype, "address", void 0);
         __decorate([
             (0, VueAnnotate_1.VueVar)(0)
         ], AccountView.prototype, "currentScanBlock", void 0);
