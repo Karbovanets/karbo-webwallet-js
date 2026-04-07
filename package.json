@@ -10,7 +10,7 @@
         "desktop:start": "electron desktop/main.js",
         "desktop:dist": "electron-builder --win portable",
         "desktop:dist:dir": "electron-builder --win dir",
-        "desktop:pack": "electron-packager . \"Karbo Wallet\" --platform=win32 --arch=x64 --out dist-desktop-packager --overwrite --prune=true",
+        "desktop:pack": "electron-packager . \"Karbo Wallet\" --platform=win32 --arch=x64 --icon=src/assets/img/favicon.ico --out dist-desktop-packager --overwrite --prune=true",
         "android:sync": "npx cap sync android",
         "android:open": "npx cap open android",
         "android:build": "node node_modules/typescript/bin/tsc --project tsconfig.prod.json && npx cap sync android"
@@ -36,14 +36,15 @@
     "author": "Gnock,Aiwe,Alex,ExploShot",
     "license": "BSD-3",
     "bugs": {
-        "url": "https://github.com/Karbovanets/Karbo-webwallet-js/issues"
+        "url": "https://github.com/Karbovanets/karbo-webwallet-js/issues"
     },
-    "homepage": "https://github.com/Karbovanets/Karbo-webwallet-js#readme",
+    "homepage": "https://github.com/Karbovanets/karbo-webwallet-js#readme",
     "build": {
         "appId": "org.karbo.wallet",
         "productName": "Karbo Wallet",
         "directories": {
-            "output": "dist-desktop"
+            "output": "dist-desktop",
+            "buildResources": "build"
         },
         "files": [
             "desktop/**/*",
@@ -51,7 +52,14 @@
             "package.json"
         ],
         "asar": true,
+        "mac": {
+            "icon": "build/icon.icns"
+        },
+        "linux": {
+            "icon": "src/assets/img/icons"
+        },
         "win": {
+            "icon": "src/assets/img/favicon.ico",
             "target": [
                 {
                     "target": "portable",

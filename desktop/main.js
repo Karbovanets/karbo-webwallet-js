@@ -9,6 +9,14 @@ const PREFERRED_PORT = 45110;
 let mainWindow = null;
 let staticServer = null;
 
+function getAppIconPath() {
+  const appRoot = path.resolve(__dirname, '..');
+  if (process.platform === 'win32') {
+    return path.join(appRoot, 'src', 'assets', 'img', 'favicon.ico');
+  }
+  return path.join(appRoot, 'src', 'assets', 'img', 'logo.png');
+}
+
 function contentTypeFor(filePath) {
   const ext = path.extname(filePath).toLowerCase();
   switch (ext) {
@@ -114,6 +122,7 @@ async function createMainWindow() {
     minHeight: 720,
     backgroundColor: '#0B1F3B',
     autoHideMenuBar: true,
+    icon: getAppIconPath(),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -165,6 +174,11 @@ app.on('before-quit', () => {
 
 app.whenReady().then(async () => {
   app.setAppUserModelId('org.karbo.wallet');
+
+  if (process.platform === 'darwin' && app.dock) {
+    app.dock.setIcon(getAppIconPath());
+  }
+
   await createMainWindow();
 
   app.on('activate', async () => {
