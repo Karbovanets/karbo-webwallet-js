@@ -1,0 +1,100 @@
+name: Desktop Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.label }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            label: Windows Portable
+            build_command: npx electron-builder --win portable --x64 --publish never
+          - os: ubuntu-latest
+            label: Linux AppImage
+            build_command: npx electron-builder --linux AppImage --x64 --publish never
+          - os: macos-latest
+            label: macOS DMG
+            build_command: npx electron-builder --mac dmg zip --publish never
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Derive version from tag
+        id: version
+        shell: bash
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Tag must look like v1.2.3 or v1.2.3-rc.1, got $TAG" >&2
+            exit 1
+          fi
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set package version for this release
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          node -e "const fs=require('fs'); const path='package.json'; const pkg=JSON.parse(fs.readFileSync(path,'utf8')); pkg.version=process.env.RELEASE_VERSION; fs.writeFileSync(path, JSON.stringify(pkg, null, 4) + '\n');"
+
+      - name: Compile TypeScript
+        run: node ./node_modules/typescript/bin/tsc --project tsconfig.prod.json
+
+      - name: Build web assets
+        run: node build.js
+
+      - name: Build desktop package
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: ${{ matrix.build_command }}
+
+      - name: Collect release assets
+        run: |
+          node -e "const fs=require('fs'); const path=require('path'); const source='dist-desktop'; const target='release-assets'; fs.mkdirSync(target,{recursive:true}); for (const entry of fs.readdirSync(source,{withFileTypes:true})) { if (entry.isFile()) { fs.copyFileSync(path.join(source, entry.name), path.join(target, entry.name)); } }"
+
+      - name: Upload release assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.os }}
+          path: release-assets/*
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download release assets
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Karbo Wallet ${{ github.ref_name }}
+          generate_release_notes: true
+          files: release-assets/*

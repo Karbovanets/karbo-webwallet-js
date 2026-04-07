@@ -7,6 +7,7 @@
     "menu": {
       "home": "홈",
       "account": "계정",
+      "overview": "개요",
       "send": "보내기",
       "receive": "받기",
       "export": "내보내기",
@@ -14,7 +15,20 @@
       "settings": "설정",
       "disconnect": "연결 끊기",
       "network": "네트워크 통계",
-      "mining": "채굴"
+      "mining": "채굴",
+      "transactions": "거래 내역"
+    },
+    "topHeader": {
+      "syncStatus": {
+        "disconnected": "연결 안 됨",
+        "disconnectedTitle": "연결된 지갑이 없습니다",
+        "connecting": "연결 중",
+        "connectingTitle": "노드에 연결 중",
+        "syncing": "동기화 {progress}%",
+        "syncingTitle": "동기화 중 {current}/{total}",
+        "synced": "동기화됨",
+        "syncedTitle": "지갑이 동기화되었습니다"
+      }
     },
     "global": {
       "loading": "로드중",
@@ -58,6 +72,7 @@
       "termsOfUse": "이용약관",
       "privacyPolicy": "개인정보정책",
       "support": "도움받기",
+      "help": "도움말",
       "donate": "기부",
       "network": "네트워크 통계",
       "miningPool": "채굴",
@@ -65,7 +80,7 @@
     },
     "homepage": {
       "mainTitle": "카르보 에 오신 것을 환영합니다",
-      "tagLine": "카르보 코인을 사용하기 가장 간단한 방법 어디서든. 언제든. 모든 장치에서.",
+      "tagLine": "클라이언트 측에서 동작하는 비수탁형 Karbo 지갑.",
       "actions": {
         "loadWallet": "지갑 불러오기",
         "importWallet": "지갑 가져오기",
@@ -94,6 +109,8 @@
     "accountPage": {
       "title": "계정",
       "subtitle": "계정 정보 및 트랜젝션 기록",
+      "recentTransactions": "최근 거래",
+      "allTransactions": "모든 거래",
       "synchronizingBlock": {
         "text": "동기화중..."
       },
@@ -312,7 +329,8 @@
       },
       "nfcErrorModal": {
         "titleInsufficientCapacity": "태그의 용량이 충분하지 않습니다."
-      }
+      },
+      "copyNotice": "주소가 복사되었습니다!"
     },
     "miningPage": {
       "title": "브라우져에서 채굴하기",

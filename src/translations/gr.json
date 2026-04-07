@@ -7,6 +7,7 @@
 	"menu": {
 	  "home": "Αρχική",
 	  "account": "Λογαριασμός",
+	  "overview": "Επισκόπηση",
 	  "send": "Αποστολή",
 	  "receive": "Λήψη",
 	  "export": "Εξαγωγή",
@@ -14,7 +15,20 @@
 	  "settings": "Ρυθμίσεις",
 	  "disconnect": "Αποσύνδεση",
 	  "network": "Στατιστικά Δικτύου",
-	  "mining": "Mining"
+	  "mining": "Mining",
+	  "transactions": "Ιστορικό"
+	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Αποσυνδεδεμένο",
+		"disconnectedTitle": "Δεν έχει συνδεθεί πορτοφόλι",
+		"connecting": "Σύνδεση",
+		"connectingTitle": "Σύνδεση στον κόμβο",
+		"syncing": "Συγχρ. {progress}%",
+		"syncingTitle": "Συγχρονισμός {current}/{total}",
+		"synced": "Συγχρον.",
+		"syncedTitle": "Το πορτοφόλι έχει συγχρονιστεί"
+	  }
 	},
 	"global": {
 	  "loading": "Φόρτωση",
@@ -58,6 +72,7 @@
 	  "termsOfUse": "Όροι χρήσης",
 	  "privacyPolicy": "Πολιτική Απορρήτου",
 	  "support": "Υποστήριξη",
+	  "help": "Βοήθεια",
 	  "donate": "Δωρεά",
 	  "network": "Στατιστικά Δικτύου",
 	  "miningPool": "Mining Pool",
@@ -65,7 +80,7 @@
 	},
 	"homepage": {
 	  "mainTitle": "Καλώς ορίσατε στο Πορτοφόλι Κάρμπο",
-	  "tagLine": "Ο απλούστερος τρόπος χρήσης του Karbo - οπουδήποτε, οποτεδήποτε",
+	  "tagLine": "Ένα πορτοφόλι Karbo στην πλευρά του χρήστη, χωρίς θεματοφυλακή.",
 	  "actions": {
 		"loadWallet": "Φόρτωσε το πορτοφόλι μου",
 		"importWallet": "Εισαγωγή πορτοφολιού",
@@ -94,6 +109,8 @@
 	"accountPage": {
 	  "title": "Λογαριασμός",
 	  "subtitle": "Επισκόπηση του λογαριασμού σας και ιστορικό συναλλαγών",
+	  "recentTransactions": "Πρόσφατες συναλλαγές",
+	  "allTransactions": "Όλες οι συναλλαγές",
 	  "synchronizingBlock": {
 		"text": "Συγχρονισμός..."
 	  },
@@ -309,7 +326,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Ανεπαρκής χωρητικότητα Tag"
-	  }
+	  },
+	  "copyNotice": "Η διεύθυνση αντιγράφηκε!"
 	},
 	"miningPage":{
 	  "title":"Κάντε mining μέσω του φυλλομετρητή σας",

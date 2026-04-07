@@ -108,9 +108,9 @@ async function createMainWindow() {
   const port = typeof address === 'object' && address ? address.port : 0;
 
   mainWindow = new BrowserWindow({
-    width: 1240,
+    width: 1200,
     height: 880,
-    minWidth: 1024,
+    minWidth: 600,
     minHeight: 720,
     backgroundColor: '#0B1F3B',
     autoHideMenuBar: true,

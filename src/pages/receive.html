@@ -1,72 +1,53 @@
-<!--textarea id="clipboardTextarea" style="width:0;height:0;position:absolute;bottom:0;right:0;"></textarea-->
 <div id="app" class="body-root receiveTab" v-cloak="">
-	<div class="body-header" >
+	<div class="body-header">
 		<div class="header-title">
-			<i class="fa fa-level-down" aria-hidden="true"></i> {{ $t("receivePage.title") }}
+			<i class="fa fa-qrcode" aria-hidden="true"></i> {{ $t("receivePage.title") }}
 		</div>
 	</div>
-	<div class="body-content" >
-		<div class="panel">
-			<div class="body" >
-				<div class="header-title" >{{ $t("receivePage.receiveBlock.address.title") }}</div>
-				<div class="content" >
-					<div class="field action" >
-						<label>{{ $t("receivePage.receiveBlock.address.label") }}</label>
-						<div class="subfield readonly" >
-							<input type="text" v-model="rawAddress" id="rawAddress" readonly="readonly"/>
-							<span class="action" @click="setInClipboard()" ><i class="fa fa-copy" ></i></span>
-						</div>
-					</div>
-				</div>
-				<div class="header-title" >{{ $t("receivePage.receiveBlock.qrCode.title") }}</div>
-				<div class="content" >
-					<div class="field">
-						<label>{{ $t("receivePage.receiveBlock.qrCode.labelAmount") }}</label>
-						<input type="text" v-model="amount" />
-					</div>
-					<div class="field">
-						<label>{{ $t("receivePage.receiveBlock.qrCode.labelRecipient") }}</label>
-						<input type="text" v-model="recipientName" />
-					</div>
-					<div class="field">
-						<label>{{ $t("receivePage.receiveBlock.qrCode.labelDescription") }}</label>
-						<input type="text" v-model="txDescription" />
-					</div>
-					<!--<div class="field">
-						<label>Identifier (optional)</label>
-						<input type="text" v-model="paymentId" maxlength="8"/>
-					</div>-->
-					<div class="actions" >
-						<button class="btn primary" @click="generateQrCode()" >{{ $t("receivePage.receiveBlock.qrCode.updateButton") }}</button>
-					</div>
-				</div>
+
+	<!-- QR Code Display -->
+	<div class="card" style="text-align:center;padding:1.5rem 1rem;">
+		<div class="qrCode">
+			<div id="qrCodeContainer"></div>
+		</div>
+	</div>
+
+	<!-- Address -->
+	<div class="card">
+		<div class="card-title">{{ $t("receivePage.receiveBlock.address.title") }}</div>
+		<div class="field">
+			<div class="subfield readonly" style="position:relative;">
+				<input type="text" v-model="rawAddress" id="rawAddress" readonly="readonly" style="font-size:0.75rem;font-family:monospace;padding-right:2.5rem;"/>
+				<span class="action" @click="copyAddress()"><i class="fa fa-copy"></i></span>
 			</div>
 		</div>
+	</div>
 
-		<img src="./assets/img/logo.png" id="qrCodeLogo" style="display: none;"/>
-		<div class="panel inline">
-			<div class="body" >
-				<div class="header-title" >{{ $t("receivePage.qrBlock.title") }}</div>
-				<div class="content" >
-					<div class="qrCode">
-						<div id="qrCodeContainer" ></div>
-					</div>
-				</div>
-			</div>
+	<!-- Optional QR customization -->
+	<div class="card">
+		<div class="card-title">{{ $t("receivePage.receiveBlock.qrCode.title") }}</div>
+		<div class="field">
+			<label>{{ $t("receivePage.receiveBlock.qrCode.labelAmount") }}</label>
+			<input type="text" v-model="amount" placeholder="0.00"/>
 		</div>
+		<div class="field">
+			<label>{{ $t("receivePage.receiveBlock.qrCode.labelRecipient") }}</label>
+			<input type="text" v-model="recipientName"/>
+		</div>
+		<div class="field">
+			<label>{{ $t("receivePage.receiveBlock.qrCode.labelDescription") }}</label>
+			<input type="text" v-model="txDescription"/>
+		</div>
+		<button class="btn primary" style="width:100%;" @click="generateQrCode()">{{ $t("receivePage.receiveBlock.qrCode.updateButton") }}</button>
+	</div>
 
-		<div class="panel inline" v-if="hasNfc && hasWritableNfc">
-			<div class="body" >
-				<div class="header-title" >Nfc</div>
-				<div class="content" >
-					<div>
-						<button @click="shareWithNfc()" class="btn primary">Share by NFC</button>
-					</div>
-					<div>
-						<button @click="writeOnNfc()" class="btn" >Write on a Nfc Tag</button>
-					</div>
-				</div>
-			</div>
+	<img src="./assets/img/logo.png" id="qrCodeLogo" style="display:none;"/>
+
+	<div class="card" v-if="hasNfc && hasWritableNfc">
+		<div class="card-title">NFC</div>
+		<div style="display:flex;gap:0.5rem;">
+			<button @click="shareWithNfc()" class="btn primary" style="flex:1;">Share by NFC</button>
+			<button @click="writeOnNfc()" class="btn basic" style="flex:1;">Write NFC Tag</button>
 		</div>
 	</div>
 </div>

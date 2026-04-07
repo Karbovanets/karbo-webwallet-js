@@ -1,13 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>Karbo Wallet</title>
 	<meta property="og:title" content="Karbo Wallet" />
-	<meta property="twitter:title" content="" />
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 	<meta http-equiv="Content-Security-Policy" content="default-src *  data: blob: filesystem: about: ws: wss: 'unsafe-inline' 'unsafe-eval' 'unsafe-dynamic'; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src * data: blob: 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src * data: blob: ; style-src * data: blob: 'unsafe-inline'; font-src * data: blob: 'unsafe-inline';">
 
@@ -19,88 +18,99 @@
 
 	<link rel="manifest" href="/manifest.json">
 
-	<!-- Add to home screen for Safari on iOS -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta name="apple-mobile-web-app-title" content="Karbo">
+	<meta name="apple-mobile-web-app-title" content="Karbo Wallet">
 
 	<link rel="icon" href="./assets/img/favicon.ico" />
 	<link rel="apple-touch-icon" href="assets/img/icons/icon-152x152.png">
 	<meta name="msapplication-TileImage" content="assets/img/icons/icon-144x144.png">
 	<link rel="icon" type="image/png" href="assets/img/icons/icon-144x144.png">
 
-	<!-- Windows -->
-	<meta name="msapplication-TileColor" content="#0B1F3B">
-	<meta name="theme-color" content="#0B1F3B">
+	<meta name="msapplication-TileColor" content="#111827">
+	<meta name="theme-color" content="#111827">
 
-	<meta name="description" content="" />
-	<meta property="og:description" content="" />
-	<meta property="twitter:description" content="" />
-
+	<meta name="description" content="Karbo Web Wallet" />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://wallet.karbo.org/" />
 	<meta property="og:image" content="https://wallet.karbo.org/assets/img/icons/icon-402x402.png" />
-
 	<meta property="twitter:card" content="summary" />
-	<meta property="twitter:site" content="https://wallet.karbo.org/" />
-
 	<meta property="twitter:creator" content="@krbcoin" />
 
 	<meta name="fragment" content="!">
 
 </head>
-<body class="menuHidden menuDisabled">
+<body class="menuDisabled">
 
-<div id="topBar">
-	<a href="#!index" class="toggleMenu"><i class="fa fa-bars" aria-hidden="true"></i></a>
-</div>
-
-<div id="menu">
-	<a id="menu_logo"><img src="./assets/img/coin_white.png" alt="&#1180;"/> Karbo</a>
-	<a href="#!index" class="onlyNotConnected"><span class="icon" ><i class="fa fa-home" aria-hidden="true"></i></span> {{ $t("menu.home") }}</a>
-	<a href="#!account" class="onlyWhenConnected"><span class="icon" ><i class="fa fa-tachometer" aria-hidden="true"></i></span> {{ $t("menu.account") }}</a>
-	<a href="#!send" class="onlyWhenConnected notViewOnlyWallet"><span class="icon" ><i class="fa fa-paper-plane" aria-hidden="true"></i></span> {{ $t("menu.send") }}</a>
-	<a href="#!receive" class="onlyWhenConnected"><span class="icon" ><i class="fa fa-inbox" aria-hidden="true"></i></span> {{ $t("menu.receive") }}</a>
-	<a href="#!export" class="onlyWhenConnected"><span class="icon" ><i class="fa fa-download" aria-hidden="true"></i></span> {{ $t("menu.export") }}</a>
-	<a href="#!settings" class="onlyWhenConnected"><span class="icon" ><i class="fa fa-cog" aria-hidden="true"></i></span> {{ $t("menu.settings") }}</a>
-	<a href="#!donate" ><span class="icon" ><i class="fa fa-heart" aria-hidden="true"></i></span> {{ $t("menu.donate") }}</a>
-	<a href="#!network" ><span class="icon" ><i class="fa fa-pie-chart" aria-hidden="true"></i></span> {{ $t("menu.network") }}</a>
-	<a href="#!disconnect"  class="onlyWhenConnected"><span class="icon" ><i class="fa fa-times" aria-hidden="true"></i></span> {{ $t("menu.disconnect") }}</a>
-</div>
-
-<div id="pageLoading" >
-	<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-	<span class="sr-only">{{ $t("global.loading") }}...</span>
-</div>
-
-<div id="page" ></div>
-
-<div id="copyright" v-cloak="">
-	<div>© 2018-2026 wallet.karbo.org</div>
-	<div class="links" >
-		<select v-model="language" class="hideOnNative">
-			<option value="en">English</option>
-			<option value="fr">French (Français)</option>
-			<option value="de">German (Deutsch)</option>
-			<option value="gr">Greek (ελληνικά)</option>
-			<option value="it">Italian (Italiano)</option>
-			<option value="ko">Korean (한국어)</option>
-			<option value="pl">Polish (Polski)</option>
-			<option value="es">Spanish (Español)</option>
-			<option value="uk">Ukrainian (Українська)</option>
-		</select>
-		<a href="#!termsOfUse" >{{ $t("bottom.termsOfUse") }}</a>
-		<a href="#!privacyPolicy" >{{ $t("bottom.privacyPolicy") }}</a>
-		<a href="#!support" >{{ $t("bottom.support") }}</a>
-		<a class="hideOnNative" href="#!donate" >{{ $t("bottom.donate") }}</a>
-		<a class="hideOnNative" href="#!network" >{{ $t("bottom.network") }}</a>
-		<!--a class="hideOnNative" href="https://pool.karbowanec.com" target="_blank" >{{ $t("bottom.miningPool") }}</a-->
-		<a class="hideOnNative" href="https://github.com/Karbovanets/karbo-webwallet-js" target="_blank">{{ $t("bottom.github") }}</a>
+<!-- Top Header Bar -->
+<div id="topHeader" v-cloak="">
+	<div class="topHeader-inner">
+		<a href="#!index" class="topHeader-logo">
+			<img src="./assets/img/coin_white.png" alt="&#1180;"/>
+			<span id="websiteTitle">{{ $t("website.title") }}</span>
+		</a>
+		<div class="topHeader-right">
+			<span class="syncStatus" id="syncStatus" :class="syncStatusClass" :title="syncStatusTitle">{{ syncStatusText }}</span>
+			<a href="#!settings" class="topHeader-btn onlyWhenConnected" :title="$t('menu.settings')"><i class="fa fa-cog" aria-hidden="true"></i></a>
+			<a href="#!export" class="topHeader-btn onlyWhenConnected" :title="$t('menu.export')"><i class="fa fa-download" aria-hidden="true"></i></a>
+			<a href="#!disconnect" class="topHeader-btn onlyWhenConnected" :title="$t('menu.disconnect')"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+		</div>
 	</div>
-	<div class="cb" ></div>
 </div>
 
-<!--<script src="lib/polyfills/weakmap.min.js"></script>-->
+<!-- Main Content Area -->
+<div id="appShell">
+	<div id="pageLoading">
+		<div class="spinner"></div>
+	</div>
+
+	<div id="page"></div>
+</div>
+
+<!-- Bottom Navigation - only visible when connected -->
+<nav id="bottomNav" class="onlyWhenConnected">
+	<a href="#!account" class="nav-item" data-page="account">
+		<i class="fa fa-bank" aria-hidden="true"></i>
+		<span>{{ $t("menu.overview") }}</span>
+	</a>
+	<a href="#!send" class="nav-item notViewOnlyWallet" data-page="send">
+		<i class="fa fa-paper-plane" aria-hidden="true"></i>
+		<span>{{ $t("menu.send") }}</span>
+	</a>
+	<a href="#!receive" class="nav-item" data-page="receive">
+		<i class="fa fa-qrcode" aria-hidden="true"></i>
+		<span>{{ $t("menu.receive") }}</span>
+	</a>
+	<a href="#!transactions" class="nav-item" data-page="transactions">
+		<i class="fa fa-list" aria-hidden="true"></i>
+		<span>{{ $t("menu.transactions") }}</span>
+	</a>
+</nav>
+
+<!-- Footer - only on non-connected pages -->
+<div id="copyright" v-cloak="">
+	<div class="copyright-inner">
+		<div>&copy; 2018-2026 wallet.karbo.org</div>
+		<div class="links">
+			<select v-model="language" class="hideOnNative">
+				<option value="en">English</option>
+				<option value="fr">Fran&ccedil;ais</option>
+				<option value="de">Deutsch</option>
+				<option value="gr">&epsilon;&lambda;&lambda;&eta;&nu;&iota;&kappa;&#940;</option>
+				<option value="it">Italiano</option>
+				<option value="ko">&#54620;&#44397;&#50612;</option>
+				<option value="pl">Polski</option>
+				<option value="es">Espa&ntilde;ol</option>
+				<option value="uk">&#1059;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072;</option>
+			</select>
+			<a href="#!termsOfUse">{{ $t("bottom.termsOfUse") }}</a>
+			<a href="#!privacyPolicy">{{ $t("bottom.privacyPolicy") }}</a>
+			<a href="#!forgotPassword">{{ $t("bottom.help") }}</a>
+			<a class="hideOnNative" href="https://github.com/Karbovanets/karbo-webwallet-js" target="_blank">GitHub</a>
+		</div>
+	</div>
+</div>
+
 <script src="lib/polyfills/core.min.js"></script>
 <script src="lib/polyfills/textEncoding/encoding-indexes.js"></script>
 <script src="lib/polyfills/textEncoding/encoding.js"></script>
@@ -108,21 +118,17 @@
 
 <script src="lib/biginteger.js"></script>
 <script src="config.js"></script>
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js" ></script>-->
-<script src="lib/vue.min.js" ></script>
-<script src="lib/vue-i18n.js" ></script>
+<script src="lib/vue.min.js"></script>
+<script src="lib/vue-i18n.js"></script>
 <script src="lib/jquery-3.2.1.min.js"></script>
 <script src="lib/sweetalert2.js"></script>
 <script src="lib/sha3.js"></script>
 <script src="lib/crypto.js"></script>
-<!--<script src="lib/qrcode.min.js"></script>-->
 <script src="lib/kjua-0.1.1.min.js"></script>
-<!--<script src="lib/nacl-fast-cn.js"></script>-->
 <script src="lib/nacl-fast.js"></script>
 <script src="lib/nacl-util.min.js"></script>
 <script src="lib/base58.js"></script>
 <script src="lib/jspdf.min.js"></script>
-<!--<script src="lib/mnemonic.js"></script>-->
 <script src="lib/cn_utils_native.js"></script>
 <script src="lib/FileSaver.min.js"></script>
 <script data-main="index.js" src="lib/require.js"></script>

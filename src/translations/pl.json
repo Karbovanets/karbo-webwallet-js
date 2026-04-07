@@ -7,15 +7,30 @@
 	"menu": {
     "home": "Home",
     "account": "Konto",
+    "overview": "Przegląd",
     "send": "Wyślij",
   	"receive": "Odbierz",
   	"export": "Export",
   	"donate": "Dotacja",
   	"settings": "Ustawienia",
   	"disconnect": "Rozłącz",
-  	"network": "Statystyki sieci"
-	},
-  "global": {
+  	"network": "Statystyki sieci",
+  	"mining": "Mining",
+  	"transactions": "Historia"
+    },
+    "topHeader": {
+      "syncStatus": {
+        "disconnected": "Rozłączony",
+        "disconnectedTitle": "Brak podłączonego portfela",
+        "connecting": "Łączenie",
+        "connectingTitle": "Łączenie z węzłem",
+        "syncing": "Synch. {progress}%",
+        "syncingTitle": "Synchronizacja {current}/{total}",
+        "synced": "Synchron.",
+        "syncedTitle": "Portfel jest zsynchronizowany"
+      }
+    },
+    "global": {
     "loading": "Wgrywanie",
     "disableSecurity":"Wyłącz to zabezpiecznie, rozumiem ryzyko",
     "passwordInvalidRequirements":"Hasło musi mieć co najmniej 8 znaków - 1 wielką literę, 1 małą literę, jedną cyfrę i jeden znak specjalny",
@@ -57,6 +72,7 @@
 	  "termsOfUse": "Warunki korzystania",
 	  "privacyPolicy": "Polityka prywatności",
 	  "support": "Wsparcie",
+	  "help": "Pomoc",
 	  "donate": "Dotacja",
 	  "network": "Statystyki Sieci",
 	  "miningPool": "Kopalnia",
@@ -64,7 +80,7 @@
 	},
 	 "homepage": {
 	    "mainTitle": "Witamy w portfelu Karbowańca",
-	    "tagLine": "Najprostrzy sposób na używanie Karbowańca - wszędzie o każdej porze",
+	    "tagLine": "Portfel Karbo po stronie klienta i bez powiernictwa.",
 	    "actions": {
 	    "loadWallet": "Otwórz mój portfel",
 	    "importWallet": "Zaimportuj portfel",
@@ -93,6 +109,8 @@
     "accountPage": {
         "title": "Konto",
         "subtitle": "Przegląd Twojego konta i historia transakcji",
+        "recentTransactions": "Ostatnie transakcje",
+        "allTransactions": "Wszystkie transakcje",
         "synchronizingBlock": {
         "text": "Synchronizuję..."
       },
@@ -308,7 +326,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Niewystarczająca pojemność tagu"
-	  }
+	  },
+	  "copyNotice": "Adres skopiowany!"
 	},
   "miningPage":{
   	  "title":"Kop bezpośrednio w przeglądarce",

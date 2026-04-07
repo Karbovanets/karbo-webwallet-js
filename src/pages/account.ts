@@ -20,15 +20,18 @@ import {DestructableView} from "../lib/numbersLab/DestructableView";
 import {Constants} from "../model/Constants";
 import {AppState} from "../model/AppState";
 import {Transaction, TransactionIn} from "../model/Transaction";
+import {Cn} from "../model/Cn";
 
 let wallet : Wallet = DependencyInjectorInstance().getInstance(Wallet.name,'default', false);
 let blockchainExplorer = DependencyInjectorInstance().getInstance(Constants.BLOCKCHAIN_EXPLORER);
 
 class AccountView extends DestructableView{
 	@VueVar([]) transactions !: Transaction[];
+	@VueVar([]) recentTransactions !: Transaction[];
 	@VueVar(0) walletAmount !: number;
 	@VueVar(0) unlockedWalletAmount !: number;
 	@VueVar(0) ticker !: string;
+	@VueVar('') address !: string;
 
 	@VueVar(0) currentScanBlock !: number;
 	@VueVar(0) blockchainHeight !: number;
@@ -41,6 +44,7 @@ class AccountView extends DestructableView{
 		let self = this;
 
 		this.ticker = config.coinSymbol;
+		this.address = wallet.getPublicAddress();
 
 		AppState.enableLeftMenu();
 		this.intervalRefresh = <any>setInterval(function(){
@@ -61,6 +65,59 @@ class AccountView extends DestructableView{
 		});
 
 		this.refreshWallet();
+	}
+
+	private formatBalanceAmount(value:number): string{
+		return Cn.formatMoney(value);
+	}
+
+	formatNativeBalance(value:number): string{
+		return this.formatBalanceAmount(value);
+	}
+
+	getBalanceWholePart(value:number): string{
+		let formattedAmount = this.formatBalanceAmount(value);
+		let fractionMatch = formattedAmount.match(/(\.\d+)$/);
+		if(fractionMatch !== null)
+			return formattedAmount.substr(0, formattedAmount.length - fractionMatch[1].length);
+		return formattedAmount;
+	}
+
+	getBalanceFractionPart(value:number): string{
+		let formattedAmount = this.formatBalanceAmount(value);
+		let fractionMatch = formattedAmount.match(/(\.\d+)$/);
+		return fractionMatch !== null ? fractionMatch[1] : '';
+	}
+
+	displayUnlockedWalletAmount(): number{
+		return Math.max(0, Math.min(this.walletAmount, this.unlockedWalletAmount));
+	}
+
+	displayPendingWalletAmount(): number{
+		return Math.max(0, this.walletAmount - this.displayUnlockedWalletAmount());
+	}
+
+	hasBalanceDetails(): boolean{
+		return this.displayPendingWalletAmount() > 0;
+	}
+
+	copyAddress(){
+		let el = document.createElement('textarea');
+		el.value = this.address;
+		el.setAttribute('readonly', '');
+		el.style.position = 'absolute';
+		el.style.left = '-9999px';
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+
+		swal({
+			type: 'success',
+			title: i18n.t('receivePage.copyNotice'),
+			timer: 1500,
+			showConfirmButton: false,
+		});
 	}
 
 	moreInfoOnTx(transaction : Transaction){
@@ -98,6 +155,8 @@ class AccountView extends DestructableView{
 		this.walletAmount = wallet.totalAmount();
 		this.unlockedWalletAmount = wallet.unlockedAmount(this.currentScanBlock);
 		this.transactions = wallet.txsMem.concat(wallet.getTransactionsCopy().reverse());
+		// Show only the 5 most recent transactions on dashboard
+		this.recentTransactions = this.transactions.slice(0, 5);
 	}
 }
 

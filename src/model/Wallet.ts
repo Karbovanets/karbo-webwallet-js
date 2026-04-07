@@ -299,23 +299,54 @@ export class Wallet extends Observable{
 	}
 
 	totalAmount() : number{
-		return this.unlockedAmount(-1);
-	}
-
-	unlockedAmount(currentBlockHeight : number = -1) : number{
 		let amount = 0;
 
 		for(let transaction of this.transactions){
 			if(!transaction.isFullyChecked())
 				continue;
-
-			if(currentBlockHeight === -1 || transaction.isConfirmed(currentBlockHeight))
-				amount += transaction.getAmount();
+			amount += transaction.getAmount();
 		}
 
-		if(currentBlockHeight === -1) {
-			for(let transaction of this.txsMem){
-				amount += transaction.getAmount();
+		for(let transaction of this.txsMem){
+			if(!transaction.isFullyChecked())
+				continue;
+			amount += transaction.getAmount();
+		}
+
+		return amount;
+	}
+
+	private spentKeyImages() : {[key: string]: boolean}{
+		let spentKeyImages : {[key: string]: boolean} = {};
+
+		for(let transaction of this.transactions.concat(this.txsMem)){
+			if(!transaction.isFullyChecked())
+				continue;
+
+			for(let input of transaction.ins){
+				if(input.keyImage !== '')
+					spentKeyImages[input.keyImage] = true;
+			}
+		}
+
+		return spentKeyImages;
+	}
+
+	unlockedAmount(currentBlockHeight : number = -1) : number{
+		let amount = 0;
+		let spentKeyImages = this.spentKeyImages();
+
+		for(let transaction of this.transactions){
+			if(!transaction.isFullyChecked())
+				continue;
+
+			if(currentBlockHeight !== -1 && !transaction.isConfirmed(currentBlockHeight))
+				continue;
+
+			for(let out of transaction.outs){
+				if(out.keyImage !== '' && spentKeyImages[out.keyImage])
+					continue;
+				amount += out.amount;
 			}
 		}
 

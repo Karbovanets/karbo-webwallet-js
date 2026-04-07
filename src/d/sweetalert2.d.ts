@@ -13,6 +13,8 @@ declare function swal(params : {
 	inputOptions?:Map<string,string>|any,
 	reverseButtons?:boolean,
 	cancelButtonText?:string,
+	timer?:number,
+	showConfirmButton?:boolean,
 }) : Promise<any>;
 
 declare namespace swal{

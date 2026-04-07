@@ -14,7 +14,21 @@
 	  "settings": "Settings",
 	  "disconnect": "Disconnect",
 	  "network": "Network Stats",
-	  "mining": "Mining"
+	  "mining": "Mining",
+	  "transactions": "History",
+	  "overview": "Overview"
+	},
+	"topHeader": {
+	  "syncStatus": {
+		"disconnected": "Disconnected",
+		"disconnectedTitle": "No wallet connected",
+		"connecting": "Connecting",
+		"connectingTitle": "Connecting to node",
+		"syncing": "Sync {progress}%",
+		"syncingTitle": "Syncing {current}/{total}",
+		"synced": "Synced",
+		"syncedTitle": "Wallet is synchronized"
+	  }
 	},
 	"global": {
 	  "loading": "Loading",
@@ -58,6 +72,7 @@
 	  "termsOfUse": "Terms of Use",
 	  "privacyPolicy": "Privacy Policy",
 	  "support": "Support",
+	  "help": "Help",
 	  "donate": "Donate",
 	  "network": "Network Stats",
 	  "miningPool": "Mining Pool",
@@ -65,7 +80,7 @@
 	},
 	"homepage": {
 	  "mainTitle": "Welcome to Karbo Wallet",
-	  "tagLine": "The simplest way to use Karbo – anywhere and any time",
+	  "tagLine": "A client-side, non-custodial wallet for Karbo.",
 	  "actions": {
 		"loadWallet": "Load my wallet",
 		"importWallet": "Import a wallet",
@@ -94,6 +109,8 @@
 	"accountPage": {
 	  "title": "Account",
 	  "subtitle": "Your account overview and transaction history",
+	  "recentTransactions": "Recent transactions",
+	  "allTransactions": "All transactions",
 	  "synchronizingBlock": {
 		"text": "Synchronizing..."
 	  },
@@ -310,7 +327,8 @@
 	  },
 	  "nfcErrorModal":{
 		"titleInsufficientCapacity":"Tag capacity insufficient"
-	  }
+	  },
+	  "copyNotice": "Address copied!"
 	},
 	"miningPage":{
 	  "title":"Mine directly in your browser",
