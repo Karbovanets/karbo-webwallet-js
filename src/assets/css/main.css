@@ -848,23 +848,28 @@ body.native .hideOnNonNative { display: initial !important; }
 	border: 1px solid var(--color-border);
 	border-radius: 0.5rem;
 	font-size: 0.875rem;
-	padding: 0.75rem 1rem;
+	padding: 0.75rem 3.5rem 0.75rem 1rem;
 	width: 100%;
 	color: var(--color-text);
 	background: var(--color-surface);
 }
-.field .subfield input.twoActions { width: calc(100% - 80px); }
+.field .subfield input.twoActions {
+	padding-right: 6rem;
+}
 .field .subfield .action {
 	border-left: 1px solid var(--color-border);
-	padding: 0 0.5rem;
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	height: 100%;
+	width: 2.75rem;
 	position: absolute;
 	top: 0; right: 0;
 	color: var(--color-primary-light);
 	cursor: pointer;
 }
-.field .subfield .action .fa { line-height: 44px; }
+.field .subfield .action.nfcAction { right: 2.75rem; }
+.field .subfield .action .fa { line-height: 1; }
 
 /* Checkbox toggle */
 .field.checkbox input {
@@ -1033,7 +1038,7 @@ body.native .hideOnNonNative { display: initial !important; }
 .transactions.compact .transaction .moreInfo { width: 8%; font-size: 0.875rem; padding-right: 4px; }
 .transactions.compact td.noTransactions { font-size: 0.8125rem; }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 800px) {
 	:root {
 		--header-height: 64px;
 		--nav-height: 0px;
