@@ -64,7 +64,7 @@ class TransactionsView extends DestructableView{
 		let explorerUrlBlock = config.testnet ? config.testnetExplorerUrlBlock : config.mainnetExplorerUrlBlock;
 		let feesHtml = '';
 		if(transaction.getAmount() < 0)
-			feesHtml = `<div>`+i18n.t('accountPage.txDetails.feesOnTx')+`: `+(transaction.fees / Math.pow(10, config.coinUnitPlaces))+`</div>`;
+			feesHtml = `<div>`+i18n.t('accountPage.txDetails.feesOnTx')+`: `+(transaction.fee / Math.pow(10, config.coinUnitPlaces))+`</div>`;
 		let paymentId = '';
 		if(transaction.paymentId !== ''){
 			paymentId = `<div>`+i18n.t('accountPage.txDetails.paymentId')+`: `+transaction.paymentId+`</div>`;

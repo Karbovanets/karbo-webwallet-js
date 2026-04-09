@@ -86,9 +86,22 @@ export class WalletWatchdog {
             } else if (message.type) {
                 if (message.type === 'processed') {
                     let transactions = message.transactions;
+                    let txPrivateKeys = typeof message.txPrivateKeys === 'object' && message.txPrivateKeys !== null ? message.txPrivateKeys : {};
+                    let hasUpdates = transactions.length > 0;
+
+                    for (let hash in txPrivateKeys) {
+                        if (Object.prototype.hasOwnProperty.call(txPrivateKeys, hash) && self.wallet.findTxPrivateKeyWithHash(hash) === null) {
+                            self.wallet.addTxPrivateKeyWithTxHash(hash, txPrivateKeys[hash]);
+                            hasUpdates = true;
+                        }
+                    }
+
                     if (transactions.length > 0) {
                         for (let tx of transactions)
                             self.wallet.addNew(Transaction.fromRaw(tx));
+                    }
+
+                    if (hasUpdates) {
                         self.signalWalletUpdate();
                     }
                     //if (self.workerCurrentProcessing.length > 0) {
@@ -233,16 +246,7 @@ export class WalletWatchdog {
 
     processTransactions(transactions: RawDaemon_Transaction[], callback: Function) {
         logDebugMsg(`processTransactions called...`, transactions);
-        let transactionsToAdd = [];
-
-        for (let tr of transactions) {
-            if (typeof tr.height !== 'undefined') {
-                logDebugMsg(`Transaction height...`, tr.height, this.wallet.lastHeight);                
-                if (tr.height >= this.wallet.lastHeight) {
-                    transactionsToAdd.push(tr);
-                }
-            }
-        }
+        let transactionsToAdd = transactions;
 
         // add the raw transaction to the processing FIFO list
         this.transactionsToProcess.push(transactionsToAdd);
