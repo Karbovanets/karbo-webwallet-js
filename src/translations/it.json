@@ -132,7 +132,7 @@
 		"title":"Dettagli transazione",
 		"txHash":"Tx hash",
 		"feesOnTx":"Commissione sulla Tx",
-		"blockHeight":"Altezza sulla blockchain",
+		"blockHeight":"Nel blocco",
 		"paymentId":"Payment ID",
 		"txPrivKey":"Chiave privata della transazione"
 	  }

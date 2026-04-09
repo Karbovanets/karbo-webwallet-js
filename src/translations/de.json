@@ -132,7 +132,7 @@
 		"title":"Transaktionsdetails",
 		"txHash":"Tx hash",
 		"feesOnTx":"Gebühren der tx",
-		"blockHeight":"Blockhöhe",
+		"blockHeight":"Im Block",
 		"paymentId":"Payment ID",
         "txPrivKey":"Privater Schlüssel für die Transaktion"
 	  }

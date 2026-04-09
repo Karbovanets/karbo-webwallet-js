@@ -132,7 +132,7 @@
 		"title":"Λεπτομέρειες συναλλαγής",
 		"txHash":"Αναγνωριστικό συναλλαγής",
 		"feesOnTx":"Τέλη συναλλαγής",
-		"blockHeight":"Block height",
+		"blockHeight":"Στο μπλοκ",
 		"paymentId":"Payment ID",
         "txPrivKey":"Ιδιωτικό κλειδί συναλλαγής"
 	  }
