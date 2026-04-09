@@ -251,6 +251,19 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
             }
             return null;
         };
+        Wallet.prototype.findWithTxHash = function (hash) {
+            for (var _i = 0, _a = this.transactions; _i < _a.length; _i++) {
+                var tr = _a[_i];
+                if (tr.hash === hash)
+                    return tr;
+            }
+            for (var _b = 0, _c = this.txsMem; _b < _c.length; _b++) {
+                var tr = _c[_b];
+                if (tr.hash === hash)
+                    return tr;
+            }
+            return null;
+        };
         Wallet.prototype.findTxPrivateKeyWithHash = function (hash) {
             if (typeof this.txPrivateKeys[hash] !== 'undefined')
                 return this.txPrivateKeys[hash];

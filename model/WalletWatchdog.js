@@ -98,11 +98,21 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                 else if (message.type) {
                     if (message.type === 'processed') {
                         var transactions = message.transactions;
+                        var txPrivateKeys = typeof message.txPrivateKeys === 'object' && message.txPrivateKeys !== null ? message.txPrivateKeys : {};
+                        var hasUpdates = transactions.length > 0;
+                        for (var hash in txPrivateKeys) {
+                            if (Object.prototype.hasOwnProperty.call(txPrivateKeys, hash) && self.wallet.findTxPrivateKeyWithHash(hash) === null) {
+                                self.wallet.addTxPrivateKeyWithTxHash(hash, txPrivateKeys[hash]);
+                                hasUpdates = true;
+                            }
+                        }
                         if (transactions.length > 0) {
                             for (var _i = 0, transactions_1 = transactions; _i < transactions_1.length; _i++) {
                                 var tx = transactions_1[_i];
                                 self.wallet.addNew(Transaction_1.Transaction.fromRaw(tx));
                             }
+                        }
+                        if (hasUpdates) {
                             self.signalWalletUpdate();
                         }
                         //if (self.workerCurrentProcessing.length > 0) {
@@ -219,16 +229,7 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
         };
         WalletWatchdog.prototype.processTransactions = function (transactions, callback) {
             logDebugMsg("processTransactions called...", transactions);
-            var transactionsToAdd = [];
-            for (var _i = 0, transactions_2 = transactions; _i < transactions_2.length; _i++) {
-                var tr = transactions_2[_i];
-                if (typeof tr.height !== 'undefined') {
-                    logDebugMsg("Transaction height...", tr.height, this.wallet.lastHeight);
-                    if (tr.height >= this.wallet.lastHeight) {
-                        transactionsToAdd.push(tr);
-                    }
-                }
-            }
+            var transactionsToAdd = transactions;
             // add the raw transaction to the processing FIFO list
             this.transactionsToProcess.push(transactionsToAdd);
             if (this.intervalTransactionsProcess === 0) {

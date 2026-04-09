@@ -109,6 +109,45 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
             }
             return false;
         };
+        TransactionsExplorer.buildDeterministicTxKeyInputs = function (rawTransaction) {
+            var inputs = [];
+            for (var _i = 0, _a = rawTransaction.vin; _i < _a.length; _i++) {
+                var rawVin = _a[_i];
+                if (rawVin.type !== '02' && rawVin.type !== 'input_to_key') {
+                    return null;
+                }
+                if (typeof rawVin.value === 'undefined' || !Array.isArray(rawVin.value.key_offsets) || typeof rawVin.value.k_image !== 'string') {
+                    return null;
+                }
+                inputs.push({
+                    type: 'input_to_key',
+                    amount: '' + rawVin.value.amount,
+                    k_image: rawVin.value.k_image,
+                    key_offsets: rawVin.value.key_offsets.slice()
+                });
+            }
+            return inputs.length > 0 ? inputs : null;
+        };
+        TransactionsExplorer.deriveDeterministicTxPrivateKey = function (rawTransaction, wallet, txPubKey) {
+            if (txPubKey === void 0) { txPubKey = ''; }
+            if (wallet.keys.priv.view === '') {
+                return null;
+            }
+            var inputs = this.buildDeterministicTxKeyInputs(rawTransaction);
+            if (inputs === null) {
+                return null;
+            }
+            try {
+                var txKeys = Cn_1.CnTransactions.generate_deterministic_tx_keys(inputs, wallet.keys.priv.view);
+                return {
+                    txPrivKey: txKeys.sec,
+                    txPubKeyMatches: txPubKey !== '' && txKeys.pub === txPubKey
+                };
+            }
+            catch (e) {
+                return null;
+            }
+        };
         TransactionsExplorer.parse = function (rawTransaction, wallet) {
             var transaction = null;
             var tx_pub_key = '';
@@ -279,6 +318,8 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
                     transaction.timestamp = rawTransaction.ts;
                 if (typeof rawTransaction.hash !== 'undefined')
                     transaction.hash = rawTransaction.hash;
+                if (typeof rawTransaction.block_hash !== 'undefined')
+                    transaction.blockHash = rawTransaction.block_hash;
                 transaction.txPubKey = tx_pub_key;
                 if (paymentId !== null)
                     transaction.paymentId = paymentId;
@@ -286,14 +327,20 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
                     transaction.paymentId = Cn_1.Cn.decrypt_payment_id(encryptedPaymentId, tx_pub_key, wallet.keys.priv.view);
                 }
                 if (rawTransaction.vin[0].type === 'ff') {
-                    transaction.fees = 0;
+                    transaction.fee = 0;
                 }
                 else {
-                    transaction.fees = rawTransaction.fee;
+                    transaction.fee = rawTransaction.fee;
                 }
                 transaction.outs = outs;
                 transaction.ins = ins;
                 transaction.is_coinbase = rawTransaction.vin[0].type === 'ff';
+                if (transaction.hash !== '' && transaction.getAmount() < 0 && wallet.findTxPrivateKeyWithHash(transaction.hash) === null) {
+                    var derivedTxKey = TransactionsExplorer.deriveDeterministicTxPrivateKey(rawTransaction, wallet, tx_pub_key);
+                    if (derivedTxKey !== null && derivedTxKey.txPubKeyMatches) {
+                        wallet.addTxPrivateKeyWithTxHash(transaction.hash, derivedTxKey.txPrivKey);
+                    }
+                }
             }
             return transaction;
         };

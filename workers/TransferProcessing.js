@@ -26,6 +26,7 @@ define(["require", "exports", "../model/TransactionsExplorer", "../model/Wallet"
             var readMinersTx = typeof currentWallet.options.checkMinerTx !== 'undefined' && currentWallet.options.checkMinerTx;
             var rawTransactions = event.transactions;
             var transactions = [];
+            var txPrivateKeys = {};
             // log any raw transactions that need to be processed
             logDebugMsg("rawTransactions", rawTransactions);
             for (var _i = 0, rawTransactions_1 = rawTransactions; _i < rawTransactions_1.length; _i++) {
@@ -42,11 +43,18 @@ define(["require", "exports", "../model/TransactionsExplorer", "../model/Wallet"
                     logDebugMsg("Added tx ".concat(transaction.hash, " to currentWallet"));
                     transactions.push(transaction.export());
                     logDebugMsg("pushed tx ".concat(transaction.hash, " to transactions[]"));
+                    if (transaction.hash !== '') {
+                        var txPrivateKey = currentWallet.findTxPrivateKeyWithHash(transaction.hash);
+                        if (txPrivateKey !== null) {
+                            txPrivateKeys[transaction.hash] = txPrivateKey;
+                        }
+                    }
                 }
             }
             postMessage({
                 type: 'processed',
-                transactions: transactions
+                transactions: transactions,
+                txPrivateKeys: txPrivateKeys
             });
         }
         // let transaction = TransactionsExplorer.parse(rawTransaction, height, this.wallet);

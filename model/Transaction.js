@@ -110,18 +110,21 @@ define(["require", "exports"], function (require, exports) {
     var Transaction = /** @class */ (function () {
         function Transaction() {
             this.blockHeight = 0;
+            this.blockHash = '';
             this.txPubKey = '';
             this.hash = '';
             this.outs = [];
             this.ins = [];
             this.timestamp = 0;
             this.paymentId = '';
-            this.fees = 0;
+            this.fee = 0;
             this.is_coinbase = false;
         }
         Transaction.fromRaw = function (raw) {
             var transac = new Transaction();
             transac.blockHeight = raw.blockHeight;
+            if (typeof raw.blockHash !== 'undefined')
+                transac.blockHash = raw.blockHash;
             transac.txPubKey = raw.txPubKey;
             transac.timestamp = raw.timestamp;
             if (typeof raw.ins !== 'undefined') {
@@ -142,8 +145,8 @@ define(["require", "exports"], function (require, exports) {
             }
             if (typeof raw.paymentId !== 'undefined')
                 transac.paymentId = raw.paymentId;
-            if (typeof raw.fees !== 'undefined')
-                transac.fees = raw.fee;
+            if (typeof raw.fee !== 'undefined')
+                transac.fee = raw.fee;
             if (typeof raw.hash !== 'undefined')
                 transac.hash = raw.hash;
             if (typeof raw.is_coinbase !== 'undefined')
@@ -158,6 +161,8 @@ define(["require", "exports"], function (require, exports) {
                 hash: this.hash,
                 is_coinbase: this.is_coinbase,
             };
+            if (this.blockHash !== '')
+                data.blockHash = this.blockHash;
             if (this.ins.length > 0) {
                 var rins = [];
                 for (var _i = 0, _a = this.ins; _i < _a.length; _i++) {
@@ -176,8 +181,8 @@ define(["require", "exports"], function (require, exports) {
             }
             if (this.paymentId !== '')
                 data.paymentId = this.paymentId;
-            if (this.fees !== 0)
-                data.fees = this.fees;
+            if (this.fee !== 0)
+                data.fee = this.fee;
             return data;
         };
         Transaction.prototype.getAmount = function () {

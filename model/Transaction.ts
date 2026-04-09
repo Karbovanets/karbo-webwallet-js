@@ -98,6 +98,7 @@ export class TransactionIn {
 
 export class Transaction {
     blockHeight: number = 0;
+    blockHash: string = '';
     txPubKey: string = '';
     hash: string = '';
 
@@ -106,13 +107,14 @@ export class Transaction {
 
     timestamp: number = 0;
     paymentId: string = '';
-    fees: number = 0;
+    fee: number = 0;
 
     is_coinbase: boolean = false;
 
     static fromRaw(raw: any) {
         let transac = new Transaction();
         transac.blockHeight = raw.blockHeight;
+        if (typeof raw.blockHash !== 'undefined') transac.blockHash = raw.blockHash;
         transac.txPubKey = raw.txPubKey;
         transac.timestamp = raw.timestamp;
         if (typeof raw.ins !== 'undefined') {
@@ -130,7 +132,7 @@ export class Transaction {
             transac.outs = outs;
         }
         if (typeof raw.paymentId !== 'undefined') transac.paymentId = raw.paymentId;
-        if (typeof raw.fees !== 'undefined') transac.fees = raw.fee;
+        if (typeof raw.fee !== 'undefined') transac.fee = raw.fee;
         if (typeof raw.hash !== 'undefined') transac.hash = raw.hash;
         if (typeof raw.is_coinbase !== 'undefined') transac.is_coinbase = raw.is_coinbase;
         return transac;
@@ -144,6 +146,7 @@ export class Transaction {
             hash: this.hash,
             is_coinbase: this.is_coinbase,
         };
+        if (this.blockHash !== '') data.blockHash = this.blockHash;
         if (this.ins.length > 0) {
             let rins: any[] = [];
             for (let nin of this.ins) {
@@ -159,7 +162,7 @@ export class Transaction {
             data.outs = routs;
         }
         if (this.paymentId !== '') data.paymentId = this.paymentId;
-        if (this.fees !== 0) data.fees = this.fees;
+        if (this.fee !== 0) data.fee = this.fee;
         return data;
     }
 

@@ -197,6 +197,8 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
                         tx.ts = rawTx.timestamp;
                         tx.height = rawTx.height;
                         tx.hash = rawTx.hash;
+                        tx.block_hash = rawTx.block_hash;
+                        tx.fee = rawTx.fee;
                         if (rawTx.output_indexes.length > 0)
                             tx.global_index_start = rawTx.output_indexes[0];
                         tx.output_indexes = rawTx.output_indexes;
@@ -235,6 +237,8 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
                         tx.ts = rawTx.timestamp;
                         tx.height = rawTx.height;
                         tx.hash = rawTx.hash;
+                        tx.block_hash = rawTx.block_hash;
+                        tx.fee = rawTx.fee;
                         if (rawTx.output_indexes.length > 0) {
                             tx.global_index_start = rawTx.output_indexes[0];
                             tx.output_indexes = rawTx.output_indexes;
@@ -312,3 +316,4 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
     }
 
 }
+

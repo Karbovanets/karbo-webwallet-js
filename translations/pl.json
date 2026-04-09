@@ -132,7 +132,7 @@
         "title":"Szczegóły stransakcji",
         "txHash":"Tx hash",
         "feesOnTx":"Tx fees",
-        "blockHeight":"Wysokość bloku",
+        "blockHeight":"W bloku",
         "paymentId":"ID płatności",
         "txPrivKey":"Prywatny klucz transakcji"
       }

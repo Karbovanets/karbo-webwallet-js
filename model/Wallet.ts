@@ -241,6 +241,16 @@ export class Wallet extends Observable{
 		return null;
 	}
 
+	findWithTxHash(hash : string) : Transaction|null{
+		for(let tr of this.transactions)
+			if(tr.hash === hash)
+				return tr;
+		for(let tr of this.txsMem)
+			if(tr.hash === hash)
+				return tr;
+		return null;
+	}
+	
 	findTxPrivateKeyWithHash(hash : string) : string|null{
 		if(typeof this.txPrivateKeys[hash] !== 'undefined')
 			return this.txPrivateKeys[hash];

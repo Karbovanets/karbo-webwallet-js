@@ -132,7 +132,7 @@
         "title": "트랜젝션 세부내용",
         "txHash": "트랜젝션 해시",
         "feesOnTx": "트랜젝션 비용",
-        "blockHeight": "블록넘버",
+        "blockHeight": "블록 내",
         "paymentId": "페이먼트 ID",
         "unlockStatus": "현황",
         "unlockConfirm": "확인",

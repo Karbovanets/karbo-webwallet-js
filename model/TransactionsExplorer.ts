@@ -138,6 +138,49 @@ export class TransactionsExplorer {
 		return false;
 	}
 
+	static buildDeterministicTxKeyInputs(rawTransaction: RawDaemon_Transaction): CnTransactions.Vin[] | null {
+		let inputs: CnTransactions.Vin[] = [];
+
+		for (let rawVin of rawTransaction.vin) {
+			if (rawVin.type !== '02' && rawVin.type !== 'input_to_key') {
+				return null;
+			}
+
+			if (typeof rawVin.value === 'undefined' || !Array.isArray(rawVin.value.key_offsets) || typeof rawVin.value.k_image !== 'string') {
+				return null;
+			}
+
+			inputs.push({
+				type: 'input_to_key',
+				amount: '' + rawVin.value.amount,
+				k_image: rawVin.value.k_image,
+				key_offsets: rawVin.value.key_offsets.slice()
+			});
+		}
+
+		return inputs.length > 0 ? inputs : null;
+	}
+
+	static deriveDeterministicTxPrivateKey(rawTransaction: RawDaemon_Transaction, wallet: Wallet, txPubKey: string = ''): { txPrivKey: string, txPubKeyMatches: boolean } | null {
+		if (wallet.keys.priv.view === '') {
+			return null;
+		}
+
+		let inputs = this.buildDeterministicTxKeyInputs(rawTransaction);
+		if (inputs === null) {
+			return null;
+		}
+
+		try {
+			let txKeys = CnTransactions.generate_deterministic_tx_keys(inputs, wallet.keys.priv.view);
+			return {
+				txPrivKey: txKeys.sec,
+				txPubKeyMatches: txPubKey !== '' && txKeys.pub === txPubKey
+			};
+		} catch (e) {
+			return null;
+		}
+	}
 	static parse(rawTransaction: RawDaemon_Transaction, wallet: Wallet): Transaction | null {
 		let transaction: Transaction | null = null;
 
@@ -323,6 +366,7 @@ export class TransactionsExplorer {
 			if (typeof rawTransaction.height !== 'undefined') transaction.blockHeight = rawTransaction.height;
 			if (typeof rawTransaction.ts !== 'undefined') transaction.timestamp = rawTransaction.ts;
 			if (typeof rawTransaction.hash !== 'undefined') transaction.hash = rawTransaction.hash;
+			if (typeof rawTransaction.block_hash !== 'undefined') transaction.blockHash = rawTransaction.block_hash;
 
 			transaction.txPubKey = tx_pub_key;
 
@@ -333,15 +377,22 @@ export class TransactionsExplorer {
 			}
 
 			if (rawTransaction.vin[0].type === 'ff') {
-				transaction.fees = 0;
+				transaction.fee = 0;
 			} else {
-				transaction.fees = rawTransaction.fee;
+				transaction.fee = rawTransaction.fee;
 			}
 
 			transaction.outs = outs;
 			transaction.ins = ins;
 
 			transaction.is_coinbase = rawTransaction.vin[0].type === 'ff';
+
+			if (transaction.hash !== '' && transaction.getAmount() < 0 && wallet.findTxPrivateKeyWithHash(transaction.hash) === null) {
+				let derivedTxKey = TransactionsExplorer.deriveDeterministicTxPrivateKey(rawTransaction, wallet, tx_pub_key);
+				if (derivedTxKey !== null && derivedTxKey.txPubKeyMatches) {
+					wallet.addTxPrivateKeyWithTxHash(transaction.hash, derivedTxKey.txPrivKey);
+				}
+			}
 		}
 
 		return transaction;

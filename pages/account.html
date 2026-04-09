@@ -56,9 +56,9 @@
 				<template v-for="transaction of recentTransactions" v-if="transaction.isFullyChecked()">
 					<tr class="transaction" :class="(transaction.blockHeight === 0 ? 'pending' : '')">
 						<td class="direction">
-							<i v-if="transaction.is_coinbase" class="fa fa-gavel" aria-hidden="true"></i>
-							<i v-else-if="transaction.ins.length == 0" class="fa fa-level-down" aria-hidden="true" style="color:var(--color-success)"></i>
-							<i v-else="" class="fa fa-level-up" aria-hidden="true" style="color:var(--color-danger)"></i>
+							<i v-if="transaction.is_coinbase" class="fa fa-gavel txDirectionIcon coinbase" aria-hidden="true"></i>
+							<i v-else-if="transaction.ins.length == 0" class="fa fa-arrow-circle-down txDirectionIcon incoming" aria-hidden="true"></i>
+							<i v-else="" class="fa fa-arrow-circle-up txDirectionIcon outgoing" aria-hidden="true"></i>
 						</td>
 						<td class="timestamp">
 							<div class="txTime" v-if="transaction.blockHeight > 0">{{$d(new Date(transaction.timestamp*1000), 'long')}}</div>

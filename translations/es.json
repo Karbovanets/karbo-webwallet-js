@@ -134,7 +134,7 @@
         "title": "Detalles de la transacción",
         "txHash": "Hachís de transacción",
         "feesOnTx": "Tarifa de transacción",
-        "blockHeight": "Altura del bloque",
+        "blockHeight": "En bloque",
         "paymentId": "ID de pago",
         "txPrivKey": "Clave privada de la transacción"
       }

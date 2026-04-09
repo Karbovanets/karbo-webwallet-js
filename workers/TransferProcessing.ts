@@ -35,6 +35,7 @@ onmessage = function (data: MessageEvent) {
 
 		let rawTransactions: RawDaemon_Transaction[] = event.transactions;
 		let transactions: any[] = [];
+		let txPrivateKeys: {[hash: string]: string} = {};
 
     // log any raw transactions that need to be processed
     logDebugMsg(`rawTransactions`, rawTransactions);
@@ -54,11 +55,19 @@ onmessage = function (data: MessageEvent) {
 
 				transactions.push(transaction.export());
         logDebugMsg(`pushed tx ${transaction.hash} to transactions[]`);
+
+				if (transaction.hash !== '') {
+					let txPrivateKey = currentWallet.findTxPrivateKeyWithHash(transaction.hash);
+					if (txPrivateKey !== null) {
+						txPrivateKeys[transaction.hash] = txPrivateKey;
+					}
+				}
 			}
 		}
 		postMessage({
 			type: 'processed',
-			transactions: transactions
+			transactions: transactions,
+			txPrivateKeys: txPrivateKeys
 		});
 	}
 	// let transaction = TransactionsExplorer.parse(rawTransaction, height, this.wallet);

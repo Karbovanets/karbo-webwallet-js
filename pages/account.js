@@ -108,24 +108,30 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
                 showConfirmButton: false,
             });
         };
+        AccountView.prototype.txBlockDetailsHtml = function (transaction, explorerUrlBlock) {
+            if (transaction.blockHash !== '')
+                return "<a href=\"" + explorerUrlBlock.replace('{ID}', transaction.blockHash) + "\" target=\"_blank\">" + transaction.blockHeight + "</a>";
+            return '' + transaction.blockHeight;
+        };
         AccountView.prototype.moreInfoOnTx = function (transaction) {
             var explorerUrlHash = config.testnet ? config.testnetExplorerUrlHash : config.mainnetExplorerUrlHash;
             var explorerUrlBlock = config.testnet ? config.testnetExplorerUrlBlock : config.mainnetExplorerUrlBlock;
             var feesHtml = '';
             if (transaction.getAmount() < 0)
-                feesHtml = "<div>" + i18n.t('accountPage.txDetails.feesOnTx') + ": " + (transaction.fees / Math.pow(10, config.coinUnitPlaces)) + "</a></div>";
+                feesHtml = "<div>" + i18n.t('accountPage.txDetails.feesOnTx') + ": " + (transaction.fee / Math.pow(10, config.coinUnitPlaces)) + "</div>";
             var paymentId = '';
             if (transaction.paymentId !== '') {
-                paymentId = "<div>" + i18n.t('accountPage.txDetails.paymentId') + ": " + transaction.paymentId + "</a></div>";
+                paymentId = "<div>" + i18n.t('accountPage.txDetails.paymentId') + ": " + transaction.paymentId + "</div>";
             }
             var txPrivKeyMessage = '';
             var txPrivKey = wallet.findTxPrivateKeyWithHash(transaction.hash);
             if (txPrivKey !== null) {
-                txPrivKeyMessage = "<div>" + i18n.t('accountPage.txDetails.txPrivKey') + ": " + txPrivKey + "</a></div>";
+                txPrivKeyMessage = "<div>" + i18n.t('accountPage.txDetails.txPrivKey') + ": " + txPrivKey + "</div>";
             }
             swal({
                 title: i18n.t('accountPage.txDetails.title'),
-                html: "\n<div class=\"tl\" >\n\t<div>" + i18n.t('accountPage.txDetails.txHash') + ": <a href=\"" + explorerUrlHash.replace('{ID}', transaction.hash) + "\" target=\"_blank\">" + transaction.hash + "</a></div>\n\t" + paymentId + "\n\t" + feesHtml + "\n\t" + txPrivKeyMessage + "\n\t<div>" + i18n.t('accountPage.txDetails.blockHeight') + ": <a href=\"" + explorerUrlBlock.replace('{ID}', '' + transaction.blockHeight) + "\" target=\"_blank\">" + transaction.blockHeight + "</a></div>\n</div>"
+                confirmButtonText: i18n.t('global.invalidPasswordModal.confirmText'),
+                html: "\n<div class=\"tl\" >\n\t<div>" + i18n.t('accountPage.txDetails.txHash') + ": <a href=\"" + explorerUrlHash.replace('{ID}', transaction.hash) + "\" target=\"_blank\">" + transaction.hash + "</a></div>\n\t" + paymentId + "\n\t" + feesHtml + "\n\t" + txPrivKeyMessage + "\n\t<div>" + i18n.t('accountPage.txDetails.blockHeight') + ": " + this.txBlockDetailsHtml(transaction, explorerUrlBlock) + "</div>\n</div>"
             });
         };
         AccountView.prototype.refreshWallet = function () {
