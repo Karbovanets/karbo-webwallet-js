@@ -19,7 +19,7 @@ import {Wallet} from "../model/Wallet";
 import {DestructableView} from "../lib/numbersLab/DestructableView";
 import {Constants} from "../model/Constants";
 import {AppState} from "../model/AppState";
-import {Transaction, TransactionIn} from "../model/Transaction";
+import {Transaction} from "../model/Transaction";
 import {Cn} from "../model/Cn";
 
 let wallet : Wallet = DependencyInjectorInstance().getInstance(Wallet.name,'default', false);
@@ -120,32 +120,39 @@ class AccountView extends DestructableView{
 		});
 	}
 
+	private txBlockDetailsHtml(transaction : Transaction, explorerUrlBlock : string): string{
+		if(transaction.blockHash !== '')
+			return `<a href="`+explorerUrlBlock.replace('{ID}', transaction.blockHash)+`" target="_blank">`+transaction.blockHeight+`</a>`;
+		return ''+transaction.blockHeight;
+	}
+
 	moreInfoOnTx(transaction : Transaction){
 		let explorerUrlHash = config.testnet ? config.testnetExplorerUrlHash : config.mainnetExplorerUrlHash;
 		let explorerUrlBlock = config.testnet ? config.testnetExplorerUrlBlock : config.mainnetExplorerUrlBlock;
 		let feesHtml = '';
 		if(transaction.getAmount() < 0)
-			feesHtml = `<div>`+i18n.t('accountPage.txDetails.feesOnTx')+`: `+(transaction.fees / Math.pow(10, config.coinUnitPlaces))+`</a></div>`;
+			feesHtml = `<div>`+i18n.t('accountPage.txDetails.feesOnTx')+`: `+(transaction.fees / Math.pow(10, config.coinUnitPlaces))+`</div>`;
 		let paymentId = '';
 		if(transaction.paymentId !== ''){
-			paymentId = `<div>`+i18n.t('accountPage.txDetails.paymentId')+`: `+transaction.paymentId+`</a></div>`;
+			paymentId = `<div>`+i18n.t('accountPage.txDetails.paymentId')+`: `+transaction.paymentId+`</div>`;
 		}
 
 		let txPrivKeyMessage = '';
 		let txPrivKey = wallet.findTxPrivateKeyWithHash(transaction.hash);
 		if(txPrivKey !== null){
-			txPrivKeyMessage = `<div>`+i18n.t('accountPage.txDetails.txPrivKey')+`: `+txPrivKey+`</a></div>`;
+			txPrivKeyMessage = `<div>`+i18n.t('accountPage.txDetails.txPrivKey')+`: `+txPrivKey+`</div>`;
 		}
 
 		swal({
 			title:i18n.t('accountPage.txDetails.title'),
+			confirmButtonText: i18n.t('global.invalidPasswordModal.confirmText'),
 			html:`
 <div class="tl" >
 	<div>`+i18n.t('accountPage.txDetails.txHash')+`: <a href="`+explorerUrlHash.replace('{ID}', transaction.hash)+`" target="_blank">`+transaction.hash+`</a></div>
 	`+paymentId+`
 	`+feesHtml+`
 	`+txPrivKeyMessage+`
-	<div>`+i18n.t('accountPage.txDetails.blockHeight')+`: <a href="`+explorerUrlBlock.replace('{ID}', ''+transaction.blockHeight)+`" target="_blank">`+transaction.blockHeight+`</a></div>
+	<div>`+i18n.t('accountPage.txDetails.blockHeight')+`: `+this.txBlockDetailsHtml(transaction, explorerUrlBlock)+`</div>
 </div>`
 		});
 	}
@@ -164,3 +171,4 @@ if(wallet !== null && blockchainExplorer !== null)
 	new AccountView('#app');
 else
 	window.location.href = '#index';
+

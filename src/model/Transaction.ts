@@ -98,6 +98,7 @@ export class TransactionIn {
 
 export class Transaction {
     blockHeight: number = 0;
+    blockHash: string = '';
     txPubKey: string = '';
     hash: string = '';
 
@@ -113,6 +114,7 @@ export class Transaction {
     static fromRaw(raw: any) {
         let transac = new Transaction();
         transac.blockHeight = raw.blockHeight;
+        if (typeof raw.blockHash !== 'undefined') transac.blockHash = raw.blockHash;
         transac.txPubKey = raw.txPubKey;
         transac.timestamp = raw.timestamp;
         if (typeof raw.ins !== 'undefined') {
@@ -144,6 +146,7 @@ export class Transaction {
             hash: this.hash,
             is_coinbase: this.is_coinbase,
         };
+        if (this.blockHash !== '') data.blockHash = this.blockHash;
         if (this.ins.length > 0) {
             let rins: any[] = [];
             for (let nin of this.ins) {

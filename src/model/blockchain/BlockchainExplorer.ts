@@ -31,6 +31,7 @@ export type RawDaemon_Transaction = {
     global_index_start?: number,
     output_indexes: number[],
     height?: number,
+    block_hash?: string,
     ts?: number,//timestamp
     hash?: string,
     fee: number
@@ -55,6 +56,7 @@ export type RawDaemon_Out = {
     global_index: number, 
     public_key: string
 }
+
 
 export interface BlockchainExplorer {
     resolveOpenAlias(str: string): Promise<{ address: string, name: string | null }>;
