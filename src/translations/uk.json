@@ -369,9 +369,9 @@
 		  "label":"Мова"
 		},
 		"theme":{
-		  "label":"Theme",
-		  "dark":"Dark",
-		  "light":"Light"
+		  "label":"Тема",
+		  "dark":"Темна",
+		  "light":"Світла"
 		},
 		"readMinerTx":{
 		  "label":"Зчитувати транзакції майнінгу (тільки для соло майнінгу)"

@@ -371,9 +371,9 @@
           "label": "언어"
         },
         "theme": {
-          "label": "Theme",
-          "dark": "Dark",
-          "light": "Light"
+          "label": "테마",
+          "dark": "다크",
+          "light": "라이트"
         },
         "currency": {
           "label": "국가 통화"
