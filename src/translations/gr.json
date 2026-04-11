@@ -366,6 +366,11 @@
 		"language":{
 		  "label":"Γλώσσα"
 		},
+		"theme":{
+		  "label":"Theme",
+		  "dark":"Dark",
+		  "light":"Light"
+		},
 		"readMinerTx":{
 		  "label":"Ανάγνωση συναλλαγών miner (Μόνο για όσους κάνουν solo mining)"
 		},

@@ -367,6 +367,11 @@
 		"language":{
 		  "label":"Language"
 		},
+		"theme":{
+		  "label":"Theme",
+		  "dark":"Dark",
+		  "light":"Light"
+		},
 		"readMinerTx":{
 		  "label":"Read miner transactions (only for solo mining)"
 		},

@@ -50,6 +50,17 @@ Storage.getItem('user-lang', browserUserLang).then(function(userLang : string){
 });
 
 //========================================================
+//====================Theme loading=======================
+//========================================================
+Storage.getItem('user-theme', 'dark').then(function(userTheme : string){
+	document.documentElement.setAttribute('data-theme', userTheme);
+	let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+	if (metaThemeColor) {
+		metaThemeColor.setAttribute('content', userTheme === 'light' ? '#eef4ff' : '#111827');
+	}
+});
+
+//========================================================
 //===========Bottom Navigation active state===============
 //========================================================
 

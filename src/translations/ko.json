@@ -369,6 +369,11 @@
         "language": {
           "label": "언어"
         },
+        "theme": {
+          "label": "Theme",
+          "dark": "Dark",
+          "light": "Light"
+        },
         "currency": {
           "label": "국가 통화"
         },

@@ -366,6 +366,11 @@
 		"language":{
 		  "label":"Język"
 		},
+		"theme":{
+		  "label":"Theme",
+		  "dark":"Dark",
+		  "light":"Light"
+		},
 		"readMinerTx":{
 		  "label":"Wzzytuj transakcje wydobycia (tylko w przypadku wydobycia solo)"
 		},
