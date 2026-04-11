@@ -130,6 +130,7 @@
       },
       "txDetails": {
         "title": "트랜젝션 세부내용",
+        "amount": "금액",
         "txHash": "트랜젝션 해시",
         "feesOnTx": "트랜젝션 비용",
         "blockHeight": "블록 내",
@@ -368,6 +369,11 @@
         },
         "language": {
           "label": "언어"
+        },
+        "theme": {
+          "label": "Theme",
+          "dark": "Dark",
+          "light": "Light"
         },
         "currency": {
           "label": "국가 통화"

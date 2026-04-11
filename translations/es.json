@@ -132,6 +132,7 @@
       },
       "txDetails": {
         "title": "Detalles de la transacción",
+        "amount": "Monto",
         "txHash": "Hachís de transacción",
         "feesOnTx": "Tarifa de transacción",
         "blockHeight": "En bloque",
@@ -367,6 +368,11 @@
         },
         "language": {
           "label": "Idioma"
+        },
+        "theme": {
+          "label": "Theme",
+          "dark": "Dark",
+          "light": "Light"
         },
         "readMinerTx": {
           "label": "Leer transacciones mineras (solo para minería en solitario)"

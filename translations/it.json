@@ -130,6 +130,7 @@
 	  },
 	  "txDetails":{
 		"title":"Dettagli transazione",
+		"amount":"Importo",
 		"txHash":"Tx hash",
 		"feesOnTx":"Commissione sulla Tx",
 		"blockHeight":"Nel blocco",
@@ -365,6 +366,11 @@
 		},
 		"language":{
 		  "label":"Language"
+		},
+		"theme":{
+		  "label":"Theme",
+		  "dark":"Dark",
+		  "light":"Light"
 		},
 		"readMinerTx":{
 		  "label":"Leggi transazioni del miner(solo mining)"

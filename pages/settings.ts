@@ -44,6 +44,7 @@ class SettingsView extends DestructableView{
 
 	@VueVar(-1) maxHeight !: number;
 	@VueVar('en') language !: string;
+	@VueVar('dark') theme !: string;
 
 	@VueVar(0) nativeVersionCode !: number;
 	@VueVar('') nativeVersionNumber !: string;
@@ -68,6 +69,10 @@ class SettingsView extends DestructableView{
 			this.language = userLang;
 		});
 
+		Storage.getItem('user-theme', 'dark').then((userTheme : string) => {
+			this.theme = userTheme;
+		});
+
 		if(typeof (<any>window).cordova !== 'undefined' && typeof (<any>window).cordova.getAppVersion !== 'undefined') {
 			(<any>window).cordova.getAppVersion.getVersionNumber().then((version : string) => {
 				this.nativeVersionNumber = version;
@@ -82,6 +87,16 @@ class SettingsView extends DestructableView{
 	languageWatch() {
 		Translations.setBrowserLang(this.language);
 		Translations.loadLangTranslation(this.language);
+	}
+
+	@VueWatched()
+	themeWatch() {
+		Storage.setItem('user-theme', this.theme);
+		document.documentElement.setAttribute('data-theme', this.theme);
+		let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+		if (metaThemeColor) {
+			metaThemeColor.setAttribute('content', this.theme === 'light' ? '#eef4ff' : '#111827');
+		}
 	}
 
 	deleteWallet() {

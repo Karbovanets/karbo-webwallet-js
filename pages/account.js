@@ -116,22 +116,32 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
         AccountView.prototype.moreInfoOnTx = function (transaction) {
             var explorerUrlHash = config.testnet ? config.testnetExplorerUrlHash : config.mainnetExplorerUrlHash;
             var explorerUrlBlock = config.testnet ? config.testnetExplorerUrlBlock : config.mainnetExplorerUrlBlock;
-            var feesHtml = '';
-            if (transaction.getAmount() < 0)
-                feesHtml = "<div>" + i18n.t('accountPage.txDetails.feesOnTx') + ": " + (transaction.fee / Math.pow(10, config.coinUnitPlaces)) + "</div>";
-            var paymentId = '';
+            var amount = transaction.getAmount();
+            var amountAbs = Math.abs(amount) / Math.pow(10, config.coinUnitPlaces);
+            var isOut = amount < 0;
+            var rows = '';
+            // Amount
+            rows += "<div class=\"tx-detail-row\">\n\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.amount') + "</span>\n\t\t\t<span class=\"tx-detail-value\" style=\"color:var(".concat(isOut ? '--color-danger' : '--color-success', ");font-weight:600;\">").concat(isOut ? '-' : '+').concat(amountAbs, " ").concat(config.coinSymbol, "</span>\n\t\t</div>");
+            // Fees
+            if (isOut)
+                rows += "<div class=\"tx-detail-row\">\n\t\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.feesOnTx') + "</span>\n\t\t\t\t<span class=\"tx-detail-value\">" + (transaction.fee / Math.pow(10, config.coinUnitPlaces)) + " " + config.coinSymbol + "</span>\n\t\t\t</div>";
+            // Block height
+            rows += "<div class=\"tx-detail-row\">\n\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.blockHeight') + "</span>\n\t\t\t<span class=\"tx-detail-value\">" + this.txBlockDetailsHtml(transaction, explorerUrlBlock) + "</span>\n\t\t</div>";
+            // Payment ID
             if (transaction.paymentId !== '') {
-                paymentId = "<div>" + i18n.t('accountPage.txDetails.paymentId') + ": " + transaction.paymentId + "</div>";
+                rows += "<div class=\"tx-detail-row\">\n\t\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.paymentId') + "</span>\n\t\t\t\t<span class=\"tx-detail-value tx-detail-mono\">" + transaction.paymentId + "</span>\n\t\t\t</div>";
             }
-            var txPrivKeyMessage = '';
+            // Tx hash
+            rows += "<div class=\"tx-detail-row tx-detail-row-stack\">\n\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.txHash') + "</span>\n\t\t\t<a href=\"" + explorerUrlHash.replace('{ID}', transaction.hash) + "\" target=\"_blank\" class=\"tx-detail-hash\">" + transaction.hash + "</a>\n\t\t</div>";
+            // Tx private key
             var txPrivKey = wallet.findTxPrivateKeyWithHash(transaction.hash);
             if (txPrivKey !== null) {
-                txPrivKeyMessage = "<div>" + i18n.t('accountPage.txDetails.txPrivKey') + ": " + txPrivKey + "</div>";
+                rows += "<div class=\"tx-detail-row tx-detail-row-stack\">\n\t\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.txPrivKey') + "</span>\n\t\t\t\t<span class=\"tx-detail-hash\">" + txPrivKey + "</span>\n\t\t\t</div>";
             }
             swal({
                 title: i18n.t('accountPage.txDetails.title'),
                 confirmButtonText: i18n.t('global.invalidPasswordModal.confirmText'),
-                html: "\n<div class=\"tl\" >\n\t<div>" + i18n.t('accountPage.txDetails.txHash') + ": <a href=\"" + explorerUrlHash.replace('{ID}', transaction.hash) + "\" target=\"_blank\">" + transaction.hash + "</a></div>\n\t" + paymentId + "\n\t" + feesHtml + "\n\t" + txPrivKeyMessage + "\n\t<div>" + i18n.t('accountPage.txDetails.blockHeight') + ": " + this.txBlockDetailsHtml(transaction, explorerUrlBlock) + "</div>\n</div>"
+                html: "<div class=\"tx-detail-grid\">" + rows + "</div>"
             });
         };
         AccountView.prototype.refreshWallet = function () {

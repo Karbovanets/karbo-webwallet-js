@@ -32,6 +32,17 @@
 		</div>
 	</div>
 
+	<!-- Theme -->
+	<div class="card">
+		<div class="card-title">{{ $t("settingsPage.settingsBlock.theme.label") }}</div>
+		<div class="field">
+			<select v-model="theme">
+				<option value="dark">{{ $t("settingsPage.settingsBlock.theme.dark") }}</option>
+				<option value="light">{{ $t("settingsPage.settingsBlock.theme.light") }}</option>
+			</select>
+		</div>
+	</div>
+
 	<!-- Node Settings -->
 	<div class="card">
 		<div class="card-title">{{ $t("settingsPage.settingsBlock.customNode.label") }}</div>

@@ -33,7 +33,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../model/Translations", "../providers/BlockchainExplorerProvider", "../model/WalletWatchdog", "../model/DeleteWallet"], function (require, exports, DestructableView_1, VueAnnotate_1, DependencyInjector_1, Wallet_1, Translations_1, BlockchainExplorerProvider_1, WalletWatchdog_1, DeleteWallet_1) {
+define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../model/Storage", "../model/Translations", "../providers/BlockchainExplorerProvider", "../model/WalletWatchdog", "../model/DeleteWallet"], function (require, exports, DestructableView_1, VueAnnotate_1, DependencyInjector_1, Wallet_1, Storage_1, Translations_1, BlockchainExplorerProvider_1, WalletWatchdog_1, DeleteWallet_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var wallet = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Wallet_1.Wallet.name, 'default', false);
@@ -56,6 +56,9 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             Translations_1.Translations.getLang().then(function (userLang) {
                 _this.language = userLang;
             });
+            Storage_1.Storage.getItem('user-theme', 'dark').then(function (userTheme) {
+                _this.theme = userTheme;
+            });
             if (typeof window.cordova !== 'undefined' && typeof window.cordova.getAppVersion !== 'undefined') {
                 window.cordova.getAppVersion.getVersionNumber().then(function (version) {
                     _this.nativeVersionNumber = version;
@@ -69,6 +72,14 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
         SettingsView.prototype.languageWatch = function () {
             Translations_1.Translations.setBrowserLang(this.language);
             Translations_1.Translations.loadLangTranslation(this.language);
+        };
+        SettingsView.prototype.themeWatch = function () {
+            Storage_1.Storage.setItem('user-theme', this.theme);
+            document.documentElement.setAttribute('data-theme', this.theme);
+            var metaThemeColor = document.querySelector('meta[name="theme-color"]');
+            if (metaThemeColor) {
+                metaThemeColor.setAttribute('content', this.theme === 'light' ? '#eef4ff' : '#111827');
+            }
         };
         SettingsView.prototype.deleteWallet = function () {
             DeleteWallet_1.DeleteWallet.deleteWallet();
@@ -152,6 +163,9 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             (0, VueAnnotate_1.VueVar)('en')
         ], SettingsView.prototype, "language", void 0);
         __decorate([
+            (0, VueAnnotate_1.VueVar)('dark')
+        ], SettingsView.prototype, "theme", void 0);
+        __decorate([
             (0, VueAnnotate_1.VueVar)(0)
         ], SettingsView.prototype, "nativeVersionCode", void 0);
         __decorate([
@@ -160,6 +174,9 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
         __decorate([
             (0, VueAnnotate_1.VueWatched)()
         ], SettingsView.prototype, "languageWatch", null);
+        __decorate([
+            (0, VueAnnotate_1.VueWatched)()
+        ], SettingsView.prototype, "themeWatch", null);
         __decorate([
             (0, VueAnnotate_1.VueWatched)()
         ], SettingsView.prototype, "readSpeedWatch", null);

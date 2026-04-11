@@ -58,6 +58,16 @@ define(["require", "exports", "./lib/numbersLab/Router", "./lib/numbersLab/Depen
         });
     });
     //========================================================
+    //====================Theme loading=======================
+    //========================================================
+    Storage_1.Storage.getItem('user-theme', 'dark').then(function (userTheme) {
+        document.documentElement.setAttribute('data-theme', userTheme);
+        var metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+            metaThemeColor.setAttribute('content', userTheme === 'light' ? '#eef4ff' : '#111827');
+        }
+    });
+    //========================================================
     //===========Bottom Navigation active state===============
     //========================================================
     function updateActiveNav() {

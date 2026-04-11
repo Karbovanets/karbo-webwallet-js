@@ -130,6 +130,7 @@
 	  },
 	  "txDetails":{
 		"title":"Transaktionsdetails",
+		"amount":"Betrag",
 		"txHash":"Tx hash",
 		"feesOnTx":"Gebühren der tx",
 		"blockHeight":"Im Block",
@@ -365,6 +366,11 @@
 		},
 		"language":{
 		  "label":"Language"
+		},
+		"theme":{
+		  "label":"Theme",
+		  "dark":"Dark",
+		  "light":"Light"
 		},
 		"readMinerTx":{
 		  "label":"Miner Transaktionen lesen (nur für Leute die solo minen)"

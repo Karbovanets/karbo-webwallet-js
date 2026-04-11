@@ -62,31 +62,59 @@ class TransactionsView extends DestructableView{
 	moreInfoOnTx(transaction : Transaction){
 		let explorerUrlHash = config.testnet ? config.testnetExplorerUrlHash : config.mainnetExplorerUrlHash;
 		let explorerUrlBlock = config.testnet ? config.testnetExplorerUrlBlock : config.mainnetExplorerUrlBlock;
-		let feesHtml = '';
-		if(transaction.getAmount() < 0)
-			feesHtml = `<div>`+i18n.t('accountPage.txDetails.feesOnTx')+`: `+(transaction.fee / Math.pow(10, config.coinUnitPlaces))+`</div>`;
-		let paymentId = '';
+
+		let amount = transaction.getAmount();
+		let amountAbs = Math.abs(amount) / Math.pow(10, config.coinUnitPlaces);
+		let isOut = amount < 0;
+
+		let rows = '';
+
+		// Amount
+		rows += `<div class="tx-detail-row">
+			<span class="tx-detail-label">`+i18n.t('accountPage.txDetails.amount')+`</span>
+			<span class="tx-detail-value" style="color:var(${isOut ? '--color-danger' : '--color-success'});font-weight:600;">${isOut ? '-' : '+'}${amountAbs} ${config.coinSymbol}</span>
+		</div>`;
+
+		// Fees
+		if(isOut)
+			rows += `<div class="tx-detail-row">
+				<span class="tx-detail-label">`+i18n.t('accountPage.txDetails.feesOnTx')+`</span>
+				<span class="tx-detail-value">`+(transaction.fee / Math.pow(10, config.coinUnitPlaces))+` `+config.coinSymbol+`</span>
+			</div>`;
+
+		// Block height
+		rows += `<div class="tx-detail-row">
+			<span class="tx-detail-label">`+i18n.t('accountPage.txDetails.blockHeight')+`</span>
+			<span class="tx-detail-value">`+this.txBlockDetailsHtml(transaction, explorerUrlBlock)+`</span>
+		</div>`;
+
+		// Payment ID
 		if(transaction.paymentId !== ''){
-			paymentId = `<div>`+i18n.t('accountPage.txDetails.paymentId')+`: `+transaction.paymentId+`</div>`;
+			rows += `<div class="tx-detail-row">
+				<span class="tx-detail-label">`+i18n.t('accountPage.txDetails.paymentId')+`</span>
+				<span class="tx-detail-value tx-detail-mono">`+transaction.paymentId+`</span>
+			</div>`;
 		}
 
-		let txPrivKeyMessage = '';
+		// Tx hash
+		rows += `<div class="tx-detail-row tx-detail-row-stack">
+			<span class="tx-detail-label">`+i18n.t('accountPage.txDetails.txHash')+`</span>
+			<a href="`+explorerUrlHash.replace('{ID}', transaction.hash)+`" target="_blank" class="tx-detail-hash">`+transaction.hash+`</a>
+		</div>`;
+
+		// Tx private key
 		let txPrivKey = wallet.findTxPrivateKeyWithHash(transaction.hash);
 		if(txPrivKey !== null){
-			txPrivKeyMessage = `<div>`+i18n.t('accountPage.txDetails.txPrivKey')+`: `+txPrivKey+`</div>`;
+			rows += `<div class="tx-detail-row tx-detail-row-stack">
+				<span class="tx-detail-label">`+i18n.t('accountPage.txDetails.txPrivKey')+`</span>
+				<span class="tx-detail-hash">`+txPrivKey+`</span>
+			</div>`;
 		}
 
 		swal({
 			title:i18n.t('accountPage.txDetails.title'),
 			confirmButtonText: i18n.t('global.invalidPasswordModal.confirmText'),
-			html:`
-<div class="tl" >
-	<div>`+i18n.t('accountPage.txDetails.txHash')+`: <a href="`+explorerUrlHash.replace('{ID}', transaction.hash)+`" target="_blank">`+transaction.hash+`</a></div>
-	`+paymentId+`
-	`+feesHtml+`
-	`+txPrivKeyMessage+`
-	<div>`+i18n.t('accountPage.txDetails.blockHeight')+`: `+this.txBlockDetailsHtml(transaction, explorerUrlBlock)+`</div>
-</div>`
+			html:`<div class="tx-detail-grid">`+rows+`</div>`
 		});
 	}
 

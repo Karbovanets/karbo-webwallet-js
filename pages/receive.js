@@ -97,11 +97,12 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "../model/
                 this.address = wallet.getPublicAddress();
         };
         AccountView.prototype.generateQrCode = function () {
+            var isLight = document.documentElement.getAttribute('data-theme') === 'light';
             var el = kjua({
                 text: this.getAddressEncoded(),
                 size: 300,
-                fill: '#e2e8f0',
-                back: '#1e293b',
+                fill: isLight ? '#10213b' : '#e2e8f0',
+                back: isLight ? '#ffffff' : '#1e293b',
                 rounded: 80,
             });
             $('#qrCodeContainer').html(el);
