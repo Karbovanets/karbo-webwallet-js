@@ -370,9 +370,9 @@
           "label": "Idioma"
         },
         "theme": {
-          "label": "Theme",
-          "dark": "Dark",
-          "light": "Light"
+          "label": "Tema",
+          "dark": "Oscuro",
+          "light": "Claro"
         },
         "readMinerTx": {
           "label": "Leer transacciones mineras (solo para minería en solitario)"

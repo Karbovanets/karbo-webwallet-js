@@ -368,9 +368,9 @@
 		  "label":"Language"
 		},
 		"theme":{
-		  "label":"Theme",
-		  "dark":"Dark",
-		  "light":"Light"
+		  "label":"Tema",
+		  "dark":"Scuro",
+		  "light":"Chiaro"
 		},
 		"readMinerTx":{
 		  "label":"Leggi transazioni del miner(solo mining)"

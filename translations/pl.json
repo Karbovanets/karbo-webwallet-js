@@ -368,9 +368,9 @@
 		  "label":"Język"
 		},
 		"theme":{
-		  "label":"Theme",
-		  "dark":"Dark",
-		  "light":"Light"
+		  "label":"Motyw",
+		  "dark":"Ciemny",
+		  "light":"Jasny"
 		},
 		"readMinerTx":{
 		  "label":"Wzzytuj transakcje wydobycia (tylko w przypadku wydobycia solo)"

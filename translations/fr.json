@@ -368,9 +368,9 @@
 		  "label":"Language"
 		},
 		"theme":{
-		  "label":"Theme",
-		  "dark":"Dark",
-		  "light":"Light"
+		  "label":"Thème",
+		  "dark":"Sombre",
+		  "light":"Clair"
 		},
 		"readMinerTx":{
 		  "label":"Lire les transactions de minage (uniquement pour les personnes faisant du solo-minage)"
