@@ -130,6 +130,7 @@
 	  },
 	  "txDetails":{
 		"title":"Transaktionsdetails",
+		"amount":"Betrag",
 		"txHash":"Tx hash",
 		"feesOnTx":"Gebühren der tx",
 		"blockHeight":"Im Block",

@@ -130,6 +130,7 @@
 	  },
 	  "txDetails":{
 		"title":"Dettagli transazione",
+		"amount":"Importo",
 		"txHash":"Tx hash",
 		"feesOnTx":"Commissione sulla Tx",
 		"blockHeight":"Nel blocco",

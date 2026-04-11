@@ -1061,6 +1061,49 @@ html[data-theme="light"] .receiveTab .qrCode canvas {
 	animation: spin 0.6s linear infinite;
 }
 
+/* =================== TX DETAIL DIALOG =================== */
+.tx-detail-grid {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	text-align: left;
+}
+.tx-detail-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.625rem 0;
+	border-bottom: 1px solid var(--color-border);
+}
+.tx-detail-row:last-child { border-bottom: none; }
+.tx-detail-row-stack {
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.25rem;
+}
+.tx-detail-label {
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: var(--color-text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}
+.tx-detail-value {
+	font-size: 0.875rem;
+	color: var(--color-text);
+}
+.tx-detail-mono {
+	font-family: 'Consolas', 'Courier New', monospace;
+	font-size: 0.75rem;
+}
+.tx-detail-hash {
+	font-family: 'Consolas', 'Courier New', monospace;
+	font-size: 0.6875rem;
+	color: var(--color-primary-light) !important;
+	word-break: break-all;
+	line-height: 1.5;
+}
+
 /* =================== SWEETALERT DARK THEME =================== */
 .swal2-popup {
 	background: var(--color-surface-light) !important;

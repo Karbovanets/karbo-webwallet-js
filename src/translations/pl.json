@@ -130,6 +130,7 @@
       },
       "txDetails":{
         "title":"Szczegóły stransakcji",
+        "amount":"Kwota",
         "txHash":"Tx hash",
         "feesOnTx":"Tx fees",
         "blockHeight":"W bloku",
