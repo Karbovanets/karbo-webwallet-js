@@ -1162,17 +1162,16 @@ html[data-theme="light"] .receiveTab .qrCode canvas {
 .transactions.compact td.noTransactions { font-size: 0.8125rem; }
 
 /* =================== ACCOUNT IDENTITY =================== */
-.account-identity {
+.account-identity-row {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
 }
-.account-number-section {
+.account-number-card {
 	min-width: 0;
 }
-.account-address-section {
+.account-address-card {
 	min-width: 0;
-	flex: 1;
 }
 .account-number-display {
 	font-size: 1.375rem;
@@ -1180,10 +1179,6 @@ html[data-theme="light"] .receiveTab .qrCode canvas {
 	font-family: monospace;
 	color: var(--color-text);
 	letter-spacing: 0.025em;
-}
-.btn-sm {
-	padding: 0.25rem 0.75rem;
-	font-size: 0.75rem;
 }
 
 @media screen and (min-width: 800px) {
@@ -1194,9 +1189,14 @@ html[data-theme="light"] .receiveTab .qrCode canvas {
 		--page-max-width: 96rem;
 	}
 
-	.account-identity {
+	.account-identity-row {
 		flex-direction: row;
-		align-items: flex-end;
+	}
+	.account-number-card {
+		flex: 1;
+	}
+	.account-address-card {
+		flex: 1;
 	}
 
 	#topHeader {

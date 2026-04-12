@@ -59,14 +59,18 @@ class AccountView extends DestructableView{
 		}, 1*1000);
 		this.refresh();
 
-		blockchainExplorer.getAccountNumber(wallet.getPublicAddress()).then(function (accountNumber: string | null) {
+		if (typeof blockchainExplorer.getAccountNumber === 'function') {
+			blockchainExplorer.getAccountNumber(wallet.getPublicAddress()).then(function (accountNumber: string | null) {
+				self.accountNumberLoading = false;
+				if (accountNumber !== null) {
+					self.accountNumber = accountNumber;
+				}
+			}).catch(function () {
+				self.accountNumberLoading = false;
+			});
+		} else {
 			self.accountNumberLoading = false;
-			if (accountNumber !== null) {
-				self.accountNumber = accountNumber;
-			}
-		}).catch(function () {
-			self.accountNumberLoading = false;
-		});
+		}
 	}
 
 	destruct(): Promise<void> {
