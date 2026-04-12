@@ -49,14 +49,17 @@ class SettingsView extends DestructableView{
 	@VueVar(0) nativeVersionCode !: number;
 	@VueVar('') nativeVersionNumber !: string;
 
+	private initializing : boolean = true;
+
 	constructor(container : string) {
 		super(container);
 		let self = this;
 		this.readSpeed = wallet.options.readSpeed;
 		this.checkMinerTx = wallet.options.checkMinerTx;
 
-		this.customNode = wallet.options.customNode;
 		this.nodeUrl = wallet.options.nodeUrl;
+		this.customNode = wallet.options.customNode;
+		this.initializing = false;
 
 		this.creationHeight = wallet.creationHeight;
 		this.scanHeight = wallet.lastHeight;
@@ -123,7 +126,9 @@ class SettingsView extends DestructableView{
 
 	@VueWatched()	readSpeedWatch(){this.updateWalletOptions();}
 	@VueWatched()	checkMinerTxWatch(){this.updateWalletOptions();}
-	@VueWatched()	customNodeWatch(){this.updateWalletOptions();}
+	@VueWatched()	customNodeWatch(){
+		if (!this.initializing) this.applyConnectionSettings();
+	}
 
 	@VueWatched()	creationHeightWatch() {
 		if(this.creationHeight < 0)this.creationHeight = 0;
@@ -150,13 +155,29 @@ class SettingsView extends DestructableView{
 		walletWatchdog.signalWalletUpdate();
 	}
 
-	updateConnectionSettings() {
+	private applyConnectionSettings() {
 		let options = wallet.options;
 		options.customNode = this.customNode;
 		options.nodeUrl = this.nodeUrl;
-		config.nodeUrl = this.nodeUrl;
 		wallet.options = options;
+		if (this.customNode && this.nodeUrl !== '') {
+			config.nodeUrl = this.nodeUrl;
+		} else if (!this.customNode) {
+			let randNodeInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
+			config.nodeUrl = config.nodeList[randNodeInt];
+		}
 		walletWatchdog.signalWalletUpdate();
+	}
+
+	updateConnectionSettings() {
+		this.applyConnectionSettings();
+		swal({
+			type: 'success',
+			title: i18n.t('settingsPage.nodeUpdatedNotice'),
+			html: config.nodeUrl,
+			timer: 2000,
+			showConfirmButton: false,
+		});
 	}
 }
 

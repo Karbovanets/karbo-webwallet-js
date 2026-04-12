@@ -91,6 +91,7 @@ export class Wallet extends Observable{
 	signalChanged = () => {
 		this.modifiedTS = new Date();
 		this.modified = true;
+		this.notify(Observable.EVENT_MODIFIED);
 	}
 
 	exportToRaw() : RawWallet{
