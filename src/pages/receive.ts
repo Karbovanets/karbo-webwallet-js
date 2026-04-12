@@ -21,8 +21,11 @@ import {VueVar, VueWatched} from "../lib/numbersLab/VueAnnotate";
 import {CoinUri} from "../model/CoinUri";
 import {Nfc} from "../model/Nfc";
 import {Cn} from "../model/Cn";
+import {BlockchainExplorerProvider} from "../providers/BlockchainExplorerProvider";
+import {BlockchainExplorer} from "../model/blockchain/BlockchainExplorer";
 
 let wallet : Wallet = DependencyInjectorInstance().getInstance(Wallet.name,'default', false);
+let blockchainExplorer : BlockchainExplorer = BlockchainExplorerProvider.getInstance();
 
 function setTextInClipboard(inputId : string){
 	/*let inputElement : HTMLInputElement = <HTMLInputElement>document.getElementById(inputId);
@@ -54,6 +57,7 @@ class AccountView extends DestructableView{
 	@VueVar('') txDescription !: string;
 	@VueVar(false) hasNfc !: boolean;
 	@VueVar(false) hasWritableNfc !: boolean;
+	@VueVar('') accountNumber !: string;
 
 	@Autowire(Nfc.name) nfc !: Nfc;
 
@@ -65,6 +69,13 @@ class AccountView extends DestructableView{
 		this.rawAddress = wallet.getPublicAddress();
 		this.address = wallet.getPublicAddress();
 		this.generateQrCode();
+
+		let self = this;
+		blockchainExplorer.getAccountNumber(wallet.getPublicAddress()).then(function (accountNumber: string | null) {
+			if (accountNumber !== null) {
+				self.accountNumber = accountNumber;
+			}
+		});
 	}
 
 	private stringToHex(str : string){
@@ -125,6 +136,16 @@ class AccountView extends DestructableView{
 
 	copyAddress(){
 		setTextInClipboard('rawAddress');
+		swal({
+			type: 'success',
+			title: i18n.t('receivePage.copyNotice'),
+			timer: 1500,
+			showConfirmButton: false,
+		});
+	}
+
+	copyAccountNumber(){
+		setTextInClipboard('accountNumber');
 		swal({
 			type: 'success',
 			title: i18n.t('receivePage.copyNotice'),

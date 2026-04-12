@@ -919,6 +919,40 @@ export namespace Cn{
 		return Cn.formatMoney(units) + ' ' + config.coinSymbol;
 	}
 
+	const LUHN36_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+	function luhnMod36Check(input: string): string {
+		let factor = 2;
+		let sum = 0;
+		const n = 36;
+		for (let i = input.length - 1; i >= 0; i--) {
+			let codePoint = LUHN36_ALPHABET.indexOf(input[i].toUpperCase());
+			if (codePoint < 0) throw 'invalid character in account number';
+			let addend = factor * codePoint;
+			factor = factor === 2 ? 1 : 2;
+			addend = Math.floor(addend / n) + (addend % n);
+			sum += addend;
+		}
+		let remainder = sum % n;
+		let checkCodePoint = (n - remainder) % n;
+		return LUHN36_ALPHABET[checkCodePoint];
+	}
+
+	export function isValidAccountNumber(str: string): boolean {
+		let match = str.match(/^(\d+)-(\d+)-([0-9A-Za-z])$/);
+		if (!match) return false;
+		let height = match[1];
+		let txIndex = match[2];
+		let checkChar = match[3].toUpperCase();
+		let input = height + txIndex;
+		try {
+			let expected = luhnMod36Check(input);
+			return expected === checkChar;
+		} catch (e) {
+			return false;
+		}
+	}
+
 }
 
 export namespace CnTransactions{

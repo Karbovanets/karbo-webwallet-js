@@ -21,6 +21,13 @@
 				<span class="action" @click="copyAddress()"><i class="fa fa-copy"></i></span>
 			</div>
 		</div>
+		<div class="field" v-if="accountNumber !== ''">
+			<label>{{ $t("receivePage.receiveBlock.address.accountNumberLabel") }}</label>
+			<div class="subfield readonly" style="position:relative;">
+				<input type="text" v-model="accountNumber" id="accountNumber" readonly="readonly" style="font-size:1rem;font-family:monospace;padding-right:2.5rem;"/>
+				<span class="action" @click="copyAccountNumber()"><i class="fa fa-copy"></i></span>
+			</div>
+		</div>
 	</div>
 
 	<!-- Optional QR customization -->

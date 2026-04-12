@@ -234,9 +234,10 @@
 	  "title":"Envoyer des KRB",
 	  "sendBlock":{
 		"address":{
-		  "label":"Adresse de destination",
-		  "placeholder":"Écrivez l'adresse où vous voulez envoyer des fonds",
+		  "label":"Adresse de destination or account number",
+		  "placeholder":"Address or account number (e.g. 1256970-1-P)",
 		  "invalid":"L'adresse de destination est invalide",
+		  "accountNumberNotFound":"Account number not found",
 		  "fundsTo":"Les fonds seront envoyé à ",
 		  "receiver":"Destinataire",
 		  "description":"Description"
@@ -307,7 +308,8 @@
 	  "receiveBlock":{
 		"address":{
 		  "title":"Votre adresse pour recevoir des fonds",
-		  "label":"Donner cette adresse pour recevoir des fonds"
+		  "label":"Donner cette adresse pour recevoir des fonds",
+		  "accountNumberLabel":"Account number"
 		},
 		"qrCode":{
 		  "title":"Ou personnalisez ce QR Code",

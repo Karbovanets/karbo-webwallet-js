@@ -50,6 +50,9 @@ class SendView extends DestructableView {
 	@VueVar(null) txDescription !: string | null;
 	@VueVar(true) openAliasValid !: boolean;
 
+	@VueVar(null) accountNumberAddress !: string | null;
+	@VueVar(true) accountNumberValid !: boolean;
+
 	@VueVar(false) qrScanning !: boolean;
 	@VueVar(false) nfcAvailable !: boolean;
 
@@ -86,6 +89,8 @@ class SendView extends DestructableView {
 		this.qrScanning = false;
 		this.amountToSendValid = false;
 		this.domainAliasAddress = null;
+		this.accountNumberAddress = null;
+		this.accountNumberValid = true;
 		this.txDestinationName = null;
 		this.txDescription = null;
 		this.mixIn = config.defaultMixin.toString();
@@ -387,8 +392,37 @@ class SendView extends DestructableView {
 
 	@VueWatched()
 	destinationAddressUserWatch() {
-		if (this.destinationAddressUser.indexOf('.') !== -1) {
-			let self = this;
+		let self = this;
+		if (Cn.isValidAccountNumber(this.destinationAddressUser)) {
+			this.openAliasValid = true;
+			this.domainAliasAddress = null;
+			if (this.timeoutResolveAlias !== 0)
+				clearTimeout(this.timeoutResolveAlias);
+
+			this.timeoutResolveAlias = <any>setTimeout(function () {
+				blockchainExplorer.resolveAccountNumber(self.destinationAddressUser).then(function (address: string) {
+					try {
+						Cn.decode_address(address);
+						self.destinationAddress = address;
+						self.accountNumberAddress = address;
+						self.destinationAddressValid = true;
+						self.accountNumberValid = true;
+					} catch (e) {
+						self.destinationAddressValid = false;
+						self.accountNumberValid = false;
+						self.accountNumberAddress = null;
+					}
+					self.timeoutResolveAlias = 0;
+				}).catch(function () {
+					self.destinationAddressValid = false;
+					self.accountNumberValid = false;
+					self.accountNumberAddress = null;
+					self.timeoutResolveAlias = 0;
+				});
+			}, 400);
+		} else if (this.destinationAddressUser.indexOf('.') !== -1) {
+			this.accountNumberAddress = null;
+			this.accountNumberValid = true;
 			if (this.timeoutResolveAlias !== 0)
 				clearTimeout(this.timeoutResolveAlias);
 
@@ -413,6 +447,9 @@ class SendView extends DestructableView {
 			}, 400);
 		} else {
 			this.openAliasValid = true;
+			this.accountNumberValid = true;
+			this.accountNumberAddress = null;
+			this.domainAliasAddress = null;
 			try {
 				Cn.decode_address(this.destinationAddressUser);
 				this.destinationAddressValid = true;

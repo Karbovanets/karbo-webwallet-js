@@ -235,8 +235,10 @@
     "title":"Wyślij KRB",
     "sendBlock":{
       "address":{
-        "label":"Adres dotacji",
+        "label":"Adres dotacji or account number",
+        "placeholder":"Address or account number (e.g. 1256970-1-P)",
         "invalid":"Adres docelowy jest nieprawidłowy",
+        "accountNumberNotFound":"Account number not found",
         "fundsTo":"Środki zostaną wysłane na adres",
         "receiver":"Odbiorca",
         "description":"Opis"
@@ -307,7 +309,8 @@
 	  "receiveBlock":{
 		"address":{
 		  "title":"Twój adres, aby otrzymać fundusze:",
-		  "label":"Podaj ten adres, aby otrzymać fundusze"
+		  "label":"Podaj ten adres, aby otrzymać fundusze",
+		  "accountNumberLabel":"Account number"
 		},
 		"qrCode":{
 		  "title":"Lub spersonalizuj kod QR:",
