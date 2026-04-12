@@ -470,7 +470,8 @@ export class TransactionsExplorer {
 		mix_outs: any[] = [],
 		mixin: number,
 		neededFee: number,
-		payment_id: string
+		payment_id: string,
+		accountRegistration: boolean = false
 	): Promise<{ raw: { hash: string, prvkey: string, raw: string }, signed: any }> {
 		return new Promise<{ raw: { hash: string, prvkey: string, raw: string }, signed: any }>(function (resolve, reject) {
 			let signed;
@@ -494,7 +495,7 @@ export class TransactionsExplorer {
 					splittedDsts, usingOuts,
 					mix_outs, mixin, neededFee,
 					payment_id, pid_encrypt,
-					realDestViewKey, 0, rct);
+					realDestViewKey, 0, rct, accountRegistration);
 
 				console.log("signed tx: ", signed);
 				let raw_tx_and_hash = CnTransactions.serialize_tx_with_hash(signed);
@@ -514,7 +515,8 @@ export class TransactionsExplorer {
 		blockchainHeight: number,
 		obtainMixOutsCallback: (amounts: number[], numberOuts: number) => Promise<RawDaemon_Out[]>,
 		confirmCallback: (amount: number, feesAmount: number) => Promise<void>,
-		mixin: number = config.defaultMixin):
+		mixin: number = config.defaultMixin,
+		accountRegistration: boolean = false):
 		Promise<{ raw: { hash: string, prvkey: string, raw: string }, signed: any }> {
 		return new Promise<{ raw: { hash: string, prvkey: string, raw: string }, signed: any }>(function (resolve, reject) {
 
@@ -647,7 +649,7 @@ export class TransactionsExplorer {
 					console.log('amounts', amounts);
 					console.log('lots_mix_outs', lotsMixOuts);
 
-					TransactionsExplorer.createRawTx(dsts, wallet, false, usingOuts, pid_encrypt, lotsMixOuts, mixin, neededFee, paymentId).then(function (data: { raw: { hash: string, prvkey: string, raw: string }, signed: any }) {
+					TransactionsExplorer.createRawTx(dsts, wallet, false, usingOuts, pid_encrypt, lotsMixOuts, mixin, neededFee, paymentId, accountRegistration).then(function (data: { raw: { hash: string, prvkey: string, raw: string }, signed: any }) {
 						resolve(data);
 					}).catch(function (e) {
 						reject(e);

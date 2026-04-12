@@ -111,6 +111,19 @@
 	  "subtitle": "Apperçu de votre compte et de l'historique des transactions",
 	  "recentTransactions": "Transactions récentes",
 	  "allTransactions": "Toutes les transactions",
+	  "accountNumber": "Account number",
+	  "address": "Address",
+	  "registerAccount": "Register account number",
+	  "registerAccountModal": {
+		"title": "Register Account Number",
+		"content": "This will create a transaction to register a human-readable account number for your wallet address. A small network fee will be charged.",
+		"confirmText": "Register",
+		"cancelText": "Cancel",
+		"confirmingTitle": "Confirm Registration",
+		"confirmingContent": "Network fee: {fees} KRB",
+		"successTitle": "Registration Sent!",
+		"successContent": "Your account number will be available after the transaction is confirmed."
+	  },
 	  "synchronizingBlock": {
 		"text": "Synchronisation en cours "
 	  },

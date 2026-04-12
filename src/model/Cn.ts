@@ -59,7 +59,8 @@ let TX_EXTRA_TAGS = {
 	PUBKEY: '01',
 	NONCE: '02',
 	MERGE_MINING: '03',
-	ADDITIONAL_PUBKEY: '04'
+	ADDITIONAL_PUBKEY: '04',
+	ACCOUNT_REGISTRATION: '04'
 };
 let TX_EXTRA_NONCE_TAGS = {
 	PAYMENT_ID: '00',
@@ -1192,6 +1193,12 @@ export namespace CnTransactions{
 		return offsets;
 	}
 
+	export function add_account_registration_to_extra(extra : string, spendPubKey : string, viewPubKey : string) {
+		if (spendPubKey.length !== 64 || viewPubKey.length !== 64) throw "Invalid pubkey length";
+		extra += TX_EXTRA_TAGS.ACCOUNT_REGISTRATION + spendPubKey + viewPubKey;
+		return extra;
+	}
+
 	//TODO merge
 	export function add_pub_key_to_extra(extra : string, pubkey : string) {
 		if (pubkey.length !== 64) throw "Invalid pubkey length";
@@ -1951,9 +1958,13 @@ export namespace CnTransactions{
 		pid_encrypt : boolean,
 		realDestViewKey : string|undefined,
 		unlock_time : number = 0,
-		rct:boolean
+		rct:boolean,
+		accountRegistration:boolean = false
 	){
 		let extra = '';
+		if (accountRegistration) {
+			extra = CnTransactions.add_account_registration_to_extra(extra, keys.spend.pub, keys.view.pub);
+		}
 		let tx : CnTransactions.Transaction = {
 			unlock_time: unlock_time,
 			version: rct ? CURRENT_TX_VERSION : OLD_TX_VERSION,
@@ -2222,7 +2233,8 @@ export namespace CnTransactions{
 									   pid_encrypt : boolean,
 									   realDestViewKey : string|undefined,
 									   unlock_time : number = 0,
-									   rct:boolean
+									   rct:boolean,
+									   accountRegistration:boolean = false
 	) : CnTransactions.Transaction{
 		let i, j;
 		if (dsts.length === 0) {
@@ -2377,7 +2389,7 @@ export namespace CnTransactions{
 		} else if (cmp > 0) {
 			throw "Need more money than found! (have: " + Cn.formatMoney(found_money) + " need: " + Cn.formatMoney(needed_money) + ")";
 		}
-		return CnTransactions.construct_tx(keys, sources, dsts, fee_amount, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct);
+		return CnTransactions.construct_tx(keys, sources, dsts, fee_amount, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct, accountRegistration);
 	}
 }
 

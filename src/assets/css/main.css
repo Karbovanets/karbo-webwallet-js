@@ -1161,12 +1161,42 @@ html[data-theme="light"] .receiveTab .qrCode canvas {
 .transactions.compact .transaction .moreInfo { width: 8%; font-size: 0.875rem; padding-right: 4px; }
 .transactions.compact td.noTransactions { font-size: 0.8125rem; }
 
+/* =================== ACCOUNT IDENTITY =================== */
+.account-identity {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+.account-number-section {
+	min-width: 0;
+}
+.account-address-section {
+	min-width: 0;
+	flex: 1;
+}
+.account-number-display {
+	font-size: 1.375rem;
+	font-weight: 600;
+	font-family: monospace;
+	color: var(--color-text);
+	letter-spacing: 0.025em;
+}
+.btn-sm {
+	padding: 0.25rem 0.75rem;
+	font-size: 0.75rem;
+}
+
 @media screen and (min-width: 800px) {
 	:root {
 		--header-height: 64px;
 		--nav-height: 0px;
 		--sidebar-width: 16.5rem;
 		--page-max-width: 96rem;
+	}
+
+	.account-identity {
+		flex-direction: row;
+		align-items: flex-end;
 	}
 
 	#topHeader {

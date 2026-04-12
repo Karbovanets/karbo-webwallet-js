@@ -111,6 +111,19 @@
       "subtitle": "계정 정보 및 트랜젝션 기록",
       "recentTransactions": "최근 거래",
       "allTransactions": "모든 거래",
+      "accountNumber": "Account number",
+      "address": "Address",
+      "registerAccount": "Register account number",
+      "registerAccountModal": {
+        "title": "Register Account Number",
+        "content": "This will create a transaction to register a human-readable account number for your wallet address. A small network fee will be charged.",
+        "confirmText": "Register",
+        "cancelText": "Cancel",
+        "confirmingTitle": "Confirm Registration",
+        "confirmingContent": "Network fee: {fees} KRB",
+        "successTitle": "Registration Sent!",
+        "successContent": "Your account number will be available after the transaction is confirmed."
+      },
       "synchronizingBlock": {
         "text": "동기화중..."
       },
