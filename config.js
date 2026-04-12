@@ -7,10 +7,7 @@ myGlobal.config = {
         "https://node.karbo.org:32448/",
         "https://node.karbo.io:32448/"
     ],
-    apiUrl: [
-        "https://node.karbo.io:32448/"
-    ],
-    nodeUrl: "https://node.karbo.org:32448/",
+    nodeUrl: "",
     mainnetExplorerUrl: "http://explorer.karbowanec.com/",
     mainnetExplorerUrlHash: "http://explorer.karbowanec.com/?hash={ID}#blockchain_transaction",
     mainnetExplorerUrlBlock: "http://explorer.karbowanec.com/?hash={ID}#blockchain_block",

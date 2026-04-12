@@ -353,6 +353,7 @@
 	"settingsPage":{
 	  "title":"Налаштування",
 	  "subtitle":"Тут ви можете змінити параметри",
+	  "nodeUpdatedNotice":"Вузол оновлено",
 	  "versionBlock":{
 		"versionNumber":"Номер версії: ",
 		"versionCode":"Код версії: "

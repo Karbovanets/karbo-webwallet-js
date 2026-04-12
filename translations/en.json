@@ -353,6 +353,7 @@
 	"settingsPage":{
 	  "title":"Settings",
 	  "subtitle":"Change your parameters here",
+	  "nodeUpdatedNotice":"Node updated",
 	  "versionBlock":{
 		"versionNumber":"Version number: ",
 		"versionCode":"Version code: "

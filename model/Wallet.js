@@ -81,6 +81,7 @@ define(["require", "exports", "./Transaction", "./KeysRepository", "../lib/numbe
             _this.signalChanged = function () {
                 _this.modifiedTS = new Date();
                 _this.modified = true;
+                _this.notify(Observable_1.Observable.EVENT_MODIFIED);
             };
             _this.keyImages = [];
             _this.txOutIndexes = [];

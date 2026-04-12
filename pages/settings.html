@@ -50,11 +50,11 @@
 			<input type="checkbox" v-model="customNode">
 			<label>{{ $t("settingsPage.settingsBlock.customNode.label") }}</label>
 		</div>
-		<div class="field">
+		<div class="field" v-if="customNode">
 			<label>{{ $t("settingsPage.settingsBlock.nodeUrl.label") }}</label>
-			<input type="url" placeholder="https://node.karbo.org:32448/" v-model="nodeUrl" />
+			<input type="url" v-model="nodeUrl" />
 		</div>
-		<button @click="updateConnectionSettings()" class="btn" style="width:100%;">{{ $t("settingsPage.walletSettings.updateButton") }}</button>
+		<button v-if="customNode" @click="updateConnectionSettings()" class="btn" style="width:100%;">{{ $t("settingsPage.walletSettings.updateButton") }}</button>
 	</div>
 
 	<!-- Sync Settings -->

@@ -43,11 +43,13 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
         __extends(SettingsView, _super);
         function SettingsView(container) {
             var _this = _super.call(this, container) || this;
+            _this.initializing = true;
             var self = _this;
             _this.readSpeed = wallet.options.readSpeed;
             _this.checkMinerTx = wallet.options.checkMinerTx;
-            _this.customNode = wallet.options.customNode;
             _this.nodeUrl = wallet.options.nodeUrl;
+            _this.customNode = wallet.options.customNode;
+            _this.initializing = false;
             _this.creationHeight = wallet.creationHeight;
             _this.scanHeight = wallet.lastHeight;
             blockchainExplorer.getHeight().then(function (height) {
@@ -103,7 +105,10 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
         };
         SettingsView.prototype.readSpeedWatch = function () { this.updateWalletOptions(); };
         SettingsView.prototype.checkMinerTxWatch = function () { this.updateWalletOptions(); };
-        SettingsView.prototype.customNodeWatch = function () { this.updateWalletOptions(); };
+        SettingsView.prototype.customNodeWatch = function () {
+            if (!this.initializing)
+                this.applyConnectionSettings();
+        };
         SettingsView.prototype.creationHeightWatch = function () {
             if (this.creationHeight < 0)
                 this.creationHeight = 0;
@@ -130,13 +135,29 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             wallet.lastHeight = this.scanHeight;
             walletWatchdog.signalWalletUpdate();
         };
-        SettingsView.prototype.updateConnectionSettings = function () {
+        SettingsView.prototype.applyConnectionSettings = function () {
             var options = wallet.options;
             options.customNode = this.customNode;
             options.nodeUrl = this.nodeUrl;
-            config.nodeUrl = this.nodeUrl;
             wallet.options = options;
+            if (this.customNode && this.nodeUrl !== '') {
+                config.nodeUrl = this.nodeUrl;
+            }
+            else if (!this.customNode) {
+                var randNodeInt = Math.floor(Math.random() * Math.floor(config.nodeList.length));
+                config.nodeUrl = config.nodeList[randNodeInt];
+            }
             walletWatchdog.signalWalletUpdate();
+        };
+        SettingsView.prototype.updateConnectionSettings = function () {
+            this.applyConnectionSettings();
+            swal({
+                type: 'success',
+                title: i18n.t('settingsPage.nodeUpdatedNotice'),
+                html: config.nodeUrl,
+                timer: 2000,
+                showConfirmButton: false,
+            });
         };
         __decorate([
             (0, VueAnnotate_1.VueVar)(10)
