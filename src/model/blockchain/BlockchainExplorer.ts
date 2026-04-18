@@ -78,4 +78,8 @@ export interface BlockchainExplorer {
     getNetworkInfo(): Promise<NetworkInfo>;
 
     getRemoteNodeInformation(): Promise<RemoteNodeInformation>;
+
+    resolveAccountNumber(accountNumber: string): Promise<string>;
+
+    getAccountNumber(address: string): Promise<string | null>;
 }

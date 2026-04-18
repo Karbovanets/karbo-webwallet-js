@@ -21,9 +21,13 @@ import {Constants} from "../model/Constants";
 import {AppState} from "../model/AppState";
 import {Transaction} from "../model/Transaction";
 import {Cn} from "../model/Cn";
+import {BlockchainExplorerProvider} from "../providers/BlockchainExplorerProvider";
+import {BlockchainExplorer, RawDaemon_Out} from "../model/blockchain/BlockchainExplorer";
+import {TransactionsExplorer} from "../model/TransactionsExplorer";
+import {WalletWatchdog} from "../model/WalletWatchdog";
 
 let wallet : Wallet = DependencyInjectorInstance().getInstance(Wallet.name,'default', false);
-let blockchainExplorer = DependencyInjectorInstance().getInstance(Constants.BLOCKCHAIN_EXPLORER);
+let blockchainExplorer : BlockchainExplorer = BlockchainExplorerProvider.getInstance();
 
 class AccountView extends DestructableView{
 	@VueVar([]) transactions !: Transaction[];
@@ -36,6 +40,9 @@ class AccountView extends DestructableView{
 	@VueVar(0) currentScanBlock !: number;
 	@VueVar(0) blockchainHeight !: number;
 	@VueVar(Math.pow(10, config.coinUnitPlaces)) currencyDivider !: number;
+
+	@VueVar('') accountNumber !: string;
+	@VueVar(true) accountNumberLoading !: boolean;
 
 	intervalRefresh : number = 0;
 
@@ -51,6 +58,19 @@ class AccountView extends DestructableView{
 			self.refresh();
 		}, 1*1000);
 		this.refresh();
+
+		if (typeof blockchainExplorer.getAccountNumber === 'function') {
+			blockchainExplorer.getAccountNumber(wallet.getPublicAddress()).then(function (accountNumber: string | null) {
+				self.accountNumberLoading = false;
+				if (accountNumber !== null) {
+					self.accountNumber = accountNumber;
+				}
+			}).catch(function () {
+				self.accountNumberLoading = false;
+			});
+		} else {
+			self.accountNumberLoading = false;
+		}
 	}
 
 	destruct(): Promise<void> {
@@ -117,6 +137,135 @@ class AccountView extends DestructableView{
 			title: i18n.t('receivePage.copyNotice'),
 			timer: 1500,
 			showConfirmButton: false,
+		});
+	}
+
+	copyAccountNumber(){
+		let el = document.createElement('textarea');
+		el.value = this.accountNumber;
+		el.setAttribute('readonly', '');
+		el.style.position = 'absolute';
+		el.style.left = '-9999px';
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+
+		swal({
+			type: 'success',
+			title: i18n.t('receivePage.copyNotice'),
+			timer: 1500,
+			showConfirmButton: false,
+		});
+	}
+
+	registerAccount(){
+		let self = this;
+		swal({
+			title: i18n.t('accountPage.registerAccountModal.title'),
+			html: i18n.t('accountPage.registerAccountModal.content'),
+			showCancelButton: true,
+			confirmButtonText: i18n.t('accountPage.registerAccountModal.confirmText'),
+			cancelButtonText: i18n.t('accountPage.registerAccountModal.cancelText'),
+		}).then(function (result: any) {
+			if (result.dismiss) return;
+
+			blockchainExplorer.getHeight().then(function (blockchainHeight: number) {
+				let dustAmount = 1; // minimal amount for self-transfer
+				let destinationAddress = wallet.getPublicAddress();
+
+				swal({
+					title: i18n.t('sendPage.creatingTransferModal.title'),
+					html: i18n.t('sendPage.creatingTransferModal.content'),
+					onOpen: () => {
+						swal.showLoading();
+					}
+				});
+
+				let mixinToSendWith: number = config.defaultMixin;
+
+				TransactionsExplorer.createTx(
+					[{address: destinationAddress, amount: dustAmount}],
+					'',
+					wallet,
+					blockchainHeight,
+					function (amounts: number[], numberOuts: number): Promise<RawDaemon_Out[]> {
+						return blockchainExplorer.getRandomOuts(amounts, numberOuts);
+					},
+					function (amount: number, feesAmount: number): Promise<void> {
+						if (amount + feesAmount > wallet.unlockedAmount(blockchainHeight)) {
+							swal({
+								type: 'error',
+								title: i18n.t('sendPage.notEnoughMoneyModal.title'),
+								text: i18n.t('sendPage.notEnoughMoneyModal.content'),
+								confirmButtonText: i18n.t('sendPage.notEnoughMoneyModal.confirmText'),
+							});
+							throw '';
+						}
+
+						return new Promise<void>(function (resolve, reject) {
+							setTimeout(function () {
+								swal({
+									title: i18n.t('accountPage.registerAccountModal.confirmingTitle'),
+									html: i18n.t('accountPage.registerAccountModal.confirmingContent', {
+										fees: feesAmount / Math.pow(10, config.coinUnitPlaces),
+									}),
+									showCancelButton: true,
+									confirmButtonText: i18n.t('sendPage.confirmTransactionModal.confirmText'),
+									cancelButtonText: i18n.t('sendPage.confirmTransactionModal.cancelText'),
+								}).then(function (result: any) {
+									if (result.dismiss) {
+										reject('');
+									} else {
+										swal({
+											title: i18n.t('sendPage.finalizingTransferModal.title'),
+											html: i18n.t('sendPage.finalizingTransferModal.content'),
+											onOpen: () => {
+												swal.showLoading();
+											}
+										});
+										resolve();
+									}
+								}).catch(reject);
+							}, 1);
+						});
+					},
+					mixinToSendWith,
+					true // accountRegistration
+				).then(function (rawTxData: { raw: { hash: string, prvkey: string, raw: string }, signed: any }) {
+					blockchainExplorer.sendRawTx(rawTxData.raw.raw).then(function () {
+						wallet.addTxPrivateKeyWithTxHash(rawTxData.raw.hash, rawTxData.raw.prvkey);
+
+						let watchdog: WalletWatchdog = DependencyInjectorInstance().getInstance(WalletWatchdog.name);
+						if (watchdog !== null) {
+							watchdog.checkMempool(true);
+						}
+
+						swal({
+							type: 'success',
+							title: i18n.t('accountPage.registerAccountModal.successTitle'),
+							html: i18n.t('accountPage.registerAccountModal.successContent'),
+							confirmButtonText: i18n.t('sendPage.transferSentModal.confirmText'),
+						});
+					}).catch(function (data: any) {
+						swal({
+							type: 'error',
+							title: i18n.t('sendPage.transferExceptionModal.title'),
+							html: i18n.t('sendPage.transferExceptionModal.content', {details: JSON.stringify(data)}),
+							confirmButtonText: i18n.t('sendPage.transferExceptionModal.confirmText'),
+						});
+					});
+				}).catch(function (error: any) {
+					if (error && error !== '') {
+						swal({
+							type: 'error',
+							title: i18n.t('sendPage.transferExceptionModal.title'),
+							html: i18n.t('sendPage.transferExceptionModal.content', {details: JSON.stringify(error)}),
+							confirmButtonText: i18n.t('sendPage.transferExceptionModal.confirmText'),
+						});
+					}
+				});
+			});
 		});
 	}
 

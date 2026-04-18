@@ -59,7 +59,8 @@ let TX_EXTRA_TAGS = {
 	PUBKEY: '01',
 	NONCE: '02',
 	MERGE_MINING: '03',
-	ADDITIONAL_PUBKEY: '04'
+	ADDITIONAL_PUBKEY: '04',
+	ACCOUNT_REGISTRATION: '04'
 };
 let TX_EXTRA_NONCE_TAGS = {
 	PAYMENT_ID: '00',
@@ -919,6 +920,40 @@ export namespace Cn{
 		return Cn.formatMoney(units) + ' ' + config.coinSymbol;
 	}
 
+	const LUHN36_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+	function luhnMod36Check(input: string): string {
+		let factor = 2;
+		let sum = 0;
+		const n = 36;
+		for (let i = input.length - 1; i >= 0; i--) {
+			let codePoint = LUHN36_ALPHABET.indexOf(input[i].toUpperCase());
+			if (codePoint < 0) throw 'invalid character in account number';
+			let addend = factor * codePoint;
+			factor = factor === 2 ? 1 : 2;
+			addend = Math.floor(addend / n) + (addend % n);
+			sum += addend;
+		}
+		let remainder = sum % n;
+		let checkCodePoint = (n - remainder) % n;
+		return LUHN36_ALPHABET[checkCodePoint];
+	}
+
+	export function isValidAccountNumber(str: string): boolean {
+		let match = str.match(/^(\d+)-(\d+)-([0-9A-Za-z])$/);
+		if (!match) return false;
+		let height = match[1];
+		let txIndex = match[2];
+		let checkChar = match[3].toUpperCase();
+		let input = height + txIndex;
+		try {
+			let expected = luhnMod36Check(input);
+			return expected === checkChar;
+		} catch (e) {
+			return false;
+		}
+	}
+
 }
 
 export namespace CnTransactions{
@@ -1156,6 +1191,12 @@ export namespace CnTransactions{
 			offsets[i] = new JSBigInt(offsets[i]).subtract(offsets[i - 1]).toString();
 		}
 		return offsets;
+	}
+
+	export function add_account_registration_to_extra(extra : string, spendPubKey : string, viewPubKey : string) {
+		if (spendPubKey.length !== 64 || viewPubKey.length !== 64) throw "Invalid pubkey length";
+		extra += TX_EXTRA_TAGS.ACCOUNT_REGISTRATION + spendPubKey + viewPubKey;
+		return extra;
 	}
 
 	//TODO merge
@@ -1917,9 +1958,13 @@ export namespace CnTransactions{
 		pid_encrypt : boolean,
 		realDestViewKey : string|undefined,
 		unlock_time : number = 0,
-		rct:boolean
+		rct:boolean,
+		accountRegistration:boolean = false
 	){
 		let extra = '';
+		if (accountRegistration) {
+			extra = CnTransactions.add_account_registration_to_extra(extra, keys.spend.pub, keys.view.pub);
+		}
 		let tx : CnTransactions.Transaction = {
 			unlock_time: unlock_time,
 			version: rct ? CURRENT_TX_VERSION : OLD_TX_VERSION,
@@ -2188,7 +2233,8 @@ export namespace CnTransactions{
 									   pid_encrypt : boolean,
 									   realDestViewKey : string|undefined,
 									   unlock_time : number = 0,
-									   rct:boolean
+									   rct:boolean,
+									   accountRegistration:boolean = false
 	) : CnTransactions.Transaction{
 		let i, j;
 		if (dsts.length === 0) {
@@ -2343,7 +2389,7 @@ export namespace CnTransactions{
 		} else if (cmp > 0) {
 			throw "Need more money than found! (have: " + Cn.formatMoney(found_money) + " need: " + Cn.formatMoney(needed_money) + ")";
 		}
-		return CnTransactions.construct_tx(keys, sources, dsts, fee_amount, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct);
+		return CnTransactions.construct_tx(keys, sources, dsts, fee_amount, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct, accountRegistration);
 	}
 }
 

@@ -111,6 +111,19 @@
 	  "subtitle": "Überblick über deinen Account und deine Transactionshistorie",
 	  "recentTransactions": "Letzte Transaktionen",
 	  "allTransactions": "Alle Transaktionen",
+	  "accountNumber": "Account number",
+	  "address": "Address",
+	  "registerAccount": "Register account number",
+	  "registerAccountModal": {
+		"title": "Register Account Number",
+		"content": "This will create a transaction to register a human-readable account number for your wallet address. A small network fee will be charged.",
+		"confirmText": "Register",
+		"cancelText": "Cancel",
+		"confirmingTitle": "Confirm Registration",
+		"confirmingContent": "Network fee: {fees} KRB",
+		"successTitle": "Registration Sent!",
+		"successContent": "Your account number will be available after the transaction is confirmed."
+	  },
 	  "synchronizingBlock": {
 		"text": "Synchronisiere "
 	  },
@@ -234,9 +247,10 @@
 	  "title":"Schicke KRB",
 	  "sendBlock":{
 		"address":{
-		  "label":"Zieladresse",
-		  "placeholder":"Schreiben Sie die Adresse, wo Sie wollen Mittel schicken",
+		  "label":"Zieladresse or account number",
+		  "placeholder":"Address or account number (e.g. 1256970-1-P)",
 		  "invalid":"Die Zieladresse ist ungültig",
+		  "accountNumberNotFound":"Account number not found",
 		  "fundsTo":"Das Guthaben wird an folgende Adresse gesendet werden",
 		  "receiver":"Empfänger",
 		  "description":"Beschreibung"
@@ -307,7 +321,8 @@
 	  "receiveBlock":{
 		"address":{
 		  "title":"Deine Adresse um Guthaben zu empfangen",
-		  "label":"Stelle diese Adresse bereit um Guthaben zu empfangen"
+		  "label":"Stelle diese Adresse bereit um Guthaben zu empfangen",
+		  "accountNumberLabel":"Account number"
 		},
 		"qrCode":{
 		  "title":"Oder personalisiere den QR code",
