@@ -75,6 +75,8 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             this.qrScanning = false;
             this.amountToSendValid = false;
             this.domainAliasAddress = null;
+            this.accountNumberAddress = null;
+            this.accountNumberValid = true;
             this.txDestinationName = null;
             this.txDescription = null;
             this.mixIn = config.defaultMixin.toString();
@@ -357,33 +359,66 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             });
         };
         SendView.prototype.destinationAddressUserWatch = function () {
-            if (this.destinationAddressUser.indexOf('.') !== -1) {
-                var self_1 = this;
+            var self = this;
+            if (Cn_1.Cn.isValidAccountNumber(this.destinationAddressUser)) {
+                this.openAliasValid = true;
+                this.domainAliasAddress = null;
                 if (this.timeoutResolveAlias !== 0)
                     clearTimeout(this.timeoutResolveAlias);
                 this.timeoutResolveAlias = setTimeout(function () {
-                    blockchainExplorer.resolveOpenAlias(self_1.destinationAddressUser).then(function (data) {
+                    blockchainExplorer.resolveAccountNumber(self.destinationAddressUser).then(function (address) {
                         try {
-                            Cn_1.Cn.decode_address(data.address);
-                            self_1.txDestinationName = data.name;
-                            self_1.destinationAddress = data.address;
-                            self_1.domainAliasAddress = data.address;
-                            self_1.destinationAddressValid = true;
-                            self_1.openAliasValid = true;
+                            Cn_1.Cn.decode_address(address);
+                            self.destinationAddress = address;
+                            self.accountNumberAddress = address;
+                            self.destinationAddressValid = true;
+                            self.accountNumberValid = true;
                         }
                         catch (e) {
-                            self_1.destinationAddressValid = false;
-                            self_1.openAliasValid = false;
+                            self.destinationAddressValid = false;
+                            self.accountNumberValid = false;
+                            self.accountNumberAddress = null;
                         }
-                        self_1.timeoutResolveAlias = 0;
+                        self.timeoutResolveAlias = 0;
                     }).catch(function () {
-                        self_1.openAliasValid = false;
-                        self_1.timeoutResolveAlias = 0;
+                        self.destinationAddressValid = false;
+                        self.accountNumberValid = false;
+                        self.accountNumberAddress = null;
+                        self.timeoutResolveAlias = 0;
+                    });
+                }, 400);
+            }
+            else if (this.destinationAddressUser.indexOf('.') !== -1) {
+                this.accountNumberAddress = null;
+                this.accountNumberValid = true;
+                if (this.timeoutResolveAlias !== 0)
+                    clearTimeout(this.timeoutResolveAlias);
+                this.timeoutResolveAlias = setTimeout(function () {
+                    blockchainExplorer.resolveOpenAlias(self.destinationAddressUser).then(function (data) {
+                        try {
+                            Cn_1.Cn.decode_address(data.address);
+                            self.txDestinationName = data.name;
+                            self.destinationAddress = data.address;
+                            self.domainAliasAddress = data.address;
+                            self.destinationAddressValid = true;
+                            self.openAliasValid = true;
+                        }
+                        catch (e) {
+                            self.destinationAddressValid = false;
+                            self.openAliasValid = false;
+                        }
+                        self.timeoutResolveAlias = 0;
+                    }).catch(function () {
+                        self.openAliasValid = false;
+                        self.timeoutResolveAlias = 0;
                     });
                 }, 400);
             }
             else {
                 this.openAliasValid = true;
+                this.accountNumberValid = true;
+                this.accountNumberAddress = null;
+                this.domainAliasAddress = null;
                 try {
                     Cn_1.Cn.decode_address(this.destinationAddressUser);
                     this.destinationAddressValid = true;
@@ -465,6 +500,12 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
         __decorate([
             (0, VueAnnotate_1.VueVar)(true)
         ], SendView.prototype, "openAliasValid", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)(null)
+        ], SendView.prototype, "accountNumberAddress", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)(true)
+        ], SendView.prototype, "accountNumberValid", void 0);
         __decorate([
             (0, VueAnnotate_1.VueVar)(false)
         ], SendView.prototype, "qrScanning", void 0);

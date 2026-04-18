@@ -111,6 +111,19 @@
       "subtitle": "계정 정보 및 트랜젝션 기록",
       "recentTransactions": "최근 거래",
       "allTransactions": "모든 거래",
+      "accountNumber": "Account number",
+      "address": "Address",
+      "registerAccount": "Register account number",
+      "registerAccountModal": {
+        "title": "Register Account Number",
+        "content": "This will create a transaction to register a human-readable account number for your wallet address. A small network fee will be charged.",
+        "confirmText": "Register",
+        "cancelText": "Cancel",
+        "confirmingTitle": "Confirm Registration",
+        "confirmingContent": "Network fee: {fees} KRB",
+        "successTitle": "Registration Sent!",
+        "successContent": "Your account number will be available after the transaction is confirmed."
+      },
       "synchronizingBlock": {
         "text": "동기화중..."
       },
@@ -237,9 +250,10 @@
       "title": "카르보 코인 보내기",
       "sendBlock": {
         "address": {
-          "label": "주소",
-          "placeholder": "위 주소로 송금이 됩니다.",
+          "label": "주소 or account number",
+          "placeholder": "Address or account number (e.g. 1256970-1-P)",
           "invalid": "입력해 주신 주소가 올바르지 않습니다.",
+          "accountNumberNotFound": "Account number not found",
           "fundsTo": "적어주신 주소로 쿼티코인이 전송됩니다.",
           "receiver": "받는 이",
           "description": "설명"
@@ -310,7 +324,8 @@
       "receiveBlock": {
         "address": {
           "title": "주소:",
-          "label": "이 주소로 송금을 받습니다."
+          "label": "이 주소로 송금을 받습니다.",
+          "accountNumberLabel": "Account number"
         },
         "qrCode": {
           "title": "QR코드 만들기:",

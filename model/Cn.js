@@ -56,7 +56,8 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
         PUBKEY: '01',
         NONCE: '02',
         MERGE_MINING: '03',
-        ADDITIONAL_PUBKEY: '04'
+        ADDITIONAL_PUBKEY: '04',
+        ACCOUNT_REGISTRATION: '04'
     };
     var TX_EXTRA_NONCE_TAGS = {
         PAYMENT_ID: '00',
@@ -890,6 +891,41 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return Cn.formatMoney(units) + ' ' + config.coinSymbol;
         }
         Cn.formatMoneySymbol = formatMoneySymbol;
+        var LUHN36_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        function luhnMod36Check(input) {
+            var factor = 2;
+            var sum = 0;
+            var n = 36;
+            for (var i = input.length - 1; i >= 0; i--) {
+                var codePoint = LUHN36_ALPHABET.indexOf(input[i].toUpperCase());
+                if (codePoint < 0)
+                    throw 'invalid character in account number';
+                var addend = factor * codePoint;
+                factor = factor === 2 ? 1 : 2;
+                addend = Math.floor(addend / n) + (addend % n);
+                sum += addend;
+            }
+            var remainder = sum % n;
+            var checkCodePoint = (n - remainder) % n;
+            return LUHN36_ALPHABET[checkCodePoint];
+        }
+        function isValidAccountNumber(str) {
+            var match = str.match(/^(\d+)-(\d+)-([0-9A-Za-z])$/);
+            if (!match)
+                return false;
+            var height = match[1];
+            var txIndex = match[2];
+            var checkChar = match[3].toUpperCase();
+            var input = height + txIndex;
+            try {
+                var expected = luhnMod36Check(input);
+                return expected === checkChar;
+            }
+            catch (e) {
+                return false;
+            }
+        }
+        Cn.isValidAccountNumber = isValidAccountNumber;
     })(Cn || (exports.Cn = Cn = {}));
     var CnTransactions;
     (function (CnTransactions) {
@@ -1089,6 +1125,13 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return offsets;
         }
         CnTransactions.abs_to_rel_offsets = abs_to_rel_offsets;
+        function add_account_registration_to_extra(extra, spendPubKey, viewPubKey) {
+            if (spendPubKey.length !== 64 || viewPubKey.length !== 64)
+                throw "Invalid pubkey length";
+            extra += TX_EXTRA_TAGS.ACCOUNT_REGISTRATION + spendPubKey + viewPubKey;
+            return extra;
+        }
+        CnTransactions.add_account_registration_to_extra = add_account_registration_to_extra;
         //TODO merge
         function add_pub_key_to_extra(extra, pubkey) {
             if (pubkey.length !== 64)
@@ -1714,9 +1757,13 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return rv;
         }
         CnTransactions.genRct = genRct;
-        function construct_tx(keys, sources, dsts, fee_amount /*JSBigInt*/, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct) {
+        function construct_tx(keys, sources, dsts, fee_amount /*JSBigInt*/, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct, accountRegistration) {
             if (unlock_time === void 0) { unlock_time = 0; }
+            if (accountRegistration === void 0) { accountRegistration = false; }
             var extra = '';
+            if (accountRegistration) {
+                extra = CnTransactions.add_account_registration_to_extra(extra, keys.spend.pub, keys.view.pub);
+            }
             var tx = {
                 unlock_time: unlock_time,
                 version: rct ? CURRENT_TX_VERSION : OLD_TX_VERSION,
@@ -1941,9 +1988,10 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             return tx;
         }
         CnTransactions.construct_tx = construct_tx;
-        function create_transaction(pub_keys, sec_keys, dsts, outputs, mix_outs, fake_outputs_count, fee_amount /*JSBigInt*/, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct) {
+        function create_transaction(pub_keys, sec_keys, dsts, outputs, mix_outs, fake_outputs_count, fee_amount /*JSBigInt*/, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct, accountRegistration) {
             if (mix_outs === void 0) { mix_outs = []; }
             if (unlock_time === void 0) { unlock_time = 0; }
+            if (accountRegistration === void 0) { accountRegistration = false; }
             var i, j;
             if (dsts.length === 0) {
                 throw 'Destinations empty';
@@ -2096,7 +2144,7 @@ define(["require", "exports", "./Mnemonic"], function (require, exports, Mnemoni
             else if (cmp > 0) {
                 throw "Need more money than found! (have: " + Cn.formatMoney(found_money) + " need: " + Cn.formatMoney(needed_money) + ")";
             }
-            return CnTransactions.construct_tx(keys, sources, dsts, fee_amount, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct);
+            return CnTransactions.construct_tx(keys, sources, dsts, fee_amount, payment_id, pid_encrypt, realDestViewKey, unlock_time, rct, accountRegistration);
         }
         CnTransactions.create_transaction = create_transaction;
     })(CnTransactions || (exports.CnTransactions = CnTransactions = {}));

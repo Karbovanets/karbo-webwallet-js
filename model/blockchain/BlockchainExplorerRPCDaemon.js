@@ -250,6 +250,22 @@ define(["require", "exports", "../WalletWatchdog"], function (require, exports, 
                 };
             });
         };
+        BlockchainExplorerRpcDaemon.prototype.resolveAccountNumber = function (accountNumber) {
+            return this.makeRpcRequest('resolveaccountnumber', { account_number: accountNumber }).then(function (response) {
+                if (response.status === 'OK' && response.address)
+                    return response.address;
+                throw 'account_number_not_found';
+            });
+        };
+        BlockchainExplorerRpcDaemon.prototype.getAccountNumber = function (address) {
+            return this.makeRpcRequest('getaccountnumber', { address: address }).then(function (response) {
+                if (response.status === 'OK' && response.account_number)
+                    return response.account_number;
+                return null;
+            }).catch(function () {
+                return null;
+            });
+        };
         return BlockchainExplorerRpcDaemon;
     }());
     exports.BlockchainExplorerRpcDaemon = BlockchainExplorerRpcDaemon;

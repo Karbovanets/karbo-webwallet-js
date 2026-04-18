@@ -33,10 +33,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../lib/numbersLab/DestructableView", "../lib/numbersLab/VueAnnotate", "../model/CoinUri", "../model/Nfc", "../model/Cn"], function (require, exports, DependencyInjector_1, Wallet_1, DestructableView_1, VueAnnotate_1, CoinUri_1, Nfc_1, Cn_1) {
+define(["require", "exports", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../lib/numbersLab/DestructableView", "../lib/numbersLab/VueAnnotate", "../model/CoinUri", "../model/Nfc", "../model/Cn", "../providers/BlockchainExplorerProvider"], function (require, exports, DependencyInjector_1, Wallet_1, DestructableView_1, VueAnnotate_1, CoinUri_1, Nfc_1, Cn_1, BlockchainExplorerProvider_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var wallet = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Wallet_1.Wallet.name, 'default', false);
+    var blockchainExplorer = BlockchainExplorerProvider_1.BlockchainExplorerProvider.getInstance();
     function setTextInClipboard(inputId) {
         /*let inputElement : HTMLInputElement = <HTMLInputElement>document.getElementById(inputId);
         let textarea : HTMLInputElement = <HTMLInputElement> document.getElementById('clipboardTextarea');
@@ -67,6 +68,12 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "../model/
             _this.rawAddress = wallet.getPublicAddress();
             _this.address = wallet.getPublicAddress();
             _this.generateQrCode();
+            var self = _this;
+            blockchainExplorer.getAccountNumber(wallet.getPublicAddress()).then(function (accountNumber) {
+                if (accountNumber !== null) {
+                    self.accountNumber = accountNumber;
+                }
+            });
             return _this;
         }
         AccountView.prototype.stringToHex = function (str) {
@@ -116,6 +123,15 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "../model/
         };
         AccountView.prototype.copyAddress = function () {
             setTextInClipboard('rawAddress');
+            swal({
+                type: 'success',
+                title: i18n.t('receivePage.copyNotice'),
+                timer: 1500,
+                showConfirmButton: false,
+            });
+        };
+        AccountView.prototype.copyAccountNumber = function () {
+            setTextInClipboard('accountNumber');
             swal({
                 type: 'success',
                 title: i18n.t('receivePage.copyNotice'),
@@ -214,6 +230,9 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "../model/
         __decorate([
             (0, VueAnnotate_1.VueVar)(false)
         ], AccountView.prototype, "hasWritableNfc", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('')
+        ], AccountView.prototype, "accountNumber", void 0);
         __decorate([
             (0, DependencyInjector_1.Autowire)(Nfc_1.Nfc.name)
         ], AccountView.prototype, "nfc", void 0);

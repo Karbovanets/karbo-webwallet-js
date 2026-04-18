@@ -315,5 +315,29 @@ export class BlockchainExplorerRpcDaemon implements BlockchainExplorer {
         });
     }
 
+    resolveAccountNumber(accountNumber: string): Promise<string> {
+        return this.makeRpcRequest('resolveaccountnumber', {account_number: accountNumber}).then(function (response: {
+            address: string,
+            status: 'OK' | string
+        }) {
+            if (response.status === 'OK' && response.address)
+                return response.address;
+            throw 'account_number_not_found';
+        });
+    }
+
+    getAccountNumber(address: string): Promise<string | null> {
+        return this.makeRpcRequest('getaccountnumber', {address: address}).then(function (response: {
+            account_number: string,
+            status: 'OK' | string
+        }) {
+            if (response.status === 'OK' && response.account_number)
+                return response.account_number;
+            return null;
+        }).catch(function () {
+            return null;
+        });
+    }
+
 }
 

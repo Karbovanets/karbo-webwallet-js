@@ -113,6 +113,19 @@
       "subtitle": "Resumen de su cuenta e historial de transacciones",
       "recentTransactions": "Transacciones recientes",
       "allTransactions": "Todas las transacciones",
+      "accountNumber": "Account number",
+      "address": "Address",
+      "registerAccount": "Register account number",
+      "registerAccountModal": {
+        "title": "Register Account Number",
+        "content": "This will create a transaction to register a human-readable account number for your wallet address. A small network fee will be charged.",
+        "confirmText": "Register",
+        "cancelText": "Cancel",
+        "confirmingTitle": "Confirm Registration",
+        "confirmingContent": "Network fee: {fees} KRB",
+        "successTitle": "Registration Sent!",
+        "successContent": "Your account number will be available after the transaction is confirmed."
+      },
       "synchronizingBlock": {
         "text": "Sincronizando..."
       },
@@ -236,9 +249,10 @@
       "title": "Enviar KRB",
       "sendBlock": {
         "address": {
-          "label": "Dirección de destino",
-          "placeholder": "Escriba la dirección a la que desea enviar los fondos.",
+          "label": "Dirección de destino or account number",
+          "placeholder": "Address or account number (e.g. 1256970-1-P)",
           "invalid": "La dirección de destino no es válida",
+          "accountNumberNotFound": "Account number not found",
           "fundsTo": "Los fondos serán enviados a",
           "receiver": "Destinatario",
           "description": "Descripción"
@@ -309,7 +323,8 @@
       "receiveBlock": {
         "address": {
           "title": "Su dirección para recibir fondos.:",
-          "label": "Da esta dirección para recibir fondos."
+          "label": "Da esta dirección para recibir fondos.",
+          "accountNumberLabel": "Account number"
         },
         "qrCode": {
           "title": "O personalizar el código QR:",

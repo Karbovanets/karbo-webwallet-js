@@ -33,11 +33,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../lib/numbersLab/DestructableView", "../model/Constants", "../model/AppState", "../model/Cn"], function (require, exports, VueAnnotate_1, DependencyInjector_1, Wallet_1, DestructableView_1, Constants_1, AppState_1, Cn_1) {
+define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DependencyInjector", "../model/Wallet", "../lib/numbersLab/DestructableView", "../model/AppState", "../model/Cn", "../providers/BlockchainExplorerProvider", "../model/TransactionsExplorer", "../model/WalletWatchdog"], function (require, exports, VueAnnotate_1, DependencyInjector_1, Wallet_1, DestructableView_1, AppState_1, Cn_1, BlockchainExplorerProvider_1, TransactionsExplorer_1, WalletWatchdog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var wallet = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Wallet_1.Wallet.name, 'default', false);
-    var blockchainExplorer = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Constants_1.Constants.BLOCKCHAIN_EXPLORER);
+    var blockchainExplorer = BlockchainExplorerProvider_1.BlockchainExplorerProvider.getInstance();
     var AccountView = /** @class */ (function (_super) {
         __extends(AccountView, _super);
         function AccountView(container) {
@@ -51,6 +51,19 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
                 self.refresh();
             }, 1 * 1000);
             _this.refresh();
+            if (typeof blockchainExplorer.getAccountNumber === 'function') {
+                blockchainExplorer.getAccountNumber(wallet.getPublicAddress()).then(function (accountNumber) {
+                    self.accountNumberLoading = false;
+                    if (accountNumber !== null) {
+                        self.accountNumber = accountNumber;
+                    }
+                }).catch(function () {
+                    self.accountNumberLoading = false;
+                });
+            }
+            else {
+                self.accountNumberLoading = false;
+            }
             return _this;
         }
         AccountView.prototype.destruct = function () {
@@ -106,6 +119,119 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
                 title: i18n.t('receivePage.copyNotice'),
                 timer: 1500,
                 showConfirmButton: false,
+            });
+        };
+        AccountView.prototype.copyAccountNumber = function () {
+            var el = document.createElement('textarea');
+            el.value = this.accountNumber;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            swal({
+                type: 'success',
+                title: i18n.t('receivePage.copyNotice'),
+                timer: 1500,
+                showConfirmButton: false,
+            });
+        };
+        AccountView.prototype.registerAccount = function () {
+            var self = this;
+            swal({
+                title: i18n.t('accountPage.registerAccountModal.title'),
+                html: i18n.t('accountPage.registerAccountModal.content'),
+                showCancelButton: true,
+                confirmButtonText: i18n.t('accountPage.registerAccountModal.confirmText'),
+                cancelButtonText: i18n.t('accountPage.registerAccountModal.cancelText'),
+            }).then(function (result) {
+                if (result.dismiss)
+                    return;
+                blockchainExplorer.getHeight().then(function (blockchainHeight) {
+                    var dustAmount = 1; // minimal amount for self-transfer
+                    var destinationAddress = wallet.getPublicAddress();
+                    swal({
+                        title: i18n.t('sendPage.creatingTransferModal.title'),
+                        html: i18n.t('sendPage.creatingTransferModal.content'),
+                        onOpen: function () {
+                            swal.showLoading();
+                        }
+                    });
+                    var mixinToSendWith = config.defaultMixin;
+                    TransactionsExplorer_1.TransactionsExplorer.createTx([{ address: destinationAddress, amount: dustAmount }], '', wallet, blockchainHeight, function (amounts, numberOuts) {
+                        return blockchainExplorer.getRandomOuts(amounts, numberOuts);
+                    }, function (amount, feesAmount) {
+                        if (amount + feesAmount > wallet.unlockedAmount(blockchainHeight)) {
+                            swal({
+                                type: 'error',
+                                title: i18n.t('sendPage.notEnoughMoneyModal.title'),
+                                text: i18n.t('sendPage.notEnoughMoneyModal.content'),
+                                confirmButtonText: i18n.t('sendPage.notEnoughMoneyModal.confirmText'),
+                            });
+                            throw '';
+                        }
+                        return new Promise(function (resolve, reject) {
+                            setTimeout(function () {
+                                swal({
+                                    title: i18n.t('accountPage.registerAccountModal.confirmingTitle'),
+                                    html: i18n.t('accountPage.registerAccountModal.confirmingContent', {
+                                        fees: feesAmount / Math.pow(10, config.coinUnitPlaces),
+                                    }),
+                                    showCancelButton: true,
+                                    confirmButtonText: i18n.t('sendPage.confirmTransactionModal.confirmText'),
+                                    cancelButtonText: i18n.t('sendPage.confirmTransactionModal.cancelText'),
+                                }).then(function (result) {
+                                    if (result.dismiss) {
+                                        reject('');
+                                    }
+                                    else {
+                                        swal({
+                                            title: i18n.t('sendPage.finalizingTransferModal.title'),
+                                            html: i18n.t('sendPage.finalizingTransferModal.content'),
+                                            onOpen: function () {
+                                                swal.showLoading();
+                                            }
+                                        });
+                                        resolve();
+                                    }
+                                }).catch(reject);
+                            }, 1);
+                        });
+                    }, mixinToSendWith, true // accountRegistration
+                    ).then(function (rawTxData) {
+                        blockchainExplorer.sendRawTx(rawTxData.raw.raw).then(function () {
+                            wallet.addTxPrivateKeyWithTxHash(rawTxData.raw.hash, rawTxData.raw.prvkey);
+                            var watchdog = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(WalletWatchdog_1.WalletWatchdog.name);
+                            if (watchdog !== null) {
+                                watchdog.checkMempool(true);
+                            }
+                            swal({
+                                type: 'success',
+                                title: i18n.t('accountPage.registerAccountModal.successTitle'),
+                                html: i18n.t('accountPage.registerAccountModal.successContent'),
+                                confirmButtonText: i18n.t('sendPage.transferSentModal.confirmText'),
+                            });
+                        }).catch(function (data) {
+                            swal({
+                                type: 'error',
+                                title: i18n.t('sendPage.transferExceptionModal.title'),
+                                html: i18n.t('sendPage.transferExceptionModal.content', { details: JSON.stringify(data) }),
+                                confirmButtonText: i18n.t('sendPage.transferExceptionModal.confirmText'),
+                            });
+                        });
+                    }).catch(function (error) {
+                        if (error && error !== '') {
+                            swal({
+                                type: 'error',
+                                title: i18n.t('sendPage.transferExceptionModal.title'),
+                                html: i18n.t('sendPage.transferExceptionModal.content', { details: JSON.stringify(error) }),
+                                confirmButtonText: i18n.t('sendPage.transferExceptionModal.confirmText'),
+                            });
+                        }
+                    });
+                });
             });
         };
         AccountView.prototype.txBlockDetailsHtml = function (transaction, explorerUrlBlock) {
@@ -179,6 +305,12 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
         __decorate([
             (0, VueAnnotate_1.VueVar)(Math.pow(10, config.coinUnitPlaces))
         ], AccountView.prototype, "currencyDivider", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('')
+        ], AccountView.prototype, "accountNumber", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)(true)
+        ], AccountView.prototype, "accountNumberLoading", void 0);
         return AccountView;
     }(DestructableView_1.DestructableView));
     if (wallet !== null && blockchainExplorer !== null)

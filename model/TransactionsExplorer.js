@@ -403,8 +403,9 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
             }
             return unspentOuts;
         };
-        TransactionsExplorer.createRawTx = function (dsts, wallet, rct, usingOuts, pid_encrypt, mix_outs, mixin, neededFee, payment_id) {
+        TransactionsExplorer.createRawTx = function (dsts, wallet, rct, usingOuts, pid_encrypt, mix_outs, mixin, neededFee, payment_id, accountRegistration) {
             if (mix_outs === void 0) { mix_outs = []; }
+            if (accountRegistration === void 0) { accountRegistration = false; }
             return new Promise(function (resolve, reject) {
                 var signed;
                 try {
@@ -421,7 +422,7 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
                     }, {
                         spend: wallet.keys.priv.spend,
                         view: wallet.keys.priv.view
-                    }, splittedDsts, usingOuts, mix_outs, mixin, neededFee, payment_id, pid_encrypt, realDestViewKey, 0, rct);
+                    }, splittedDsts, usingOuts, mix_outs, mixin, neededFee, payment_id, pid_encrypt, realDestViewKey, 0, rct, accountRegistration);
                     console.log("signed tx: ", signed);
                     var raw_tx_and_hash = Cn_1.CnTransactions.serialize_tx_with_hash(signed);
                     resolve({ raw: raw_tx_and_hash, signed: signed });
@@ -431,9 +432,10 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
                 }
             });
         };
-        TransactionsExplorer.createTx = function (userDestinations, userPaymentId, wallet, blockchainHeight, obtainMixOutsCallback, confirmCallback, mixin) {
+        TransactionsExplorer.createTx = function (userDestinations, userPaymentId, wallet, blockchainHeight, obtainMixOutsCallback, confirmCallback, mixin, accountRegistration) {
             if (userPaymentId === void 0) { userPaymentId = ''; }
             if (mixin === void 0) { mixin = config.defaultMixin; }
+            if (accountRegistration === void 0) { accountRegistration = false; }
             return new Promise(function (resolve, reject) {
                 var neededFee = new JSBigInt(window.config.coinFee);
                 var pid_encrypt = false; //don't encrypt payment ID unless we find an integrated one
@@ -541,7 +543,7 @@ define(["require", "exports", "./Transaction", "./MathUtil", "./Cn"], function (
                         console.log('------------------------------mix_outs');
                         console.log('amounts', amounts);
                         console.log('lots_mix_outs', lotsMixOuts);
-                        TransactionsExplorer.createRawTx(dsts, wallet, false, usingOuts, pid_encrypt, lotsMixOuts, mixin, neededFee, paymentId).then(function (data) {
+                        TransactionsExplorer.createRawTx(dsts, wallet, false, usingOuts, pid_encrypt, lotsMixOuts, mixin, neededFee, paymentId, accountRegistration).then(function (data) {
                             resolve(data);
                         }).catch(function (e) {
                             reject(e);
