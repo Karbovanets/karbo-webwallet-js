@@ -23,21 +23,21 @@ import {Translations} from "../model/Translations";
 
 export class DeleteWallet{
     public static deleteWallet() {
-        //localStorage.clear();
-		//window.location.href = '/';
         swal({
-            title: i18n.t('settingsPage.deleteWalletModal.title'),
-            html: i18n.t('settingsPage.deleteWalletModal.content'),
+            title: 'Remove from This Device',
+            html: 'This removes only the local copy stored in this browser/app.<br/>It does not affect funds on the blockchain.<br/>You can restore this wallet later using your backup keys or wallet backup file.',
             showCancelButton: true,
-            confirmButtonText: i18n.t('settingsPage.deleteWalletModal.confirmText'),
+            confirmButtonText: 'Remove from This Device',
             cancelButtonText: i18n.t('settingsPage.deleteWalletModal.cancelText'),
             type: 'warning'
         }).then((result:any) => {
             if (result.value) {
+                let walletId = WalletRepository.getCurrentWalletId();
                 AppState.disconnect();
                 DependencyInjectorInstance().register(Wallet.name, undefined,'default');
-                WalletRepository.deleteLocalCopy();
-                window.location.href = '#index';
+                WalletRepository.deleteLocalCopy(walletId).then(function () {
+                    window.location.href = '#index';
+                });
             }
         });
     } 

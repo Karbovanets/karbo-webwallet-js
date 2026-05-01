@@ -45,11 +45,14 @@ class ChangeWalletPasswordView extends DestructableView{
 
 	@VueWatched()
 	oldPasswordWatch(){
-		let wallet = WalletRepository.getLocalWalletWithPassword(this.oldPassword);
-		if(wallet !== null) {
+		if (this.oldPassword === '') {
 			this.invalidOldPassword = false;
-		}else
-			this.invalidOldPassword = true;
+			return;
+		}
+
+		WalletRepository.getLocalWalletWithPassword(this.oldPassword, WalletRepository.getCurrentWalletId(), false).then((wallet: Wallet|null) => {
+			this.invalidOldPassword = wallet === null;
+		});
 	}
 
 	forceInsecurePasswordCheck(){

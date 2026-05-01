@@ -29,7 +29,7 @@ class IndexedDBStorage implements StorageInterface {
 
 	constructor() {
 		this.ready = new Promise<void>((resolve, reject) => {
-			const request = indexedDB.open(this.dbName);
+			const request = indexedDB.open(this.dbName, 1);
 			request.onupgradeneeded = (event) => {
 				this.db = (event.target as IDBOpenDBRequest).result;
 				this.db.createObjectStore(this.storeName, { keyPath: 'key' });
@@ -46,9 +46,13 @@ class IndexedDBStorage implements StorageInterface {
 
 	async setItem(key: string, value: string): Promise<void> {
 		await this.ready;
-		const transaction = this.db.transaction(this.storeName, 'readwrite');
-		const store = transaction.objectStore(this.storeName);
-		await store.put({ key, value });
+		return new Promise<void>((resolve, reject) => {
+			const transaction = this.db.transaction(this.storeName, 'readwrite');
+			const store = transaction.objectStore(this.storeName);
+			const request = store.put({ key, value });
+			request.onsuccess = () => resolve();
+			request.onerror = (event:any) => reject((event.target as IDBRequest).error);
+		});
 	}
 
 	async getItem(key: string, defaultValue: any = null): Promise<string | any> {
@@ -70,29 +74,170 @@ class IndexedDBStorage implements StorageInterface {
 
 	async keys(): Promise<string[]> {
 		await this.ready;
-		const transaction = this.db.transaction(this.storeName, 'readonly');
-		const store = transaction.objectStore(this.storeName);
-		const keys = await store.getAllKeys();
-		return keys;
+		return new Promise<string[]>((resolve, reject) => {
+			const transaction = this.db.transaction(this.storeName, 'readonly');
+			const store = transaction.objectStore(this.storeName);
+			const request = store.getAllKeys();
+			request.onsuccess = () => resolve(<string[]>request.result);
+			request.onerror = (event:any) => reject((event.target as IDBRequest).error);
+		});
 	}
 
 	async remove(key: string): Promise<void> {
 		await this.ready;
-		const transaction = this.db.transaction(this.storeName, 'readwrite');
-		const store = transaction.objectStore(this.storeName);
-		await store.delete(key);
+		return new Promise<void>((resolve, reject) => {
+			const transaction = this.db.transaction(this.storeName, 'readwrite');
+			const store = transaction.objectStore(this.storeName);
+			const request = store.delete(key);
+			request.onsuccess = () => resolve();
+			request.onerror = (event:any) => reject((event.target as IDBRequest).error);
+		});
 	}
 
 	async clear(): Promise<void> {
 		await this.ready;
-		const transaction = this.db.transaction(this.storeName, 'readwrite');
-		const store = transaction.objectStore(this.storeName);
-		await store.clear();
+		return new Promise<void>((resolve, reject) => {
+			const transaction = this.db.transaction(this.storeName, 'readwrite');
+			const store = transaction.objectStore(this.storeName);
+			const request = store.clear();
+			request.onsuccess = () => resolve();
+			request.onerror = (event:any) => reject((event.target as IDBRequest).error);
+		});
 	}
 }
 
+class NativeStorage implements StorageInterface {
+	private get nativeStorage(): any {
+		return (<any>window).NativeStorage;
+	}
+
+	isAvailable(): boolean {
+		return typeof window !== 'undefined' && typeof (<any>window).NativeStorage !== 'undefined';
+	}
+
+	setItem(key: string, value: string): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			this.nativeStorage.setItem(key, value, function () {
+				resolve();
+			}, function (error: any) {
+				reject(error);
+			});
+		});
+	}
+
+	getItem(key: string, defaultValue: any = null): Promise<any> {
+		return new Promise<any>((resolve, reject) => {
+			this.nativeStorage.getItem(key, function (value: any) {
+				resolve(value);
+			}, function (error: any) {
+				if (error && (error.code === 2 || error.code === 'ITEM_NOT_FOUND')) {
+					resolve(defaultValue);
+				} else {
+					reject(error);
+				}
+			});
+		});
+	}
+
+	keys(): Promise<string[]> {
+		return new Promise<string[]>((resolve, reject) => {
+			this.nativeStorage.keys(function (keys: string[]) {
+				resolve(keys);
+			}, function (error: any) {
+				reject(error);
+			});
+		});
+	}
+
+	remove(key: string): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			this.nativeStorage.remove(key, function () {
+				resolve();
+			}, function (error: any) {
+				reject(error);
+			});
+		});
+	}
+
+	clear(): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			this.nativeStorage.clear(function () {
+				resolve();
+			}, function (error: any) {
+				reject(error);
+			});
+		});
+	}
+}
+
+class HybridStorage implements StorageInterface {
+	private indexedDbStorage: IndexedDBStorage = new IndexedDBStorage();
+	private nativeStorage: NativeStorage = new NativeStorage();
+
+	private get activeStorage(): StorageInterface {
+		if (this.nativeStorage.isAvailable())
+			return this.nativeStorage;
+		return this.indexedDbStorage;
+	}
+
+	setItem(key: string, value: string): Promise<void> {
+		return this.activeStorage.setItem(key, value);
+	}
+
+	getItem(key: string, defaultValue: any = null): Promise<any> {
+		if (!this.nativeStorage.isAvailable())
+			return this.indexedDbStorage.getItem(key, defaultValue);
+
+		let missingValue = '__karbo_storage_missing__' + key;
+		return this.nativeStorage.getItem(key, missingValue).then((value: any) => {
+			if (value !== missingValue)
+				return value;
+			return this.indexedDbStorage.getItem(key, defaultValue);
+		});
+	}
+
+	keys(): Promise<string[]> {
+		if (!this.nativeStorage.isAvailable())
+			return this.indexedDbStorage.keys();
+
+		return Promise.all([
+			this.nativeStorage.keys(),
+			this.indexedDbStorage.keys()
+		]).then(function (keyLists: string[][]) {
+			let keysObj: {[key: string]: boolean} = {};
+			for (let keyList of keyLists) {
+				for (let key of keyList)
+					keysObj[key] = true;
+			}
+			return Object.keys(keysObj);
+		});
+	}
+
+	remove(key: string): Promise<void> {
+		if (!this.nativeStorage.isAvailable())
+			return this.indexedDbStorage.remove(key);
+
+		return Promise.all([
+			this.nativeStorage.remove(key).catch(function () {}),
+			this.indexedDbStorage.remove(key).catch(function () {})
+		]).then(function () {});
+	}
+
+	clear(): Promise<void> {
+		if (!this.nativeStorage.isAvailable())
+			return this.indexedDbStorage.clear();
+
+		return Promise.all([
+			this.nativeStorage.clear(),
+			this.indexedDbStorage.clear()
+		]).then(function () {});
+	}
+}
+
+export type StorageProtectionStatus = 'enabled'|'not_available'|'not_granted';
+
 export class Storage {
-	static _storage: StorageInterface = new IndexedDBStorage();
+	static _storage: StorageInterface = new HybridStorage();
 
 	static clear(): Promise<void> {
 		return Storage._storage.clear();
@@ -116,5 +261,24 @@ export class Storage {
 
 	static setItem(key: string, value: any): Promise<void> {
 		return Storage._storage.setItem(key, value);
+	}
+
+	static requestPersistentStorage(): Promise<StorageProtectionStatus> {
+		if (typeof navigator === 'undefined' || typeof (<any>navigator).storage === 'undefined')
+			return Promise.resolve('not_available');
+
+		let storageManager = (<any>navigator).storage;
+		if (typeof storageManager.persisted !== 'function' || typeof storageManager.persist !== 'function')
+			return Promise.resolve('not_available');
+
+		return storageManager.persisted().then(function (persisted: boolean) {
+			if (persisted)
+				return 'enabled';
+			return storageManager.persist().then(function (granted: boolean) {
+				return granted ? 'enabled' : 'not_granted';
+			});
+		}).catch(function () {
+			return 'not_granted';
+		});
 	}
 }

@@ -727,6 +727,79 @@ html[data-theme="light"] .receiveTab .qrCode canvas {
 	gap: 0.5rem;
 }
 
+.indexTab .walletVault {
+	padding: 1rem;
+}
+.wallet-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+.wallet-row {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 0;
+}
+.wallet-row-main {
+	min-width: 0;
+}
+.wallet-row-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem;
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--color-text);
+	margin-bottom: 0.35rem;
+}
+.wallet-row-active {
+	display: inline-flex;
+	align-items: center;
+	border: 1px solid rgba(16, 185, 129, 0.32);
+	color: var(--color-success);
+	border-radius: 999px;
+	padding: 0.125rem 0.5rem;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	line-height: 1.2;
+}
+.wallet-row-address {
+	font-family: 'Consolas', 'Courier New', monospace;
+	font-size: 0.75rem;
+	color: var(--color-text-muted);
+	word-break: break-all;
+	line-height: 1.45;
+}
+.wallet-row-meta {
+	margin-top: 0.4rem;
+	font-size: 0.75rem;
+	color: var(--color-text-muted);
+}
+.wallet-row-actions {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.5rem;
+}
+.wallet-vault-actions {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.75rem;
+	margin: 1rem 0 0.75rem;
+}
+.storage-status-title {
+	font-weight: 700;
+	color: var(--color-text);
+	margin-bottom: 0.4rem;
+}
+.storage-status-copy,
+.wallet-storage-note {
+	color: var(--color-text-muted);
+	font-size: 0.8125rem;
+	line-height: 1.6;
+}
+
 /* Notes/features section */
 .indexTab .notesBlock {
 	padding: 2rem 0;
@@ -1294,6 +1367,25 @@ html[data-theme="light"] .receiveTab .qrCode canvas {
 
 	body.connected .body-header {
 		margin-bottom: 1.25rem;
+	}
+
+	.indexTab .walletVault {
+		padding: 1.5rem 2rem 2rem;
+	}
+
+	.wallet-row {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 14rem;
+		align-items: start;
+	}
+
+	.wallet-row-actions {
+		grid-template-columns: 1fr;
+	}
+
+	.wallet-vault-actions {
+		grid-template-columns: 1fr 1fr;
+		max-width: 32rem;
 	}
 
 	body.connected .card,

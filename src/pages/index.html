@@ -1,18 +1,65 @@
 <div id="app" class="indexTab" v-cloak="">
-	<div class="mainBlock">
+	<div class="walletVault" v-if="hasLocalWallet">
+		<div class="body-header">
+			<div class="header-title">Wallets</div>
+			<div class="header-subtitle">Open a saved wallet or add another local wallet.</div>
+		</div>
+
+		<div class="storage-status card">
+			<div class="storage-status-title">{{storageProtectionText}}</div>
+			<div class="storage-status-copy">
+				This wallet list is stored locally in this browser/app. Storage protection can reduce the risk of automatic browser cleanup, but clearing site data can still remove local copies.
+			</div>
+		</div>
+
+		<div class="wallet-list">
+			<div class="wallet-row card" v-for="wallet of wallets">
+				<div class="wallet-row-main">
+					<div class="wallet-row-title">
+						<span>{{wallet.name}}</span>
+						<span class="wallet-row-active" v-if="isWalletLoaded && wallet.id === activeWalletId">Open</span>
+					</div>
+					<div class="wallet-row-address" v-if="wallet.address !== ''">{{wallet.address}}</div>
+					<div class="wallet-row-address" v-if="wallet.address === ''">Address will appear after this wallet is opened.</div>
+					<div class="wallet-row-meta">Last opened: {{formatWalletDate(wallet.lastOpenedAt)}}</div>
+				</div>
+				<div class="wallet-row-actions">
+					<button class="btn primary small" @click="loadWallet(wallet.id)">Open Wallet</button>
+					<button class="btn small" @click="renameWallet(wallet)">Rename</button>
+					<button class="btn small" @click="exportWallet(wallet)">Export Backup</button>
+					<button class="btn red small" @click="removeWallet(wallet)">Remove from This Device</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="wallet-vault-actions">
+			<a href="#!createWallet" class="btn primary">Create New Wallet</a>
+			<a href="#!import" class="btn basic">Import Wallet</a>
+		</div>
+
+		<div class="card wallet-storage-note">
+			<div class="card-title">Local storage notice</div>
+			<div>
+				This wallet is stored locally in this browser.
+				<br/><br/>
+				You have confirmed that your wallet keys are backed up. If you clear site data, reset the browser, use private mode, or uninstall the app, the local wallet may disappear, but you can restore it from your backup keys or wallet backup file.
+			</div>
+		</div>
+	</div>
+
+	<div class="mainBlock" v-if="!hasLocalWallet">
 		<div class="headline">
 			<img src="./assets/img/coin_logo.svg" alt="Karbo" style="width:64px;height:64px;margin-bottom:1rem;border-radius:50%;"/>
 			<h1>{{ $t("homepage.mainTitle") }}</h1>
 			<h2>{{ $t("homepage.tagLine") }}</h2>
 		</div>
 		<div class="callToAction">
-			<a href="#" @click="loadWallet()" v-if="hasLocalWallet" class="btn primary" style="width:100%;">{{ $t("homepage.actions.loadWallet") }}</a>
-			<a href="#!createWallet" class="btn primary" style="width:100%;" v-if="!hasLocalWallet">{{ $t("homepage.actions.createWallet") }}</a>
-			<a href="#!import" class="btn basic" style="width:100%;">{{ $t("homepage.actions.importWallet") }}</a>
+			<a href="#!createWallet" class="btn primary" style="width:100%;">Create New Wallet</a>
+			<a href="#!import" class="btn basic" style="width:100%;">Import Wallet</a>
 		</div>
 	</div>
 
-	<div class="notesBlock hideOnNative">
+	<div class="notesBlock hideOnNative" v-if="!hasLocalWallet">
 		<div class="container">
 			<div class="notes">
 				<div class="block">

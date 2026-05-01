@@ -82,10 +82,10 @@
 	  "mainTitle": "Welcome to Karbo Wallet",
 	  "tagLine": "A client-side, non-custodial wallet for Karbo.",
 	  "actions": {
-		"loadWallet": "Load my wallet",
-		"importWallet": "Import a wallet",
+		"loadWallet": "Open Wallet",
+		"importWallet": "Import Wallet",
 		"create": "Create",
-		"createWallet": "Create a wallet"
+		"createWallet": "Create New Wallet"
 	  },
 	  "notes": {
 		"secure": {
@@ -400,7 +400,7 @@
 		}
 	  },
 	  "changePasswordButton":"Change my wallet password",
-	  "deleteWalletButton":"Delete my wallet (local copy)",
+	  "deleteWalletButton":"Remove from This Device",
 	  "resetWalletButton": "Reset and rescan wallet",
 	  "walletSettings":{
 		"creationHeight":{
@@ -412,9 +412,9 @@
 		"updateButton":"Update"
 	  },
 	  "deleteWalletModal":{
-		"title":"Delete My Wallet (local copy)",
-		"content":"Are you sure you REALLY want to delete your wallet ?",
-		"confirmText":"Yes I'm sure",
+		"title":"Remove from This Device",
+		"content":"This removes only the local copy stored in this browser/app.<br/>It does not affect funds on the blockchain.<br/>You can restore this wallet later using your backup keys or wallet backup file.",
+		"confirmText":"Remove from This Device",
 		"cancelText":"Cancel"
 	  },
 	  "resetWalletModal": {
@@ -445,7 +445,7 @@
 	  "qrCodeBlock":{
 		"title":"QR code",
 		"startScanButton":"Start the scan",
-		"importButton":"Import"
+		"importButton":"Import Wallet"
 	  },
 	  "qrScanningBlock":{
 		"title":"Present the QR code"
@@ -486,8 +486,8 @@
 	  }
 	},
 	"importPage":{
-	  "title":"Create a wallet",
-	  "subtitle":"From previously created keys, file, or mnemonic phrase",
+	  "title":"Import Wallet",
+	  "subtitle":"Add an existing wallet from keys, file, QR code, or mnemonic phrase",
 	  "chooseMethod":"Choose your import method:",
 	  "fromKeys":"From keys",
 	  "fromFile":"From a file",
@@ -508,7 +508,7 @@
 	  "walletBlock":{
 		"title":"Wallet file",
 		"label":"Select the file",
-		"importButton":"Import"
+		"importButton":"Import Wallet"
 	  }
 	},
 	"importFromMnemonicPage":{
@@ -521,7 +521,7 @@
 		  "invalid":"The mnemonic phrase is invalid",
 		  "language":"Language"
 		},
-		"importButton":"Import"
+		"importButton":"Import Wallet"
 	  }
 	},
 	"importFromKeysPage":{
@@ -545,7 +545,7 @@
 		"publicKey":{
 		  "label":"Public key"
 		},
-		"importButton":"Import"
+		"importButton":"Import Wallet"
 	  }
 	}
   },

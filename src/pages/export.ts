@@ -53,7 +53,7 @@ class ExportView extends DestructableView {
 				let savePassword : string = result.value;
 				// let password = prompt();
 				// let wallet = WalletRepository.getMain();
-				return WalletRepository.getLocalWalletWithPassword(savePassword).then((wallet : Wallet|null) : { wallet: Wallet, password: string }|null => {
+				return WalletRepository.getLocalWalletWithPassword(savePassword, WalletRepository.getCurrentWalletId(), false).then((wallet : Wallet|null) : { wallet: Wallet, password: string }|null => {
 					if (wallet !== null) {
 						return {wallet: wallet, password: savePassword};
 					} else {
