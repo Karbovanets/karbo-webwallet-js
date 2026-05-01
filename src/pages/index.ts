@@ -26,7 +26,7 @@ class IndexView extends DestructableView{
 	@VueVar(false) isWalletLoaded !: boolean;
 	@VueVar([]) wallets !: WalletVaultRecord[];
 	@VueVar('') activeWalletId !: string;
-	@VueVar('Storage protection: Not available in this browser') storageProtectionText !: string;
+	@VueVar('walletVault.storageStatus.notAvailable') storageProtectionKey !: string;
 	@VueVar('not_available') storageProtectionStatus !: string;
 
 	constructor(container : string){
@@ -34,12 +34,12 @@ class IndexView extends DestructableView{
 		this.isWalletLoaded = DependencyInjectorInstance().getInstance(Wallet.name,'default', false) !== null;
 		this.refreshWallets();
 		this.refreshStorageProtection();
-		WalletRepository.consumeMigrationNotice().then(function(message: string|null) {
+		WalletRepository.consumeMigrationNotice().then((message: string|null) => {
 			if (message !== null) {
 				swal({
 					type: 'info',
-					title: 'Wallet list updated',
-					text: message,
+					title: i18n.t('walletVault.migrationNoticeTitle'),
+					text: this.translateMigrationNotice(message),
 					confirmButtonText: i18n.t('global.invalidPasswordModal.confirmText')
 				});
 			}
@@ -67,11 +67,11 @@ class IndexView extends DestructableView{
 		Storage.requestPersistentStorage().then((status: StorageProtectionStatus) => {
 			this.storageProtectionStatus = status;
 			if (status === 'enabled')
-				this.storageProtectionText = 'Storage protection: Enabled';
+				this.storageProtectionKey = 'walletVault.storageStatus.enabled';
 			else if (status === 'not_available')
-				this.storageProtectionText = 'Storage protection: Not available in this browser';
+				this.storageProtectionKey = 'walletVault.storageStatus.notAvailable';
 			else
-				this.storageProtectionText = 'Storage protection: Not granted';
+				this.storageProtectionKey = 'walletVault.storageStatus.notGranted';
 		});
 	}
 
@@ -81,11 +81,11 @@ class IndexView extends DestructableView{
 
 	renameWallet(wallet: WalletVaultRecord){
 		let options: any = {
-			title: 'Rename Wallet',
+			title: i18n.t('walletVault.renameModal.title'),
 			input: 'text',
 			inputValue: wallet.name,
 			showCancelButton: true,
-			confirmButtonText: 'Rename',
+			confirmButtonText: i18n.t('walletVault.renameModal.confirmText'),
 			cancelButtonText: i18n.t('global.openWalletModal.cancelText')
 		};
 		swal(options).then((result: any) => {
@@ -102,7 +102,7 @@ class IndexView extends DestructableView{
 			title: i18n.t('global.openWalletModal.title'),
 			input: 'password',
 			showCancelButton: true,
-			confirmButtonText: 'Export Backup',
+			confirmButtonText: i18n.t('walletVault.actions.exportBackup'),
 			cancelButtonText: i18n.t('global.openWalletModal.cancelText')
 		}).then((result: any) => {
 			if (!result.value)
@@ -132,10 +132,10 @@ class IndexView extends DestructableView{
 
 	removeWallet(wallet: WalletVaultRecord){
 		swal({
-			title: 'Remove from This Device',
-			html: 'This removes only the local copy stored in this browser/app.<br/>It does not affect funds on the blockchain.<br/>You can restore this wallet later using your backup keys or wallet backup file.',
+			title: i18n.t('walletVault.actions.remove'),
+			html: i18n.t('walletVault.removeModal.content'),
 			showCancelButton: true,
-			confirmButtonText: 'Remove from This Device',
+			confirmButtonText: i18n.t('walletVault.actions.remove'),
 			cancelButtonText: i18n.t('global.openWalletModal.cancelText'),
 			type: 'warning'
 		}).then((result:any) => {
@@ -151,8 +151,14 @@ class IndexView extends DestructableView{
 
 	formatWalletDate(value: string|null): string{
 		if (value === null || value === '')
-			return 'Never opened';
+			return i18n.t('walletVault.neverOpened');
 		return new Date(value).toLocaleString();
+	}
+
+	private translateMigrationNotice(message: string): string {
+		if (message.indexOf('walletVault.') === 0)
+			return i18n.t(message);
+		return message;
 	}
 
 	private walletBackupFileName(wallet: WalletVaultRecord): string {

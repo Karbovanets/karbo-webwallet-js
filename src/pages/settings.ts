@@ -48,7 +48,7 @@ class SettingsView extends DestructableView{
 
 	@VueVar(0) nativeVersionCode !: number;
 	@VueVar('') nativeVersionNumber !: string;
-	@VueVar('Storage protection: Not available in this browser') storageProtectionText !: string;
+	@VueVar('walletVault.storageStatus.notAvailable') storageProtectionKey !: string;
 
 	private initializing : boolean = true;
 
@@ -91,11 +91,11 @@ class SettingsView extends DestructableView{
 	refreshStorageProtection(){
 		Storage.requestPersistentStorage().then((status: StorageProtectionStatus) => {
 			if (status === 'enabled')
-				this.storageProtectionText = 'Storage protection: Enabled';
+				this.storageProtectionKey = 'walletVault.storageStatus.enabled';
 			else if (status === 'not_available')
-				this.storageProtectionText = 'Storage protection: Not available in this browser';
+				this.storageProtectionKey = 'walletVault.storageStatus.notAvailable';
 			else
-				this.storageProtectionText = 'Storage protection: Not granted';
+				this.storageProtectionKey = 'walletVault.storageStatus.notGranted';
 		});
 	}
 

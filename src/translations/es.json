@@ -84,10 +84,10 @@
       "mainTitle": "Bienvenido a Karbo Cartera",
       "tagLine": "Una billetera de Karbo del lado del cliente y sin custodia.",
       "actions": {
-        "loadWallet": "Cargar mi cartera",
-        "importWallet": "Importar una cartera",
+        "loadWallet": "Abrir cartera",
+        "importWallet": "Importar cartera",
         "create": "Crear",
-        "createWallet": "Crear una cartera"
+        "createWallet": "Crear cartera nueva"
       },
 	  "notes": {
 		"secure": {
@@ -107,6 +107,41 @@
 		  "description": "¡Alojado en Github!"
 		}
 	  }
+    },
+    "walletVault":{
+      "title": "Carteras",
+      "subtitle": "Abra una cartera guardada o añada otra cartera local.",
+      "openBadge": "Abierta",
+      "emptyAddress": "La dirección aparecerá después de abrir esta cartera.",
+      "lastOpened": "Última apertura: {date}",
+      "neverOpened": "Nunca abierta",
+      "migrationNoticeTitle": "Lista de carteras actualizada",
+      "migrationNoticeContent": "Su cartera existente se ha añadido a la nueva lista como 'Wallet 1'.",
+      "actions": {
+        "open": "Abrir cartera",
+        "rename": "Cambiar nombre",
+        "exportBackup": "Exportar copia de seguridad",
+        "remove": "Eliminar de este dispositivo",
+        "create": "Crear cartera nueva",
+        "import": "Importar cartera"
+      },
+      "storageStatus": {
+        "enabled": "Protección del almacenamiento: Activada",
+        "notAvailable": "Protección del almacenamiento: No disponible en este navegador",
+        "notGranted": "Protección del almacenamiento: No concedida",
+        "description": "Esta lista de carteras se almacena localmente en este navegador/app. La protección del almacenamiento puede reducir el riesgo de limpieza automática del navegador, pero borrar los datos del sitio aún puede eliminar las copias locales."
+      },
+      "storageNotice": {
+        "title": "Aviso de almacenamiento local",
+        "content": "Esta cartera se almacena localmente en este navegador.<br/><br/>Ha confirmado que las claves de su cartera tienen copia de seguridad. Si borra los datos del sitio, restablece el navegador, usa modo privado o desinstala la app, la cartera local puede desaparecer, pero puede restaurarla desde sus claves de copia de seguridad o archivo de copia de seguridad de la cartera."
+      },
+      "renameModal": {
+        "title": "Cambiar nombre de la cartera",
+        "confirmText": "Cambiar nombre"
+      },
+      "removeModal": {
+        "content": "Esto elimina solo la copia local almacenada en este navegador/app.<br/>No afecta los fondos en la blockchain.<br/>Puede restaurar esta cartera más tarde usando sus claves de copia de seguridad o archivo de copia de seguridad de la cartera."
+      }
     },
     "accountPage": {
       "title": "Cuenta",
@@ -400,8 +435,12 @@
         }
       },
       "changePasswordButton": "Cambiar mi contraseña de billetera",
-      "deleteWalletButton": "Eliminar mi billetera (copia local)",
+      "deleteWalletButton": "Eliminar de este dispositivo",
       "resetWalletButton": "Reset and rescan wallet",
+      "localWalletStorage":{
+        "title": "Almacenamiento local de la cartera",
+        "protectionNote": "La protección del almacenamiento solo reduce el riesgo de eliminación automática por el navegador. No impide borrar manualmente los datos del sitio."
+      },
       "walletSettings": {
         "creationHeight": {
           "label": "Altura de creación de la cartera."
@@ -445,7 +484,7 @@
       "qrCodeBlock": {
         "title": "Código QR",
         "startScanButton": "Iniciar el escaneo",
-        "importButton": "Importar"
+        "importButton": "Importar cartera"
       },
       "qrScanningBlock": {
         "title": "Presentar el código QR"
@@ -486,8 +525,8 @@
       }
     },
     "importPage": {
-      "title": "Crear una billetera",
-      "subtitle": "A partir de claves, archivos o frases mnemónicas creadas previamente.",
+      "title": "Importar cartera",
+      "subtitle": "Añada una cartera existente desde claves, frase semilla, código QR o archivo de copia de seguridad",
       "chooseMethod": "Selecciona un método de importación:",
       "fromKeys": "De las llaves",
       "fromFile": "De un archivo",
@@ -508,7 +547,7 @@
       "walletBlock": {
         "title": "Archivo de billetera",
         "label": "Selecciona el archivo",
-        "importButton": "Importar"
+        "importButton": "Importar cartera"
       }
     },
     "importFromMnemonicPage": {
@@ -521,7 +560,7 @@
           "invalid": "La frase mnemotécnica es inválida.",
           "language": "Idioma"
         },
-        "importButton": "Importar"
+        "importButton": "Importar cartera"
       }
     },
     "importFromKeysPage": {
@@ -545,7 +584,7 @@
         "publicKey": {
           "label": "Llave pública"
         },
-        "importButton": "Importar"
+        "importButton": "Importar cartera"
       }
     }
   },

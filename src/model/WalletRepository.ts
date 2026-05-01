@@ -179,7 +179,7 @@ export class WalletRepository{
 					return WalletRepository.writeVault(migratedVault).then(function () {
 						return Storage.setItem(
 							WalletRepository.MIGRATION_NOTICE_KEY,
-							'Your existing wallet has been added to the new wallet list as \u2018Wallet 1\u2019.'
+							'walletVault.migrationNoticeContent'
 						).then(function () {
 							return migratedVault;
 						});

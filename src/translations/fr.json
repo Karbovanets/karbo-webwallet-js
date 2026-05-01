@@ -82,10 +82,10 @@
 	  "mainTitle": "Bienvenue dans Portefeuille pour Karbo",
 	  "tagLine": "Un portefeuille Karbo côté client et non dépositaire.",
 	  "actions": {
-		"loadWallet": "Charger mon portefeuille",
+		"loadWallet": "Ouvrir le portefeuille",
 		"importWallet": "Importer un portefeuille",
 		"create": "Créer",
-		"createWallet": "Créer un portefeuille"
+		"createWallet": "Créer un nouveau portefeuille"
 	  },
 	  "notes": {
 		"secure": {
@@ -105,6 +105,41 @@
 		  "description": "Hébergé sur Github!"
 		}
 	  }
+	},
+	"walletVault":{
+		"title": "Portefeuilles",
+		"subtitle": "Ouvrez un portefeuille enregistré ou ajoutez un autre portefeuille local.",
+		"openBadge": "Ouvert",
+		"emptyAddress": "L’adresse apparaîtra après l’ouverture de ce portefeuille.",
+		"lastOpened": "Dernière ouverture : {date}",
+		"neverOpened": "Jamais ouvert",
+		"migrationNoticeTitle": "Liste des portefeuilles mise à jour",
+		"migrationNoticeContent": "Votre portefeuille existant a été ajouté à la nouvelle liste sous le nom 'Wallet 1'.",
+		"actions": {
+			"open": "Ouvrir le portefeuille",
+			"rename": "Renommer le portefeuille",
+			"exportBackup": "Exporter la sauvegarde",
+			"remove": "Retirer de cet appareil",
+			"create": "Créer un nouveau portefeuille",
+			"import": "Importer un portefeuille"
+		},
+		"storageStatus": {
+			"enabled": "Protection du stockage : Activée",
+			"notAvailable": "Protection du stockage : Non disponible dans ce navigateur",
+			"notGranted": "Protection du stockage : Non accordée",
+			"description": "Cette liste de portefeuilles est stockée localement dans ce navigateur/cette app. La protection du stockage peut réduire le risque de nettoyage automatique du navigateur, mais l’effacement des données du site peut toujours supprimer les copies locales."
+		},
+		"storageNotice": {
+			"title": "Avis de stockage local",
+			"content": "Ce portefeuille est stocké localement dans ce navigateur.<br/><br/>Vous avez confirmé que vos clés de portefeuille sont sauvegardées. Si vous effacez les données du site, réinitialisez le navigateur, utilisez le mode privé ou désinstallez l’app, le portefeuille local peut disparaître, mais vous pouvez le restaurer avec vos clés de sauvegarde ou votre fichier de sauvegarde du portefeuille."
+		},
+		"renameModal": {
+			"title": "Renommer le portefeuille",
+			"confirmText": "Renommer"
+		},
+		"removeModal": {
+			"content": "Cela supprime uniquement la copie locale stockée dans ce navigateur/cette app.<br/>Cela n’affecte pas les fonds sur la blockchain.<br/>Vous pourrez restaurer ce portefeuille plus tard avec vos clés de sauvegarde ou votre fichier de sauvegarde du portefeuille."
+		}
 	},
 	"accountPage": {
 	  "title": "Mon compte",
@@ -398,8 +433,12 @@
 		  }
 	  },
 	  "changePasswordButton":"Changer le mot de passe de mon portefeuille",
-	  "deleteWalletButton":"Supprimer mon portefeuille (copie locale)",
+	  "deleteWalletButton":"Retirer de cet appareil",
 	  "resetWalletButton": "Reset and rescan wallet",
+	  "localWalletStorage":{
+	    "title": "Stockage local du portefeuille",
+	    "protectionNote": "La protection du stockage réduit seulement le risque d’éviction automatique par le navigateur. Elle n’empêche pas l’effacement manuel des données du site."
+	  },
 	  "walletSettings":{
 		"creationHeight":{
 		  "label":"Hauteur à laquelle le portefeuille a été créé"
@@ -443,7 +482,7 @@
 	  "qrCodeBlock":{
 		"title":"QR code",
 		"startScanButton":"Commençer le scan",
-		"importButton":"Importer"
+		"importButton":"Importer le portefeuille"
 	  },
 	  "qrScanningBlock":{
 		"title":"Présentez le QR code"
@@ -484,8 +523,8 @@
 	  }
 	},
 	"importPage":{
-	  "title":"Créer un portefeuille",
-	  "subtitle":"Depuis des cléfs, une fichier ou une phrase mnémotechnique",
+	  "title":"Importer un portefeuille",
+	  "subtitle":"Ajoutez un portefeuille existant depuis des clés, une graine, un QR code ou un fichier de sauvegarde",
 	  "chooseMethod":"Choisissez votre méthode d'import",
 	  "fromKeys":"Depuis des cléfs privées",
 	  "fromFile":"Depuis un fichier",
@@ -506,7 +545,7 @@
 	  "walletBlock":{
 		"title":"Fichier du portefeuille",
 		"label":"Sélectionner",
-		"importButton":"Importer"
+		"importButton":"Importer le portefeuille"
 	  }
 	},
 	"importFromMnemonicPage":{
@@ -519,7 +558,7 @@
 		  "invalid":"la phrase mnémotechnique est invalide",
 		  "language":"Langue"
 		},
-		"importButton":"Importer"
+		"importButton":"Importer le portefeuille"
 	  }
 	},
 	"importFromKeysPage":{
@@ -543,7 +582,7 @@
 		"publicKey":{
 		  "label":"Cléf publique"
 		},
-		"importButton":"Importer"
+		"importButton":"Importer le portefeuille"
 	  }
 	}
   },

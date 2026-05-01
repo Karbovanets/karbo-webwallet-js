@@ -82,10 +82,10 @@
       "mainTitle": "카르보 에 오신 것을 환영합니다",
       "tagLine": "클라이언트 측에서 동작하는 비수탁형 Karbo 지갑.",
       "actions": {
-        "loadWallet": "지갑 불러오기",
+        "loadWallet": "지갑 열기",
         "importWallet": "지갑 가져오기",
         "create": "지갑 만들기",
-        "createWallet": "지갑 만들기"
+        "createWallet": "새 지갑 만들기"
       },
 	  "notes": {
 		"secure": {
@@ -105,6 +105,41 @@
 		  "description": "Github에서 호스팅!"
 		}
 	  }
+    },
+    "walletVault":{
+      "title": "지갑",
+      "subtitle": "저장된 지갑을 열거나 다른 로컬 지갑을 추가하세요.",
+      "openBadge": "열림",
+      "emptyAddress": "이 지갑을 열면 주소가 표시됩니다.",
+      "lastOpened": "마지막으로 연 시간: {date}",
+      "neverOpened": "연 적 없음",
+      "migrationNoticeTitle": "지갑 목록이 업데이트되었습니다",
+      "migrationNoticeContent": "기존 지갑이 새 지갑 목록에 'Wallet 1'로 추가되었습니다.",
+      "actions": {
+        "open": "지갑 열기",
+        "rename": "지갑 이름 변경",
+        "exportBackup": "백업 내보내기",
+        "remove": "이 기기에서 제거",
+        "create": "새 지갑 만들기",
+        "import": "지갑 가져오기"
+      },
+      "storageStatus": {
+        "enabled": "저장소 보호: 활성화됨",
+        "notAvailable": "저장소 보호: 이 브라우저에서 사용할 수 없음",
+        "notGranted": "저장소 보호: 허용되지 않음",
+        "description": "이 지갑 목록은 이 브라우저/앱에 로컬로 저장됩니다. 저장소 보호는 브라우저의 자동 정리 위험을 줄일 수 있지만, 사이트 데이터를 지우면 로컬 복사본이 삭제될 수 있습니다."
+      },
+      "storageNotice": {
+        "title": "로컬 저장소 안내",
+        "content": "이 지갑은 이 브라우저에 로컬로 저장됩니다.<br/><br/>지갑 키를 백업했음을 확인했습니다. 사이트 데이터를 지우거나, 브라우저를 초기화하거나, 비공개 모드를 사용하거나, 앱을 제거하면 로컬 지갑이 사라질 수 있지만 백업 키 또는 지갑 백업 파일로 복원할 수 있습니다."
+      },
+      "renameModal": {
+        "title": "지갑 이름 변경",
+        "confirmText": "이름 변경"
+      },
+      "removeModal": {
+        "content": "이 브라우저/앱에 저장된 로컬 복사본만 제거합니다.<br/>블록체인의 자금에는 영향을 주지 않습니다.<br/>나중에 백업 키 또는 지갑 백업 파일을 사용하여 이 지갑을 복원할 수 있습니다."
+      }
     },
     "accountPage": {
       "title": "계정",
@@ -404,8 +439,12 @@
         }
       },
       "changePasswordButton": "비밀번호 변경",
-      "deleteWalletButton": "웹지갑 지우기 (지금 사용하는 기기의 브라우저에 한정)",
+      "deleteWalletButton": "이 기기에서 제거",
       "resetWalletButton": "Reset and rescan wallet",
+      "localWalletStorage":{
+        "title": "로컬 지갑 저장소",
+        "protectionNote": "저장소 보호는 브라우저의 자동 제거 위험만 줄입니다. 사이트 데이터를 수동으로 지우는 것은 막지 못합니다."
+      },
       "walletSettings": {
         "creationHeight": {
           "label": "지갑이 생성된 블록높이"
@@ -449,7 +488,7 @@
       "qrCodeBlock": {
         "title": "QR 코드",
         "startScanButton": "스캔시작",
-        "importButton": "불러오기"
+        "importButton": "지갑 가져오기"
       },
       "qrScanningBlock": {
         "title": "QR 코드를 보여주세요."
@@ -490,8 +529,8 @@
       }
     },
     "importPage": {
-      "title": "지갑 만들기",
-      "subtitle": "키, 파일 또는 연상단어를 사용하여 가져오기",
+      "title": "지갑 가져오기",
+      "subtitle": "키, 시드 문구, QR 코드 또는 지갑 백업 파일에서 기존 지갑을 추가합니다",
       "chooseMethod": "지갑을 가져올 방법을 선택해 주세요:",
       "fromKeys": "키를 사용하여 가져오기",
       "fromFile": "파일을 사용하여 가져오기",
@@ -512,7 +551,7 @@
       "walletBlock": {
         "title": "지갑 파일",
         "label": "파일 선택하기",
-        "importButton": "가져오기"
+        "importButton": "지갑 가져오기"
       }
     },
     "importFromMnemonicPage": {
@@ -525,7 +564,7 @@
           "invalid": "연상단어가 일치하지 않습니다.",
           "language": "언어"
         },
-        "importButton": "불러오기"
+        "importButton": "지갑 가져오기"
       }
     },
     "importFromKeysPage": {
@@ -549,7 +588,7 @@
         "publicKey": {
           "label": "공개 키"
         },
-        "importButton": "불러오기"
+        "importButton": "지갑 가져오기"
       }
     }
   },

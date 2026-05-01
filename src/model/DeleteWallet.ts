@@ -24,10 +24,10 @@ import {Translations} from "../model/Translations";
 export class DeleteWallet{
     public static deleteWallet() {
         swal({
-            title: 'Remove from This Device',
-            html: 'This removes only the local copy stored in this browser/app.<br/>It does not affect funds on the blockchain.<br/>You can restore this wallet later using your backup keys or wallet backup file.',
+            title: i18n.t('walletVault.actions.remove'),
+            html: i18n.t('walletVault.removeModal.content'),
             showCancelButton: true,
-            confirmButtonText: 'Remove from This Device',
+            confirmButtonText: i18n.t('walletVault.actions.remove'),
             cancelButtonText: i18n.t('settingsPage.deleteWalletModal.cancelText'),
             type: 'warning'
         }).then((result:any) => {

@@ -1,15 +1,8 @@
 <div id="app" class="indexTab" v-cloak="">
 	<div class="walletVault" v-if="hasLocalWallet">
 		<div class="body-header">
-			<div class="header-title">Wallets</div>
-			<div class="header-subtitle">Open a saved wallet or add another local wallet.</div>
-		</div>
-
-		<div class="storage-status card">
-			<div class="storage-status-title">{{storageProtectionText}}</div>
-			<div class="storage-status-copy">
-				This wallet list is stored locally in this browser/app. Storage protection can reduce the risk of automatic browser cleanup, but clearing site data can still remove local copies.
-			</div>
+			<div class="header-title">{{ $t("walletVault.title") }}</div>
+			<div class="header-subtitle">{{ $t("walletVault.subtitle") }}</div>
 		</div>
 
 		<div class="wallet-list">
@@ -17,32 +10,37 @@
 				<div class="wallet-row-main">
 					<div class="wallet-row-title">
 						<span>{{wallet.name}}</span>
-						<span class="wallet-row-active" v-if="isWalletLoaded && wallet.id === activeWalletId">Open</span>
+						<span class="wallet-row-active" v-if="isWalletLoaded && wallet.id === activeWalletId">{{ $t("walletVault.openBadge") }}</span>
 					</div>
 					<div class="wallet-row-address" v-if="wallet.address !== ''">{{wallet.address}}</div>
-					<div class="wallet-row-address" v-if="wallet.address === ''">Address will appear after this wallet is opened.</div>
-					<div class="wallet-row-meta">Last opened: {{formatWalletDate(wallet.lastOpenedAt)}}</div>
+					<div class="wallet-row-address" v-if="wallet.address === ''">{{ $t("walletVault.emptyAddress") }}</div>
+					<div class="wallet-row-meta">{{ $t("walletVault.lastOpened", {date: formatWalletDate(wallet.lastOpenedAt)}) }}</div>
 				</div>
 				<div class="wallet-row-actions">
-					<button class="btn primary small" @click="loadWallet(wallet.id)">Open Wallet</button>
-					<button class="btn small" @click="renameWallet(wallet)">Rename</button>
-					<button class="btn small" @click="exportWallet(wallet)">Export Backup</button>
-					<button class="btn red small" @click="removeWallet(wallet)">Remove from This Device</button>
+					<button class="btn primary small" @click="loadWallet(wallet.id)">{{ $t("walletVault.actions.open") }}</button>
+					<button class="btn small" @click="renameWallet(wallet)">{{ $t("walletVault.actions.rename") }}</button>
+					<button class="btn small" @click="exportWallet(wallet)">{{ $t("walletVault.actions.exportBackup") }}</button>
+					<button class="btn red small" @click="removeWallet(wallet)">{{ $t("walletVault.actions.remove") }}</button>
 				</div>
 			</div>
 		</div>
 
 		<div class="wallet-vault-actions">
-			<a href="#!createWallet" class="btn primary">Create New Wallet</a>
-			<a href="#!import" class="btn basic">Import Wallet</a>
+			<a href="#!createWallet" class="btn primary">{{ $t("walletVault.actions.create") }}</a>
+			<a href="#!import" class="btn basic">{{ $t("walletVault.actions.import") }}</a>
 		</div>
 
-		<div class="card wallet-storage-note">
-			<div class="card-title">Local storage notice</div>
-			<div>
-				This wallet is stored locally in this browser.
-				<br/><br/>
-				You have confirmed that your wallet keys are backed up. If you clear site data, reset the browser, use private mode, or uninstall the app, the local wallet may disappear, but you can restore it from your backup keys or wallet backup file.
+		<div class="wallet-storage-cards">
+			<div class="card wallet-storage-note">
+				<div class="card-title">{{ $t("walletVault.storageNotice.title") }}</div>
+				<div v-html="$t('walletVault.storageNotice.content')"></div>
+			</div>
+
+			<div class="storage-status card">
+				<div class="storage-status-title">{{ $t(storageProtectionKey) }}</div>
+				<div class="storage-status-copy">
+					{{ $t("walletVault.storageStatus.description") }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -54,8 +52,8 @@
 			<h2>{{ $t("homepage.tagLine") }}</h2>
 		</div>
 		<div class="callToAction">
-			<a href="#!createWallet" class="btn primary" style="width:100%;">Create New Wallet</a>
-			<a href="#!import" class="btn basic" style="width:100%;">Import Wallet</a>
+			<a href="#!createWallet" class="btn primary" style="width:100%;">{{ $t("walletVault.actions.create") }}</a>
+			<a href="#!import" class="btn basic" style="width:100%;">{{ $t("walletVault.actions.import") }}</a>
 		</div>
 	</div>
 

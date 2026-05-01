@@ -82,10 +82,10 @@
 	    "mainTitle": "Witamy w portfelu Karbowańca",
 	    "tagLine": "Portfel Karbo po stronie klienta i bez powiernictwa.",
 	    "actions": {
-	    "loadWallet": "Otwórz mój portfel",
-	    "importWallet": "Zaimportuj portfel",
+	    "loadWallet": "Otwórz portfel",
+	    "importWallet": "Importuj portfel",
 	    "create": "Utwórz",
-	    "createWallet": "Utwórz portfel"
+	    "createWallet": "Utwórz nowy portfel"
   },
    "notes": {
     "secure": {
@@ -106,6 +106,41 @@
    }
    }
 },
+    "walletVault":{
+      "title": "Portfele",
+      "subtitle": "Otwórz zapisany portfel albo dodaj kolejny portfel lokalny.",
+      "openBadge": "Otwarty",
+      "emptyAddress": "Adres pojawi się po otwarciu tego portfela.",
+      "lastOpened": "Ostatnio otwarty: {date}",
+      "neverOpened": "Nigdy nie otwierany",
+      "migrationNoticeTitle": "Lista portfeli zaktualizowana",
+      "migrationNoticeContent": "Istniejący portfel został dodany do nowej listy jako 'Wallet 1'.",
+      "actions": {
+        "open": "Otwórz portfel",
+        "rename": "Zmień nazwę portfela",
+        "exportBackup": "Eksportuj kopię zapasową",
+        "remove": "Usuń z tego urządzenia",
+        "create": "Utwórz nowy portfel",
+        "import": "Importuj portfel"
+      },
+      "storageStatus": {
+        "enabled": "Ochrona pamięci: Włączona",
+        "notAvailable": "Ochrona pamięci: Niedostępna w tej przeglądarce",
+        "notGranted": "Ochrona pamięci: Nieprzyznana",
+        "description": "Ta lista portfeli jest przechowywana lokalnie w tej przeglądarce/aplikacji. Ochrona pamięci może zmniejszyć ryzyko automatycznego czyszczenia przez przeglądarkę, ale wyczyszczenie danych witryny nadal może usunąć lokalne kopie."
+      },
+      "storageNotice": {
+        "title": "Informacja o lokalnym przechowywaniu",
+        "content": "Ten portfel jest przechowywany lokalnie w tej przeglądarce.<br/><br/>Potwierdzono, że klucze portfela mają kopię zapasową. Jeśli wyczyścisz dane witryny, zresetujesz przeglądarkę, użyjesz trybu prywatnego albo odinstalujesz aplikację, lokalny portfel może zniknąć, ale można go przywrócić z kluczy kopii zapasowej albo pliku kopii zapasowej portfela."
+      },
+      "renameModal": {
+        "title": "Zmień nazwę portfela",
+        "confirmText": "Zmień nazwę"
+      },
+      "removeModal": {
+        "content": "Usuwa to tylko lokalną kopię przechowywaną w tej przeglądarce/aplikacji.<br/>Nie wpływa to na środki w blockchainie.<br/>Możesz później przywrócić ten portfel za pomocą kluczy kopii zapasowej albo pliku kopii zapasowej portfela."
+      }
+    },
     "accountPage": {
         "title": "Konto",
         "subtitle": "Przegląd Twojego konta i historia transakcji",
@@ -399,8 +434,12 @@
         }
 	  },
     "changePasswordButton":"Zmień moje hasło do portfela",
-	  "deleteWalletButton":"Usuń mój portfel (kopię lokalną)",
+	  "deleteWalletButton":"Usuń z tego urządzenia",
     "resetWalletButton": "Zresetuj i ponownie przeskanuj portfel",
+    "localWalletStorage":{
+      "title": "Lokalne przechowywanie portfela",
+      "protectionNote": "Ochrona pamięci tylko zmniejsza ryzyko automatycznego usunięcia przez przeglądarkę. Nie zapobiega ręcznemu wyczyszczeniu danych witryny."
+    },
 	  "walletSettings":{
 		"creationHeight":{
 		  "label":"Wysokość bloku tworzenia portfela"
@@ -444,7 +483,7 @@
 	  "qrCodeBlock":{
 		"title":"Kod QR",
 		"startScanButton":"Rozpocznij skanowanie",
-		"importButton":"Import"
+		"importButton":"Importuj portfel"
 	  },
 	  "qrScanningBlock":{
 		"title":"Pokarz kod QR"
@@ -485,8 +524,8 @@
     }
   },
   "importPage":{
-    "title":"Utwórz portfel",
-    "subtitle":"Z wcześniej utworzonych kluczy, pliku lub frazy mnemonicznej",
+    "title":"Importuj portfel",
+    "subtitle":"Dodaj istniejący portfel z kluczy, frazy seed, kodu QR albo pliku kopii zapasowej",
     "chooseMethod":"Wybierz metodę importu:",
     "fromKeys":"Za pomocą kluczy",
     "fromFile":"Za pomocą pliku",
@@ -507,7 +546,7 @@
     "walletBlock":{
       "title":"Plik portfela",
       "label":"Wybierz plik",
-      "importButton":"Import"
+      "importButton":"Importuj portfel"
     }
   },
   "importFromMnemonicPage":{
@@ -520,7 +559,7 @@
         "invalid":"Fraza mnemoniczna jest nieprawidłowa",
         "language":"Język"
       },
-      "importButton":"Import"
+      "importButton":"Importuj portfel"
     }
   },
   "importFromKeysPage":{
@@ -544,7 +583,7 @@
       "publicKey":{
         "label":"Klucz publiczny"
       },
-      "importButton":"Import"
+      "importButton":"Importuj portfel"
       }
     }
   },
