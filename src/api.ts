@@ -25,7 +25,9 @@ function sendMessageToParent(type : string, data : any){
 window.addEventListener('message', function(e : MessageEvent){
 	//console.log(e);
 	if(e.data == 'hasWallet'){
-		sendMessageToParent('hasWallet', WalletRepository.hasOneStored());
+		WalletRepository.hasOneStored().then(function (hasWallet: boolean) {
+			sendMessageToParent('hasWallet', hasWallet);
+		});
 	}
 });
 

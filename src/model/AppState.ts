@@ -25,33 +25,67 @@ import {WalletWatchdog} from "./WalletWatchdog";
 export class WalletWorker {
 	wallet: Wallet;
 	password: string;
+	walletId: string;
+	walletName: string|null;
+	backupConfirmed: boolean;
 
-	intervalSave = 0;
+	intervalSave: any = 0;
+	private active = true;
+	private saveObserver !: Function;
 
-	constructor(wallet: Wallet, password: string) {
+	constructor(wallet: Wallet, password: string, walletId: string, walletName: string|null = null, backupConfirmed: boolean = true) {
 		this.wallet = wallet;
 		this.password = password;
+		this.walletId = walletId;
+		this.walletName = walletName;
+		this.backupConfirmed = backupConfirmed;
 		let self: any = this;
-		wallet.addObserver(Observable.EVENT_MODIFIED, function () {
+		this.saveObserver = function () {
+			if (!self.active)
+				return;
 			if (self.intervalSave === 0)
 				self.intervalSave = setTimeout(function () {
+					if (!self.active)
+						return;
 					self.save();
 					self.intervalSave = 0;
 				}, 1000);
-		});
+		};
+		wallet.addObserver(Observable.EVENT_MODIFIED, this.saveObserver);
 
 		this.save();
 	}
 
-	save() {
-		WalletRepository.save(this.wallet, this.password);
+	save(makeActive: boolean = true): Promise<void> {
+		if (!this.active && makeActive)
+			return Promise.resolve();
+		return WalletRepository.save(this.wallet, this.password, this.walletId, this.walletName, this.backupConfirmed, makeActive);
+	}
+
+	stop(): Promise<void> {
+		if (!this.active)
+			return Promise.resolve();
+
+		this.active = false;
+		this.wallet.removeObserver(Observable.EVENT_MODIFIED, this.saveObserver);
+		if (this.intervalSave !== 0) {
+			clearTimeout(this.intervalSave);
+			this.intervalSave = 0;
+		}
+		return this.save(false);
 	}
 }
 
 export class AppState {
 
-	static openWallet(wallet: Wallet, password: string) {
-		let walletWorker = new WalletWorker(wallet, password);
+	static openWallet(wallet: Wallet, password: string, walletId: string|null = null, walletName: string|null = null, backupConfirmed: boolean = true) {
+		let existingWallet: Wallet = DependencyInjectorInstance().getInstance(Wallet.name, 'default', false);
+		if (existingWallet !== null)
+			AppState.disconnect();
+
+		let resolvedWalletId = walletId === null ? WalletRepository.createWalletId() : walletId;
+		WalletRepository.setCurrentWalletId(resolvedWalletId);
+		let walletWorker = new WalletWorker(wallet, password, resolvedWalletId, walletName, backupConfirmed);
 
 		DependencyInjectorInstance().register(Wallet.name, wallet);
 		let watchdog = BlockchainExplorerProvider.getInstance().watchdog(wallet);
@@ -59,6 +93,7 @@ export class AppState {
 		DependencyInjectorInstance().register(WalletWorker.name, walletWorker);
 
 		$('body').addClass('connected');
+		$('body').removeClass('viewOnlyWallet');
 		if (wallet.isViewOnly())
 			$('body').addClass('viewOnlyWallet');
 	}
@@ -69,6 +104,8 @@ export class AppState {
 		let walletWatchdog: WalletWatchdog = DependencyInjectorInstance().getInstance(WalletWatchdog.name, 'default', false);
 		if (walletWatchdog !== null)
 			walletWatchdog.stop();
+		if (walletWorker !== null)
+			walletWorker.stop();
 
 		DependencyInjectorInstance().register(Wallet.name, undefined, 'default');
 		DependencyInjectorInstance().register(WalletWorker.name, undefined, 'default');
@@ -93,7 +130,7 @@ export class AppState {
 		}
 	}
 
-	static askUserOpenWallet(redirectToHome: boolean = true) {
+	static askUserOpenWallet(redirectToHome: boolean = true, walletId: string|null = null) {
 		let self = this;
 		return new Promise<void>(function (resolve, reject) {
 
@@ -118,8 +155,9 @@ export class AppState {
 						let savePassword = result.value;
 						// let password = prompt();
 						let memoryWallet = DependencyInjectorInstance().getInstance(Wallet.name, 'default', false);
-						if (memoryWallet === null) {
-							WalletRepository.getLocalWalletWithPassword(savePassword).then((wallet: Wallet | null) => {
+						let currentWalletId = WalletRepository.getCurrentWalletId();
+						if (memoryWallet === null || (walletId !== null && currentWalletId !== walletId)) {
+							WalletRepository.getLocalWalletWithPassword(savePassword, walletId).then((wallet: Wallet | null) => {
 								//console.log(wallet);
 								if (wallet !== null) {
 									wallet.recalculateIfNotViewOnly();
@@ -158,7 +196,7 @@ export class AppState {
 									swal.close();
 									resolve();
 
-									AppState.openWallet(wallet, savePassword);
+									AppState.openWallet(wallet, savePassword, WalletRepository.getCurrentWalletId());
 									if (redirectToHome)
 										window.location.href = '#account';
 								} else {

@@ -25,6 +25,7 @@ import {Translations} from "../model/Translations";
 import {MnemonicLang} from "../model/MnemonicLang";
 import {BlockchainExplorer} from "../model/blockchain/BlockchainExplorer";
 import {Cn, CnNativeBride, CnRandom} from "../model/Cn";
+import {Storage, StorageProtectionStatus} from "../model/Storage";
 
 let blockchainExplorer : BlockchainExplorer = BlockchainExplorerProvider.getInstance();
 
@@ -37,6 +38,7 @@ class CreateViewWallet extends DestructableView{
 	@VueVar(false) forceInsecurePassword !: boolean;
 
 	@VueVar(false) walletBackupMade !: boolean;
+	@VueVar('walletVault.storageStatus.notAvailable') storageProtectionKey !: string;
 
 	@VueVar(null) newWallet !: Wallet|null;
 	@VueVar('') mnemonicPhrase !: string;
@@ -44,6 +46,7 @@ class CreateViewWallet extends DestructableView{
 	constructor(container : string){
 		super(container);
 		this.generateWallet();
+		this.refreshStorageProtection();
 		AppState.enableLeftMenu();
 	}
 
@@ -121,6 +124,17 @@ class CreateViewWallet extends DestructableView{
 		if(this.walletPassword !== '' && (!this.insecurePassword || this.forceInsecurePassword)) {
 			this.step = 2;
 		}
+	}
+
+	refreshStorageProtection(){
+		Storage.requestPersistentStorage().then((status: StorageProtectionStatus) => {
+			if (status === 'enabled')
+				this.storageProtectionKey = 'walletVault.storageStatus.enabled';
+			else if (status === 'not_available')
+				this.storageProtectionKey = 'walletVault.storageStatus.notAvailable';
+			else
+				this.storageProtectionKey = 'walletVault.storageStatus.notGranted';
+		});
 	}
 
 	downloadBackup(){

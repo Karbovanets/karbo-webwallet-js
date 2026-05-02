@@ -60,6 +60,8 @@ Storage.getItem('user-theme', 'dark').then(function(userTheme : string){
 	}
 });
 
+Storage.requestPersistentStorage();
+
 //========================================================
 //===========Bottom Navigation active state===============
 //========================================================

@@ -82,10 +82,10 @@
 	  "mainTitle": "Benvenuto in Portafoglio per Karbo",
 	  "tagLine": "Un wallet Karbo lato client e non custodial.",
 	  "actions": {
-		"loadWallet": "Carica il mio portafoglio",
-		"importWallet": "Importa un portafoglio",
+		"loadWallet": "Apri portafoglio",
+		"importWallet": "Importa portafoglio",
 		"create": "Crea",
-		"createWallet": "Crea un portafoglio"
+		"createWallet": "Crea nuovo portafoglio"
 	  },
 	  "notes": {
 		"secure": {
@@ -105,6 +105,41 @@
 		  "description": "Ospitato su Github!"
 		}
 	  }
+	},
+	"walletVault":{
+		"title": "Portafogli",
+		"subtitle": "Apri un portafoglio salvato o aggiungi un altro portafoglio locale.",
+		"openBadge": "Aperto",
+		"emptyAddress": "L’indirizzo apparirà dopo l’apertura di questo portafoglio.",
+		"lastOpened": "Ultima apertura: {date}",
+		"neverOpened": "Mai aperto",
+		"migrationNoticeTitle": "Elenco portafogli aggiornato",
+		"migrationNoticeContent": "Il portafoglio esistente è stato aggiunto al nuovo elenco come 'Wallet 1'.",
+		"actions": {
+			"open": "Apri portafoglio",
+			"rename": "Rinomina portafoglio",
+			"exportBackup": "Esporta backup",
+			"remove": "Rimuovi da questo dispositivo",
+			"create": "Crea nuovo portafoglio",
+			"import": "Importa portafoglio"
+		},
+		"storageStatus": {
+			"enabled": "Protezione archiviazione: Attivata",
+			"notAvailable": "Protezione archiviazione: Non disponibile in questo browser",
+			"notGranted": "Protezione archiviazione: Non concessa",
+			"description": "Questo elenco di portafogli è archiviato localmente in questo browser/app. La protezione dell’archiviazione può ridurre il rischio di pulizia automatica del browser, ma la cancellazione dei dati del sito può comunque rimuovere le copie locali."
+		},
+		"storageNotice": {
+			"title": "Avviso di archiviazione locale",
+			"content": "Questo portafoglio è archiviato localmente in questo browser.<br/><br/>Hai confermato che le chiavi del portafoglio sono state salvate. Se cancelli i dati del sito, reimposti il browser, usi la modalità privata o disinstalli l’app, il portafoglio locale potrebbe scomparire, ma puoi ripristinarlo dalle chiavi di backup o dal file di backup del portafoglio."
+		},
+		"renameModal": {
+			"title": "Rinomina portafoglio",
+			"confirmText": "Rinomina"
+		},
+		"removeModal": {
+			"content": "Questo rimuove solo la copia locale archiviata in questo browser/app.<br/>Non influisce sui fondi sulla blockchain.<br/>Puoi ripristinare questo portafoglio in seguito usando le chiavi di backup o il file di backup del portafoglio."
+		}
 	},
 	"accountPage": {
 	  "title": "Account",
@@ -398,8 +433,12 @@
 		  }
 	  },
 	  "changePasswordButton":"Cambia la password del mio portafoglio",
-	  "deleteWalletButton":"Elimina il mio portafoglio (copia locale)",
+	  "deleteWalletButton":"Rimuovi da questo dispositivo",
 	  "resetWalletButton": "Reset and rescan wallet",
+	  "localWalletStorage":{
+	    "title": "Archiviazione locale del portafoglio",
+	    "protectionNote": "La protezione dell’archiviazione riduce solo il rischio di rimozione automatica da parte del browser. Non impedisce la cancellazione manuale dei dati del sito."
+	  },
 	  "walletSettings":{
 		"creationHeight":{
 		  "label":"Altezza a cui è stato creato il portafoglio"
@@ -443,7 +482,7 @@
 	  "qrCodeBlock":{
 		"title":"QR code",
 		"startScanButton":"Inizia la scansione",
-		"importButton":"Importa"
+		"importButton":"Importa portafoglio"
 	  },
 	  "qrScanningBlock":{
 		"title":"Presentare il codice QR"
@@ -484,8 +523,8 @@
 	  }
 	},
 	"importPage":{
-	  "title":"Creare un portafoglio",
-	  "subtitle":"Da chiavi, da file o da una frase mnemonica",
+	  "title":"Importa portafoglio",
+	  "subtitle":"Aggiungi un portafoglio esistente da chiavi, frase seed, codice QR o file di backup",
 	  "chooseMethod":"Scegli il tuo metodo di importazione:",
 	  "fromKeys":"Da chiavi",
 	  "fromFile":"Da un file",
@@ -506,7 +545,7 @@
 	  "walletBlock":{
 		"title":"File del portafoglio",
 		"label":"Seleziona il file",
-		"importButton":"Importa"
+		"importButton":"Importa portafoglio"
 	  }
 	},
 	"importFromMnemonicPage":{
@@ -519,7 +558,7 @@
 		  "invalid":"La frase mnemonica è invalida",
 		  "language":"Lingua"
 		},
-		"importButton":"Importa"
+		"importButton":"Importa portafoglio"
 	  }
 	},
 	"importFromKeysPage":{
@@ -543,7 +582,7 @@
 		"publicKey":{
 		  "label":"Public key"
 		},
-		"importButton":"Importa"
+		"importButton":"Importa portafoglio"
 	  }
 	}
   },

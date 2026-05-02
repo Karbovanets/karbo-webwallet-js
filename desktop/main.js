@@ -1,4 +1,4 @@
-const { app, BrowserWindow, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
@@ -8,6 +8,215 @@ const PREFERRED_PORT = 45110;
 
 let mainWindow = null;
 let staticServer = null;
+
+function emptyVault() {
+  return {
+    version: 2,
+    activeWalletId: null,
+    wallets: []
+  };
+}
+
+function getStorageRoot() {
+  return app.getPath('userData');
+}
+
+function getWalletsDir() {
+  return path.join(getStorageRoot(), 'wallets');
+}
+
+function getVaultPath() {
+  return path.join(getStorageRoot(), 'vault.json');
+}
+
+function validateWalletId(walletId) {
+  if (typeof walletId !== 'string' || !/^wallet_[a-f0-9]{32}$/.test(walletId)) {
+    throw new Error('Invalid wallet id');
+  }
+}
+
+function getWalletPath(walletId) {
+  validateWalletId(walletId);
+  return path.join(getWalletsDir(), `wallet_${walletId}.karbowallet`);
+}
+
+async function ensureWalletStorageDirs() {
+  await fs.promises.mkdir(getWalletsDir(), { recursive: true });
+}
+
+function sanitizeWalletMetadata(raw) {
+  const now = new Date().toISOString();
+  return {
+    id: raw.id,
+    name: typeof raw.name === 'string' && raw.name.trim() !== '' ? raw.name.trim() : 'Wallet',
+    address: typeof raw.address === 'string' ? raw.address : '',
+    createdAt: typeof raw.createdAt === 'string' ? raw.createdAt : now,
+    updatedAt: typeof raw.updatedAt === 'string' ? raw.updatedAt : now,
+    lastOpenedAt: typeof raw.lastOpenedAt === 'string' ? raw.lastOpenedAt : null,
+    backupConfirmed: raw.backupConfirmed === true
+  };
+}
+
+function normalizeVault(rawVault) {
+  if (!rawVault || typeof rawVault !== 'object' || !Array.isArray(rawVault.wallets)) {
+    return emptyVault();
+  }
+
+  const vault = emptyVault();
+  vault.activeWalletId = typeof rawVault.activeWalletId === 'string' ? rawVault.activeWalletId : null;
+  for (const rawRecord of rawVault.wallets) {
+    if (!rawRecord || typeof rawRecord.id !== 'string') {
+      continue;
+    }
+    try {
+      validateWalletId(rawRecord.id);
+      vault.wallets.push(sanitizeWalletMetadata(rawRecord));
+    } catch (_error) {
+      continue;
+    }
+  }
+
+  if (vault.activeWalletId && !vault.wallets.some((wallet) => wallet.id === vault.activeWalletId)) {
+    vault.activeWalletId = vault.wallets.length > 0 ? vault.wallets[0].id : null;
+  }
+
+  return vault;
+}
+
+async function readVaultFromDisk() {
+  const vaultPath = getVaultPath();
+  try {
+    const data = await fs.promises.readFile(vaultPath, 'utf8');
+    return normalizeVault(JSON.parse(data));
+  } catch (error) {
+    if (error && error.code === 'ENOENT') {
+      return null;
+    }
+    throw error;
+  }
+}
+
+async function writeVaultMetadata(vault) {
+  await ensureWalletStorageDirs();
+  const metadataVault = normalizeVault(vault);
+  await fs.promises.writeFile(getVaultPath(), JSON.stringify(metadataVault, null, 2), 'utf8');
+}
+
+async function saveVaultFromRenderer(rawVault) {
+  await ensureWalletStorageDirs();
+  const vault = emptyVault();
+  vault.activeWalletId = typeof rawVault.activeWalletId === 'string' ? rawVault.activeWalletId : null;
+
+  if (Array.isArray(rawVault.wallets)) {
+    for (const rawRecord of rawVault.wallets) {
+      if (!rawRecord || typeof rawRecord.id !== 'string') {
+        continue;
+      }
+      validateWalletId(rawRecord.id);
+      if (typeof rawRecord.encryptedWalletData === 'string') {
+        await fs.promises.writeFile(getWalletPath(rawRecord.id), rawRecord.encryptedWalletData, 'utf8');
+      }
+      vault.wallets.push(sanitizeWalletMetadata(rawRecord));
+    }
+  }
+
+  if (vault.activeWalletId && !vault.wallets.some((wallet) => wallet.id === vault.activeWalletId)) {
+    vault.activeWalletId = vault.wallets.length > 0 ? vault.wallets[0].id : null;
+  }
+
+  await writeVaultMetadata(vault);
+}
+
+async function readWalletBlob(walletId) {
+  const walletPath = getWalletPath(walletId);
+  try {
+    return await fs.promises.readFile(walletPath, 'utf8');
+  } catch (error) {
+    if (error && error.code === 'ENOENT') {
+      return null;
+    }
+    throw error;
+  }
+}
+
+function registerKarboStorageIpc() {
+  ipcMain.handle('karbo-storage:listWallets', async () => {
+    return readVaultFromDisk();
+  });
+
+  ipcMain.handle('karbo-storage:loadWallet', async (_event, walletId) => {
+    validateWalletId(walletId);
+    return readWalletBlob(walletId);
+  });
+
+  ipcMain.handle('karbo-storage:saveWallet', async (_event, walletId, encryptedBlob, metadata, activeWalletId) => {
+    validateWalletId(walletId);
+    if (typeof encryptedBlob !== 'string') {
+      throw new Error('Invalid encrypted wallet data');
+    }
+
+    await ensureWalletStorageDirs();
+    await fs.promises.writeFile(getWalletPath(walletId), encryptedBlob, 'utf8');
+
+    const vault = (await readVaultFromDisk()) || emptyVault();
+    const cleanMetadata = sanitizeWalletMetadata(Object.assign({}, metadata || {}, { id: walletId }));
+    const index = vault.wallets.findIndex((wallet) => wallet.id === walletId);
+    if (index === -1) {
+      vault.wallets.push(cleanMetadata);
+    } else {
+      vault.wallets[index] = cleanMetadata;
+    }
+    vault.activeWalletId = typeof activeWalletId === 'string' ? activeWalletId : walletId;
+    await writeVaultMetadata(vault);
+  });
+
+  ipcMain.handle('karbo-storage:saveVault', async (_event, vault) => {
+    await saveVaultFromRenderer(vault || emptyVault());
+  });
+
+  ipcMain.handle('karbo-storage:deleteWallet', async (_event, walletId) => {
+    validateWalletId(walletId);
+    const vault = (await readVaultFromDisk()) || emptyVault();
+    vault.wallets = vault.wallets.filter((wallet) => wallet.id !== walletId);
+    if (vault.activeWalletId === walletId) {
+      vault.activeWalletId = vault.wallets.length > 0 ? vault.wallets[0].id : null;
+    }
+    try {
+      await fs.promises.unlink(getWalletPath(walletId));
+    } catch (error) {
+      if (!error || error.code !== 'ENOENT') {
+        throw error;
+      }
+    }
+    await writeVaultMetadata(vault);
+  });
+
+  ipcMain.handle('karbo-storage:renameWallet', async (_event, walletId, name) => {
+    validateWalletId(walletId);
+    const vault = (await readVaultFromDisk()) || emptyVault();
+    const record = vault.wallets.find((wallet) => wallet.id === walletId);
+    if (!record) {
+      throw new Error('Wallet not found');
+    }
+    record.name = typeof name === 'string' && name.trim() !== '' ? name.trim() : 'Wallet';
+    record.updatedAt = new Date().toISOString();
+    await writeVaultMetadata(vault);
+  });
+
+  ipcMain.handle('karbo-storage:setActiveWalletId', async (_event, walletId) => {
+    if (walletId !== null) {
+      validateWalletId(walletId);
+    }
+    const vault = (await readVaultFromDisk()) || emptyVault();
+    vault.activeWalletId = walletId;
+    await writeVaultMetadata(vault);
+  });
+
+  ipcMain.handle('karbo-storage:exportWallet', async (_event, walletId) => {
+    validateWalletId(walletId);
+    return readWalletBlob(walletId);
+  });
+}
 
 function getAppIconPath() {
   const appRoot = path.resolve(__dirname, '..');
@@ -126,7 +335,8 @@ async function createMainWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      sandbox: false
+      sandbox: false,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
@@ -174,6 +384,7 @@ app.on('before-quit', () => {
 
 app.whenReady().then(async () => {
   app.setAppUserModelId('org.karbo.wallet');
+  registerKarboStorageIpc();
 
   if (process.platform === 'darwin' && app.dock) {
     app.dock.setIcon(getAppIconPath());

@@ -82,10 +82,10 @@
 	  "mainTitle": "Willkommen bei Karbo Wallet",
 	  "tagLine": "Eine clientseitige, nicht-verwahrende Wallet für Karbo.",
 	  "actions": {
-		"loadWallet": "Lade meine Wallet",
-		"importWallet": "Importiere eine Wallet",
+		"loadWallet": "Wallet öffnen",
+		"importWallet": "Wallet importieren",
 		"create": "Erstelle eine Wallet",
-		"createWallet": "Erstelle eine Wallet"
+		"createWallet": "Neue Wallet erstellen"
 	  },
 	  "notes": {
 		"secure": {
@@ -105,6 +105,41 @@
 		  "description": "Auf Github gehostet!"
 		}
 	  }
+	},
+	"walletVault":{
+		"title": "Wallets",
+		"subtitle": "Eine gespeicherte Wallet öffnen oder eine weitere lokale Wallet hinzufügen.",
+		"openBadge": "Geöffnet",
+		"emptyAddress": "Die Adresse erscheint, nachdem diese Wallet geöffnet wurde.",
+		"lastOpened": "Zuletzt geöffnet: {date}",
+		"neverOpened": "Noch nie geöffnet",
+		"migrationNoticeTitle": "Wallet-Liste aktualisiert",
+		"migrationNoticeContent": "Ihre bestehende Wallet wurde der neuen Wallet-Liste als 'Wallet 1' hinzugefügt.",
+		"actions": {
+			"open": "Wallet öffnen",
+			"rename": "Wallet umbenennen",
+			"exportBackup": "Backup exportieren",
+			"remove": "Von diesem Gerät entfernen",
+			"create": "Neue Wallet erstellen",
+			"import": "Wallet importieren"
+		},
+		"storageStatus": {
+			"enabled": "Speicherschutz: Aktiviert",
+			"notAvailable": "Speicherschutz: In diesem Browser nicht verfügbar",
+			"notGranted": "Speicherschutz: Nicht gewährt",
+			"description": "Diese Wallet-Liste wird lokal in diesem Browser/dieser App gespeichert. Speicherschutz kann das Risiko einer automatischen Browser-Bereinigung verringern, aber das Löschen von Websitedaten kann lokale Kopien weiterhin entfernen."
+		},
+		"storageNotice": {
+			"title": "Hinweis zum lokalen Speicher",
+			"content": "Diese Wallet wird lokal in diesem Browser gespeichert.<br/><br/>Sie haben bestätigt, dass Ihre Wallet-Schlüssel gesichert sind. Wenn Sie Websitedaten löschen, den Browser zurücksetzen, den privaten Modus verwenden oder die App deinstallieren, kann die lokale Wallet verschwinden, aber Sie können sie mit Ihren Backup-Schlüsseln oder Ihrer Wallet-Backup-Datei wiederherstellen."
+		},
+		"renameModal": {
+			"title": "Wallet umbenennen",
+			"confirmText": "Umbenennen"
+		},
+		"removeModal": {
+			"content": "Dies entfernt nur die lokale Kopie, die in diesem Browser/dieser App gespeichert ist.<br/>Es wirkt sich nicht auf Guthaben auf der Blockchain aus.<br/>Sie können diese Wallet später mit Ihren Backup-Schlüsseln oder Ihrer Wallet-Backup-Datei wiederherstellen."
+		}
 	},
 	"accountPage": {
 	  "title": "Account",
@@ -398,8 +433,12 @@
 		}
 	  },
 	  "changePasswordButton":"Ändere mein Wallet Passwort",
-	  "deleteWalletButton":"Lösche meine Wallet (lokale Kopie)",
+	  "deleteWalletButton":"Von diesem Gerät entfernen",
 	  "resetWalletButton": "Reset and rescan wallet",
+	  "localWalletStorage":{
+	    "title": "Lokaler Wallet-Speicher",
+	    "protectionNote": "Speicherschutz verringert nur das Risiko einer automatischen Browser-Bereinigung. Er verhindert nicht das manuelle Löschen von Websitedaten."
+	  },
 	  "walletSettings":{
 		"creationHeight":{
 		  "label":"Erstellhöhe der Wallet"
@@ -443,7 +482,7 @@
 	  "qrCodeBlock":{
 		"title":"QR code",
 		"startScanButton":"Starte den Scan",
-		"importButton":"Importiere"
+		"importButton":"Wallet importieren"
 	  },
 	  "qrScanningBlock":{
 		"title":"Präsentiere den QR code"
@@ -484,8 +523,8 @@
 	  }
 	},
 	"importPage":{
-	  "title":"Erstelle eine Wallet",
-	  "subtitle":"Von vorher erstellten Schlüsslen, einer Datei oder einer Mnemonic Phrase",
+	  "title":"Wallet importieren",
+	  "subtitle":"Eine bestehende Wallet aus Schlüsseln, Seed, QR-Code oder Backup-Datei hinzufügen",
 	  "chooseMethod":"Wähle deine Import Methode",
 	  "fromKeys":"Von Schlüsseln",
 	  "fromFile":"Von einer Datei",
@@ -506,7 +545,7 @@
 	  "walletBlock":{
 		"title":"Wallet Datei",
 		"label":"Datei auswählen",
-		"importButton":"Importiere"
+		"importButton":"Wallet importieren"
 	  }
 	},
 	"importFromMnemonicPage":{
@@ -519,7 +558,7 @@
 		  "invalid":"Die Mnemonic Phrase ist ungültig",
 		  "language":"Sprache"
 		},
-		"importButton":"Importiere"
+		"importButton":"Wallet importieren"
 	  }
 	},
 	"importFromKeysPage":{
@@ -543,7 +582,7 @@
 		"publicKey":{
 		  "label":"Öffentlicher Schlüssel"
 		},
-		"importButton":"Importiere"
+		"importButton":"Wallet importieren"
 	  }
 	}
   },

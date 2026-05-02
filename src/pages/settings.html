@@ -43,6 +43,17 @@
 		</div>
 	</div>
 
+	<!-- Local Storage Status -->
+	<div class="card">
+		<div class="card-title">{{ $t("settingsPage.localWalletStorage.title") }}</div>
+		<div style="color:var(--color-text-muted);font-size:0.8125rem;line-height:1.6;">
+			<div style="color:var(--color-text);font-weight:600;margin-bottom:0.5rem;">{{ $t(storageProtectionKey) }}</div>
+			<div v-html="$t('walletVault.storageNotice.content')"></div>
+			<br/>
+			{{ $t("settingsPage.localWalletStorage.protectionNote") }}
+		</div>
+	</div>
+
 	<!-- Node Settings -->
 	<div class="card">
 		<div class="card-title">{{ $t("settingsPage.settingsBlock.customNode.label") }}</div>
@@ -93,7 +104,7 @@
 		<div style="display:flex;flex-direction:column;gap:0.5rem;">
 			<a href="#!changeWalletPassword" class="btn" style="width:100%;text-align:center;">{{ $t("settingsPage.changePasswordButton") }}</a>
 			<button class="btn" style="width:100%;" @click="resetWallet()">{{ $t("settingsPage.resetWalletButton") }}</button>
-			<button class="btn red" style="width:100%;" @click="deleteWallet()">{{ $t("settingsPage.deleteWalletButton") }}</button>
+			<button class="btn red" style="width:100%;" @click="deleteWallet()">{{ $t("walletVault.actions.remove") }}</button>
 		</div>
 	</div>
 </div>

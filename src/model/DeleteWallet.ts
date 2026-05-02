@@ -23,21 +23,21 @@ import {Translations} from "../model/Translations";
 
 export class DeleteWallet{
     public static deleteWallet() {
-        //localStorage.clear();
-		//window.location.href = '/';
         swal({
-            title: i18n.t('settingsPage.deleteWalletModal.title'),
-            html: i18n.t('settingsPage.deleteWalletModal.content'),
+            title: i18n.t('walletVault.actions.remove'),
+            html: i18n.t('walletVault.removeModal.content'),
             showCancelButton: true,
-            confirmButtonText: i18n.t('settingsPage.deleteWalletModal.confirmText'),
+            confirmButtonText: i18n.t('walletVault.actions.remove'),
             cancelButtonText: i18n.t('settingsPage.deleteWalletModal.cancelText'),
             type: 'warning'
         }).then((result:any) => {
             if (result.value) {
+                let walletId = WalletRepository.getCurrentWalletId();
                 AppState.disconnect();
                 DependencyInjectorInstance().register(Wallet.name, undefined,'default');
-                WalletRepository.deleteLocalCopy();
-                window.location.href = '#index';
+                WalletRepository.deleteLocalCopy(walletId).then(function () {
+                    window.location.href = '#index';
+                });
             }
         });
     } 

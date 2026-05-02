@@ -82,10 +82,10 @@
 	  "mainTitle": "Welcome to Karbo Wallet",
 	  "tagLine": "A client-side, non-custodial wallet for Karbo.",
 	  "actions": {
-		"loadWallet": "Load my wallet",
-		"importWallet": "Import a wallet",
+		"loadWallet": "Open Wallet",
+		"importWallet": "Import Wallet",
 		"create": "Create",
-		"createWallet": "Create a wallet"
+		"createWallet": "Create New Wallet"
 	  },
 	  "notes": {
 		"secure": {
@@ -105,6 +105,41 @@
 		  "description": "Hosted on Github!"
 		}
 	  }
+	},
+	"walletVault":{
+		"title": "Wallets",
+		"subtitle": "Open a saved wallet or add another local wallet.",
+		"openBadge": "Open",
+		"emptyAddress": "Address will appear after this wallet is opened.",
+		"lastOpened": "Last opened: {date}",
+		"neverOpened": "Never opened",
+		"migrationNoticeTitle": "Wallet list updated",
+		"migrationNoticeContent": "Your existing wallet has been added to the new wallet list as 'Wallet 1'.",
+		"actions": {
+			"open": "Open Wallet",
+			"rename": "Rename Wallet",
+			"exportBackup": "Export Backup",
+			"remove": "Remove from This Device",
+			"create": "Create New Wallet",
+			"import": "Import Wallet"
+		},
+		"storageStatus": {
+			"enabled": "Storage protection: Enabled",
+			"notAvailable": "Storage protection: Not available in this browser",
+			"notGranted": "Storage protection: Not granted",
+			"description": "This wallet list is stored locally in this browser/app. Storage protection can reduce the risk of automatic browser cleanup, but clearing site data can still remove local copies."
+		},
+		"storageNotice": {
+			"title": "Local storage notice",
+			"content": "This wallet is stored locally in this browser.<br/><br/>You have confirmed that your wallet keys are backed up. If you clear site data, reset the browser, use private mode, or uninstall the app, the local wallet may disappear, but you can restore it from your backup keys or wallet backup file."
+		},
+		"renameModal": {
+			"title": "Rename Wallet",
+			"confirmText": "Rename"
+		},
+		"removeModal": {
+			"content": "This removes only the local copy stored in this browser/app.<br/>It does not affect funds on the blockchain.<br/>You can restore this wallet later using your backup keys or wallet backup file."
+		}
 	},
 	"accountPage": {
 	  "title": "Account",
@@ -400,8 +435,12 @@
 		}
 	  },
 	  "changePasswordButton":"Change my wallet password",
-	  "deleteWalletButton":"Delete my wallet (local copy)",
+	  "deleteWalletButton":"Remove from This Device",
 	  "resetWalletButton": "Reset and rescan wallet",
+	  "localWalletStorage":{
+	    "title": "Local Wallet Storage",
+	    "protectionNote": "Storage protection only reduces the risk of automatic browser eviction. It does not prevent manual clearing of site data."
+	  },
 	  "walletSettings":{
 		"creationHeight":{
 		  "label":"Creation height of the wallet"
@@ -412,9 +451,9 @@
 		"updateButton":"Update"
 	  },
 	  "deleteWalletModal":{
-		"title":"Delete My Wallet (local copy)",
-		"content":"Are you sure you REALLY want to delete your wallet ?",
-		"confirmText":"Yes I'm sure",
+		"title":"Remove from This Device",
+		"content":"This removes only the local copy stored in this browser/app.<br/>It does not affect funds on the blockchain.<br/>You can restore this wallet later using your backup keys or wallet backup file.",
+		"confirmText":"Remove from This Device",
 		"cancelText":"Cancel"
 	  },
 	  "resetWalletModal": {
@@ -445,7 +484,7 @@
 	  "qrCodeBlock":{
 		"title":"QR code",
 		"startScanButton":"Start the scan",
-		"importButton":"Import"
+		"importButton":"Import Wallet"
 	  },
 	  "qrScanningBlock":{
 		"title":"Present the QR code"
@@ -486,8 +525,8 @@
 	  }
 	},
 	"importPage":{
-	  "title":"Create a wallet",
-	  "subtitle":"From previously created keys, file, or mnemonic phrase",
+	  "title":"Import Wallet",
+	  "subtitle":"Add an existing wallet from keys, seed phrase, QR code, or wallet backup file",
 	  "chooseMethod":"Choose your import method:",
 	  "fromKeys":"From keys",
 	  "fromFile":"From a file",
@@ -508,7 +547,7 @@
 	  "walletBlock":{
 		"title":"Wallet file",
 		"label":"Select the file",
-		"importButton":"Import"
+		"importButton":"Import Wallet"
 	  }
 	},
 	"importFromMnemonicPage":{
@@ -521,7 +560,7 @@
 		  "invalid":"The mnemonic phrase is invalid",
 		  "language":"Language"
 		},
-		"importButton":"Import"
+		"importButton":"Import Wallet"
 	  }
 	},
 	"importFromKeysPage":{
@@ -545,7 +584,7 @@
 		"publicKey":{
 		  "label":"Public key"
 		},
-		"importButton":"Import"
+		"importButton":"Import Wallet"
 	  }
 	}
   },

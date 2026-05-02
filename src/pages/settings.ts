@@ -21,7 +21,7 @@ import {DependencyInjectorInstance} from "../lib/numbersLab/DependencyInjector";
 import {Constants} from "../model/Constants";
 import {Wallet} from "../model/Wallet";
 import {AppState} from "../model/AppState";
-import {Storage} from "../model/Storage";
+import {Storage, StorageProtectionStatus} from "../model/Storage";
 import {Translations} from "../model/Translations";
 import {BlockchainExplorerProvider} from "../providers/BlockchainExplorerProvider";
 import {BlockchainExplorer} from "../model/blockchain/BlockchainExplorer";
@@ -48,6 +48,7 @@ class SettingsView extends DestructableView{
 
 	@VueVar(0) nativeVersionCode !: number;
 	@VueVar('') nativeVersionNumber !: string;
+	@VueVar('walletVault.storageStatus.notAvailable') storageProtectionKey !: string;
 
 	private initializing : boolean = true;
 
@@ -75,6 +76,7 @@ class SettingsView extends DestructableView{
 		Storage.getItem('user-theme', 'dark').then((userTheme : string) => {
 			this.theme = userTheme;
 		});
+		this.refreshStorageProtection();
 
 		if(typeof (<any>window).cordova !== 'undefined' && typeof (<any>window).cordova.getAppVersion !== 'undefined') {
 			(<any>window).cordova.getAppVersion.getVersionNumber().then((version : string) => {
@@ -84,6 +86,17 @@ class SettingsView extends DestructableView{
 				this.nativeVersionCode = version;
 			});
 		}
+	}
+
+	refreshStorageProtection(){
+		Storage.requestPersistentStorage().then((status: StorageProtectionStatus) => {
+			if (status === 'enabled')
+				this.storageProtectionKey = 'walletVault.storageStatus.enabled';
+			else if (status === 'not_available')
+				this.storageProtectionKey = 'walletVault.storageStatus.notAvailable';
+			else
+				this.storageProtectionKey = 'walletVault.storageStatus.notGranted';
+		});
 	}
 
 	@VueWatched()
