@@ -76,4 +76,18 @@
 		<div class="card-title">{{ $t("createWalletPage.disclaimerBlock.title") }}</div>
 		<div style="color:var(--color-text-muted);font-size:0.8125rem;line-height:1.6;" v-html="$t('createWalletPage.disclaimerBlock.content')"></div>
 	</div>
+
+	<div class="wallet-storage-cards hideOnNative">
+		<div class="card wallet-storage-note">
+			<div class="card-title">{{ $t("walletVault.storageNotice.title") }}</div>
+			<div v-html="$t('walletVault.storageNotice.content')"></div>
+		</div>
+
+		<div class="storage-status card">
+			<div class="storage-status-title">{{ $t(storageProtectionKey) }}</div>
+			<div class="storage-status-copy">
+				{{ $t("walletVault.storageStatus.description") }}
+			</div>
+		</div>
+	</div>
 </div>

@@ -19,7 +19,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DestructableView", "../model/KeysRepository", "../model/Wallet", "../model/Password", "../providers/BlockchainExplorerProvider", "../model/Mnemonic", "../model/AppState", "../model/WalletRepository", "../model/Translations", "../model/MnemonicLang", "../model/Cn"], function (require, exports, VueAnnotate_1, DestructableView_1, KeysRepository_1, Wallet_1, Password_1, BlockchainExplorerProvider_1, Mnemonic_1, AppState_1, WalletRepository_1, Translations_1, MnemonicLang_1, Cn_1) {
+define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DestructableView", "../model/KeysRepository", "../model/Wallet", "../model/Password", "../providers/BlockchainExplorerProvider", "../model/Mnemonic", "../model/AppState", "../model/WalletRepository", "../model/Translations", "../model/MnemonicLang", "../model/Cn", "../model/Storage"], function (require, exports, VueAnnotate_1, DestructableView_1, KeysRepository_1, Wallet_1, Password_1, BlockchainExplorerProvider_1, Mnemonic_1, AppState_1, WalletRepository_1, Translations_1, MnemonicLang_1, Cn_1, Storage_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var blockchainExplorer = BlockchainExplorerProvider_1.BlockchainExplorerProvider.getInstance();
@@ -28,6 +28,7 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
         function CreateViewWallet(container) {
             var _this = _super.call(this, container) || this;
             _this.generateWallet();
+            _this.refreshStorageProtection();
             AppState_1.AppState.enableLeftMenu();
             return _this;
         }
@@ -97,6 +98,17 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
                 this.step = 2;
             }
         };
+        CreateViewWallet.prototype.refreshStorageProtection = function () {
+            var _this = this;
+            Storage_1.Storage.requestPersistentStorage().then(function (status) {
+                if (status === 'enabled')
+                    _this.storageProtectionKey = 'walletVault.storageStatus.enabled';
+                else if (status === 'not_available')
+                    _this.storageProtectionKey = 'walletVault.storageStatus.notAvailable';
+                else
+                    _this.storageProtectionKey = 'walletVault.storageStatus.notGranted';
+            });
+        };
         CreateViewWallet.prototype.downloadBackup = function () {
             if (this.newWallet !== null)
                 WalletRepository_1.WalletRepository.downloadEncryptedPdf(this.newWallet);
@@ -126,6 +138,9 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
         __decorate([
             (0, VueAnnotate_1.VueVar)(false)
         ], CreateViewWallet.prototype, "walletBackupMade", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('walletVault.storageStatus.notAvailable')
+        ], CreateViewWallet.prototype, "storageProtectionKey", void 0);
         __decorate([
             (0, VueAnnotate_1.VueVar)(null)
         ], CreateViewWallet.prototype, "newWallet", void 0);

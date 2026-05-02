@@ -96,6 +96,8 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                     self.workerProcessingReady = true;
                 }
                 else if (message.type) {
+                    if (self.stopped)
+                        return;
                     if (message.type === 'processed') {
                         var transactions = message.transactions;
                         var txPrivateKeys = typeof message.txPrivateKeys === 'object' && message.txPrivateKeys !== null ? message.txPrivateKeys : {};
@@ -127,6 +129,8 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
             };
         };
         WalletWatchdog.prototype.signalWalletUpdate = function () {
+            if (this.stopped)
+                return;
             var self = this;
             logDebugMsg('wallet update');
             this.lastBlockLoading = -1; //reset scanning
@@ -157,9 +161,13 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
         };
         WalletWatchdog.prototype.stop = function () {
             clearInterval(this.intervalTransactionsProcess);
+            this.intervalTransactionsProcess = 0;
             this.transactionsToProcess = [];
             clearInterval(this.intervalMempool);
+            this.intervalMempool = 0;
             this.stopped = true;
+            if (typeof this.workerProcessing !== 'undefined')
+                this.terminateWorker();
         };
         WalletWatchdog.prototype.checkMempool = function (force) {
             if (force === void 0) { force = false; }
@@ -168,6 +176,8 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                 return false;
             }
             this.explorer.getTransactionPool().then(function (pool) {
+                if (self.stopped)
+                    return;
                 var txsMem = [];
                 if (typeof pool !== 'undefined')
                     for (var _i = 0, pool_1 = pool; _i < pool_1.length; _i++) {
@@ -191,6 +201,11 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
         };
         WalletWatchdog.prototype.checkTransactionsInterval = function () {
             logDebugMsg("checkTransactionsInterval called...");
+            if (this.stopped) {
+                clearInterval(this.intervalTransactionsProcess);
+                this.intervalTransactionsProcess = 0;
+                return;
+            }
             //somehow we're repeating and regressing back to re-process Tx's
             //loadHistory getting into a stack overflow ?
             //need to work out timings and ensure process does not reload when it's already running...
@@ -229,6 +244,10 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
         };
         WalletWatchdog.prototype.processTransactions = function (transactions, callback) {
             logDebugMsg("processTransactions called...", transactions);
+            if (this.stopped) {
+                callback();
+                return;
+            }
             var transactionsToAdd = transactions;
             // add the raw transaction to the processing FIFO list
             this.transactionsToProcess.push(transactionsToAdd);
@@ -264,6 +283,8 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                 return;
             }
             this.explorer.getHeight().then(function (height) {
+                if (self.stopped)
+                    return;
                 logDebugMsg("Checking on height", height);
                 if (height > self.lastMaximumHeight) {
                     self.lastMaximumHeight = height;
@@ -287,6 +308,8 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                     if (endBlock_1 > self.lastMaximumHeight)
                         endBlock_1 = self.lastMaximumHeight;
                     self.explorer.getTransactionsForBlocks(previousStartBlock_1, endBlock_1, self.wallet.options.checkMinerTx).then(function (transactions) {
+                        if (self.stopped)
+                            return;
                         logDebugMsg("getTransactionsForBlocks", previousStartBlock_1, endBlock_1, transactions);
                         //to ensure no pile explosion
                         if (transactions === 'OK') {
@@ -317,6 +340,8 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                             }, delay);
                         }
                     }).catch(function () {
+                        if (self.stopped)
+                            return;
                         logDebugMsg("Error occured in loadHistory[1]...");
                         setTimeout(function () {
                             self.loadHistory();
@@ -329,6 +354,8 @@ define(["require", "exports", "./Transaction", "./TransactionsExplorer"], functi
                     }, 30 * 1000);
                 }
             }).catch(function () {
+                if (self.stopped)
+                    return;
                 logDebugMsg("Error occured in loadHistory[2]...");
                 setTimeout(function () {
                     self.loadHistory();

@@ -24,7 +24,9 @@ define(["require", "exports", "./model/WalletRepository"], function (require, ex
     window.addEventListener('message', function (e) {
         //console.log(e);
         if (e.data == 'hasWallet') {
-            sendMessageToParent('hasWallet', WalletRepository_1.WalletRepository.hasOneStored());
+            WalletRepository_1.WalletRepository.hasOneStored().then(function (hasWallet) {
+                sendMessageToParent('hasWallet', hasWallet);
+            });
         }
     });
     sendMessageToParent('ready', null);

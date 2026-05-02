@@ -1,18 +1,63 @@
 <div id="app" class="indexTab" v-cloak="">
-	<div class="mainBlock">
+	<div class="walletVault" v-if="hasLocalWallet">
+		<div class="body-header">
+			<div class="header-title">{{ $t("walletVault.title") }}</div>
+			<div class="header-subtitle">{{ $t("walletVault.subtitle") }}</div>
+		</div>
+
+		<div class="wallet-list">
+			<div class="wallet-row card" v-for="wallet of wallets">
+				<div class="wallet-row-main">
+					<div class="wallet-row-title">
+						<span>{{wallet.name}}</span>
+						<span class="wallet-row-active" v-if="isWalletLoaded && wallet.id === activeWalletId">{{ $t("walletVault.openBadge") }}</span>
+					</div>
+					<div class="wallet-row-address" v-if="wallet.address !== ''">{{wallet.address}}</div>
+					<div class="wallet-row-address" v-if="wallet.address === ''">{{ $t("walletVault.emptyAddress") }}</div>
+					<div class="wallet-row-meta">{{ $t("walletVault.lastOpened", {date: formatWalletDate(wallet.lastOpenedAt)}) }}</div>
+				</div>
+				<div class="wallet-row-actions">
+					<button class="btn primary small" @click="loadWallet(wallet.id)">{{ $t("walletVault.actions.open") }}</button>
+					<button class="btn small" @click="renameWallet(wallet)">{{ $t("walletVault.actions.rename") }}</button>
+					<button class="btn small" @click="exportWallet(wallet)">{{ $t("walletVault.actions.exportBackup") }}</button>
+					<button class="btn red small" @click="removeWallet(wallet)">{{ $t("walletVault.actions.remove") }}</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="wallet-vault-actions">
+			<a href="#!createWallet" class="btn primary">{{ $t("walletVault.actions.create") }}</a>
+			<a href="#!import" class="btn basic">{{ $t("walletVault.actions.import") }}</a>
+		</div>
+
+		<div class="wallet-storage-cards">
+			<div class="card wallet-storage-note">
+				<div class="card-title">{{ $t("walletVault.storageNotice.title") }}</div>
+				<div v-html="$t('walletVault.storageNotice.content')"></div>
+			</div>
+
+			<div class="storage-status card">
+				<div class="storage-status-title">{{ $t(storageProtectionKey) }}</div>
+				<div class="storage-status-copy">
+					{{ $t("walletVault.storageStatus.description") }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="mainBlock" v-if="!hasLocalWallet">
 		<div class="headline">
 			<img src="./assets/img/coin_logo.svg" alt="Karbo" style="width:64px;height:64px;margin-bottom:1rem;border-radius:50%;"/>
 			<h1>{{ $t("homepage.mainTitle") }}</h1>
 			<h2>{{ $t("homepage.tagLine") }}</h2>
 		</div>
 		<div class="callToAction">
-			<a href="#" @click="loadWallet()" v-if="hasLocalWallet" class="btn primary" style="width:100%;">{{ $t("homepage.actions.loadWallet") }}</a>
-			<a href="#!createWallet" class="btn primary" style="width:100%;" v-if="!hasLocalWallet">{{ $t("homepage.actions.createWallet") }}</a>
-			<a href="#!import" class="btn basic" style="width:100%;">{{ $t("homepage.actions.importWallet") }}</a>
+			<a href="#!createWallet" class="btn primary" style="width:100%;">{{ $t("walletVault.actions.create") }}</a>
+			<a href="#!import" class="btn basic" style="width:100%;">{{ $t("walletVault.actions.import") }}</a>
 		</div>
 	</div>
 
-	<div class="notesBlock hideOnNative">
+	<div class="notesBlock hideOnNative" v-if="!hasLocalWallet">
 		<div class="container">
 			<div class="notes">
 				<div class="block">

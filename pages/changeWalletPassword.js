@@ -45,12 +45,14 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             return _super.call(this, container) || this;
         }
         ChangeWalletPasswordView.prototype.oldPasswordWatch = function () {
-            var wallet = WalletRepository_1.WalletRepository.getLocalWalletWithPassword(this.oldPassword);
-            if (wallet !== null) {
+            var _this = this;
+            if (this.oldPassword === '') {
                 this.invalidOldPassword = false;
+                return;
             }
-            else
-                this.invalidOldPassword = true;
+            WalletRepository_1.WalletRepository.getLocalWalletWithPassword(this.oldPassword, WalletRepository_1.WalletRepository.getCurrentWalletId(), false).then(function (wallet) {
+                _this.invalidOldPassword = wallet === null;
+            });
         };
         ChangeWalletPasswordView.prototype.forceInsecurePasswordCheck = function () {
             var self = this;

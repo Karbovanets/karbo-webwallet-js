@@ -21,21 +21,21 @@ define(["require", "exports", "../model/WalletRepository", "../lib/numbersLab/De
         function DeleteWallet() {
         }
         DeleteWallet.deleteWallet = function () {
-            //localStorage.clear();
-            //window.location.href = '/';
             swal({
-                title: i18n.t('settingsPage.deleteWalletModal.title'),
-                html: i18n.t('settingsPage.deleteWalletModal.content'),
+                title: i18n.t('walletVault.actions.remove'),
+                html: i18n.t('walletVault.removeModal.content'),
                 showCancelButton: true,
-                confirmButtonText: i18n.t('settingsPage.deleteWalletModal.confirmText'),
+                confirmButtonText: i18n.t('walletVault.actions.remove'),
                 cancelButtonText: i18n.t('settingsPage.deleteWalletModal.cancelText'),
                 type: 'warning'
             }).then(function (result) {
                 if (result.value) {
+                    var walletId = WalletRepository_1.WalletRepository.getCurrentWalletId();
                     AppState_1.AppState.disconnect();
                     (0, DependencyInjector_1.DependencyInjectorInstance)().register(Wallet_1.Wallet.name, undefined, 'default');
-                    WalletRepository_1.WalletRepository.deleteLocalCopy();
-                    window.location.href = '#index';
+                    WalletRepository_1.WalletRepository.deleteLocalCopy(walletId).then(function () {
+                        window.location.href = '#index';
+                    });
                 }
             });
         };

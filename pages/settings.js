@@ -61,6 +61,7 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             Storage_1.Storage.getItem('user-theme', 'dark').then(function (userTheme) {
                 _this.theme = userTheme;
             });
+            _this.refreshStorageProtection();
             if (typeof window.cordova !== 'undefined' && typeof window.cordova.getAppVersion !== 'undefined') {
                 window.cordova.getAppVersion.getVersionNumber().then(function (version) {
                     _this.nativeVersionNumber = version;
@@ -71,6 +72,17 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
             }
             return _this;
         }
+        SettingsView.prototype.refreshStorageProtection = function () {
+            var _this = this;
+            Storage_1.Storage.requestPersistentStorage().then(function (status) {
+                if (status === 'enabled')
+                    _this.storageProtectionKey = 'walletVault.storageStatus.enabled';
+                else if (status === 'not_available')
+                    _this.storageProtectionKey = 'walletVault.storageStatus.notAvailable';
+                else
+                    _this.storageProtectionKey = 'walletVault.storageStatus.notGranted';
+            });
+        };
         SettingsView.prototype.languageWatch = function () {
             Translations_1.Translations.setBrowserLang(this.language);
             Translations_1.Translations.loadLangTranslation(this.language);
@@ -192,6 +204,9 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../lib/numb
         __decorate([
             (0, VueAnnotate_1.VueVar)('')
         ], SettingsView.prototype, "nativeVersionNumber", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('walletVault.storageStatus.notAvailable')
+        ], SettingsView.prototype, "storageProtectionKey", void 0);
         __decorate([
             (0, VueAnnotate_1.VueWatched)()
         ], SettingsView.prototype, "languageWatch", null);

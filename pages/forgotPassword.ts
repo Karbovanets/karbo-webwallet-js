@@ -29,11 +29,9 @@ class ForgotPasswordView extends DestructableView{
 	constructor(container : string){
 		super(container);
 		let self = this;
-	}
+    }
     
     deleteWallet() {
-        //localStorage.clear();
-		//window.location.href = '/';
         DeleteWallet.deleteWallet();
     }
 }

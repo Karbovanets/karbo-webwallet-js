@@ -20,9 +20,193 @@ define(["require", "exports", "./Wallet", "./CoinUri", "./Storage"], function (r
         function WalletRepository() {
         }
         WalletRepository.hasOneStored = function () {
-            return Storage_1.Storage.getItem('wallet', null).then(function (wallet) {
-                return wallet !== null;
+            return WalletRepository.getWallets().then(function (wallets) {
+                return wallets.length > 0;
             });
+        };
+        WalletRepository.createWalletId = function () {
+            var bytes;
+            if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+                bytes = new Uint8Array(16);
+                crypto.getRandomValues(bytes);
+            }
+            else {
+                bytes = nacl.randomBytes(16);
+            }
+            var hex = '';
+            for (var i = 0; i < bytes.length; ++i) {
+                var part = bytes[i].toString(16);
+                if (part.length === 1)
+                    part = '0' + part;
+                hex += part;
+            }
+            return 'wallet_' + hex;
+        };
+        WalletRepository.getCurrentWalletId = function () {
+            return WalletRepository.currentWalletId;
+        };
+        WalletRepository.setCurrentWalletId = function (walletId) {
+            WalletRepository.currentWalletId = walletId;
+        };
+        WalletRepository.emptyVault = function () {
+            return {
+                version: 2,
+                activeWalletId: null,
+                wallets: []
+            };
+        };
+        WalletRepository.hasElectronStorage = function () {
+            return typeof window !== 'undefined' && typeof window.karboStorage !== 'undefined';
+        };
+        WalletRepository.normalizeWalletRecord = function (rawRecord) {
+            if (rawRecord === null || typeof rawRecord !== 'object' || typeof rawRecord.id !== 'string')
+                return null;
+            var now = new Date().toISOString();
+            return {
+                id: rawRecord.id,
+                name: typeof rawRecord.name === 'string' && rawRecord.name.trim() !== '' ? rawRecord.name : 'Wallet',
+                address: typeof rawRecord.address === 'string' ? rawRecord.address : '',
+                encryptedWalletData: typeof rawRecord.encryptedWalletData === 'string' ? rawRecord.encryptedWalletData : undefined,
+                createdAt: typeof rawRecord.createdAt === 'string' ? rawRecord.createdAt : now,
+                updatedAt: typeof rawRecord.updatedAt === 'string' ? rawRecord.updatedAt : now,
+                lastOpenedAt: typeof rawRecord.lastOpenedAt === 'string' ? rawRecord.lastOpenedAt : null,
+                backupConfirmed: rawRecord.backupConfirmed === true
+            };
+        };
+        WalletRepository.normalizeVault = function (rawVault) {
+            if (rawVault === null || typeof rawVault === 'undefined')
+                return null;
+            if (typeof rawVault === 'string') {
+                try {
+                    rawVault = JSON.parse(rawVault);
+                }
+                catch (e) {
+                    return null;
+                }
+            }
+            if (typeof rawVault !== 'object' || !Array.isArray(rawVault.wallets))
+                return null;
+            var vault = WalletRepository.emptyVault();
+            vault.activeWalletId = typeof rawVault.activeWalletId === 'string' ? rawVault.activeWalletId : null;
+            for (var _i = 0, _a = rawVault.wallets; _i < _a.length; _i++) {
+                var rawRecord = _a[_i];
+                var record = WalletRepository.normalizeWalletRecord(rawRecord);
+                if (record !== null)
+                    vault.wallets.push(record);
+            }
+            if (vault.activeWalletId !== null && WalletRepository.findRecord(vault, vault.activeWalletId) === null)
+                vault.activeWalletId = vault.wallets.length > 0 ? vault.wallets[0].id : null;
+            return vault;
+        };
+        WalletRepository.loadVault = function () {
+            if (WalletRepository.hasElectronStorage() && window.karboStorage) {
+                return window.karboStorage.listWallets().then(function (rawVault) {
+                    return WalletRepository.normalizeVault(rawVault);
+                });
+            }
+            return Storage_1.Storage.getItem(WalletRepository.VAULT_STORAGE_KEY, null).then(function (rawVault) {
+                return WalletRepository.normalizeVault(rawVault);
+            });
+        };
+        WalletRepository.writeVault = function (vault) {
+            if (WalletRepository.hasElectronStorage() && window.karboStorage) {
+                return window.karboStorage.saveVault(vault);
+            }
+            return Storage_1.Storage.setItem(WalletRepository.VAULT_STORAGE_KEY, JSON.stringify(vault));
+        };
+        WalletRepository.ensureVault = function () {
+            return WalletRepository.loadVault().then(function (existingVault) {
+                if (existingVault !== null)
+                    return existingVault;
+                return Storage_1.Storage.getItem(WalletRepository.LEGACY_WALLET_STORAGE_KEY, null).then(function (legacyWallet) {
+                    if (legacyWallet !== null) {
+                        var now = new Date().toISOString();
+                        var walletId = WalletRepository.createWalletId();
+                        var migratedVault_1 = {
+                            version: 2,
+                            activeWalletId: walletId,
+                            wallets: [{
+                                    id: walletId,
+                                    name: 'Wallet 1',
+                                    address: '',
+                                    encryptedWalletData: legacyWallet,
+                                    createdAt: now,
+                                    updatedAt: now,
+                                    lastOpenedAt: null,
+                                    backupConfirmed: true
+                                }]
+                        };
+                        return WalletRepository.writeVault(migratedVault_1).then(function () {
+                            return Storage_1.Storage.setItem(WalletRepository.MIGRATION_NOTICE_KEY, 'walletVault.migrationNoticeContent').then(function () {
+                                return migratedVault_1;
+                            });
+                        });
+                    }
+                    var emptyVault = WalletRepository.emptyVault();
+                    return WalletRepository.writeVault(emptyVault).then(function () {
+                        return emptyVault;
+                    });
+                });
+            });
+        };
+        WalletRepository.consumeMigrationNotice = function () {
+            return Storage_1.Storage.getItem(WalletRepository.MIGRATION_NOTICE_KEY, null).then(function (message) {
+                if (message === null)
+                    return null;
+                return Storage_1.Storage.remove(WalletRepository.MIGRATION_NOTICE_KEY).then(function () {
+                    return message;
+                });
+            });
+        };
+        WalletRepository.getWallets = function () {
+            return WalletRepository.ensureVault().then(function (vault) {
+                return vault.wallets.slice();
+            });
+        };
+        WalletRepository.getActiveWalletId = function () {
+            return WalletRepository.ensureVault().then(function (vault) {
+                return vault.activeWalletId;
+            });
+        };
+        WalletRepository.setActiveWalletId = function (walletId) {
+            return WalletRepository.ensureVault().then(function (vault) {
+                if (walletId !== null && WalletRepository.findRecord(vault, walletId) === null)
+                    throw 'missing_wallet';
+                vault.activeWalletId = walletId;
+                WalletRepository.currentWalletId = walletId;
+                if (WalletRepository.hasElectronStorage() && window.karboStorage)
+                    return window.karboStorage.setActiveWalletId(walletId);
+                return WalletRepository.writeVault(vault);
+            });
+        };
+        WalletRepository.findRecord = function (vault, walletId) {
+            for (var _i = 0, _a = vault.wallets; _i < _a.length; _i++) {
+                var wallet = _a[_i];
+                if (wallet.id === walletId)
+                    return wallet;
+            }
+            return null;
+        };
+        WalletRepository.getNextWalletName = function (vault) {
+            return 'Wallet ' + (vault.wallets.length + 1);
+        };
+        WalletRepository.resolveWalletId = function (vault, walletId) {
+            if (typeof walletId === 'string' && WalletRepository.findRecord(vault, walletId) !== null)
+                return walletId;
+            if (WalletRepository.currentWalletId !== null && WalletRepository.findRecord(vault, WalletRepository.currentWalletId) !== null)
+                return WalletRepository.currentWalletId;
+            if (vault.activeWalletId !== null && WalletRepository.findRecord(vault, vault.activeWalletId) !== null)
+                return vault.activeWalletId;
+            if (vault.wallets.length > 0)
+                return vault.wallets[0].id;
+            return null;
+        };
+        WalletRepository.getEncryptedWalletData = function (record) {
+            if (typeof record.encryptedWalletData === 'string')
+                return Promise.resolve(record.encryptedWalletData);
+            if (WalletRepository.hasElectronStorage() && window.karboStorage)
+                return window.karboStorage.loadWallet(record.id);
+            return Promise.resolve(null);
         };
         WalletRepository.decodeWithPassword = function (rawWallet, password) {
             if (password.length > 32)
@@ -71,20 +255,76 @@ define(["require", "exports", "./Wallet", "./CoinUri", "./Storage"], function (r
             }
             return null;
         };
-        WalletRepository.getLocalWalletWithPassword = function (password) {
+        WalletRepository.getLocalWalletWithPassword = function (password, walletId, markOpened) {
             var _this = this;
-            return Storage_1.Storage.getItem('wallet', null).then(function (existingWallet) {
-                //console.log(existingWallet);
-                if (existingWallet !== null) {
-                    return _this.decodeWithPassword(JSON.parse(existingWallet), password);
-                }
-                else {
+            if (markOpened === void 0) { markOpened = true; }
+            return WalletRepository.ensureVault().then(function (vault) {
+                var resolvedWalletId = WalletRepository.resolveWalletId(vault, walletId);
+                if (resolvedWalletId === null)
                     return null;
-                }
+                var record = WalletRepository.findRecord(vault, resolvedWalletId);
+                if (record === null)
+                    return null;
+                return WalletRepository.getEncryptedWalletData(record).then(function (encryptedWalletData) {
+                    if (encryptedWalletData === null)
+                        return null;
+                    var wallet = _this.decodeWithPassword(JSON.parse(encryptedWalletData), password);
+                    if (wallet !== null) {
+                        if (!markOpened)
+                            return wallet;
+                        var now = new Date().toISOString();
+                        record.address = wallet.getPublicAddress();
+                        record.lastOpenedAt = now;
+                        record.updatedAt = now;
+                        vault.activeWalletId = resolvedWalletId;
+                        WalletRepository.currentWalletId = resolvedWalletId;
+                        return WalletRepository.writeVault(vault).then(function () {
+                            return wallet;
+                        });
+                    }
+                    return null;
+                });
             });
         };
-        WalletRepository.save = function (wallet, password) {
-            return Storage_1.Storage.setItem('wallet', JSON.stringify(this.getEncrypted(wallet, password)));
+        WalletRepository.save = function (wallet, password, walletId, walletName, backupConfirmed, makeActive) {
+            var _this = this;
+            if (backupConfirmed === void 0) { backupConfirmed = true; }
+            if (makeActive === void 0) { makeActive = true; }
+            return WalletRepository.ensureVault().then(function (vault) {
+                var resolvedWalletId = WalletRepository.resolveWalletId(vault, walletId);
+                if (resolvedWalletId === null || (typeof walletId === 'string' && WalletRepository.findRecord(vault, walletId) === null))
+                    resolvedWalletId = typeof walletId === 'string' ? walletId : WalletRepository.createWalletId();
+                var existingRecord = WalletRepository.findRecord(vault, resolvedWalletId);
+                var now = new Date().toISOString();
+                var encryptedWalletData = JSON.stringify(_this.getEncrypted(wallet, password));
+                var address = wallet.getPublicAddress();
+                if (existingRecord === null) {
+                    existingRecord = {
+                        id: resolvedWalletId,
+                        name: walletName !== null && typeof walletName === 'string' && walletName.trim() !== '' ? walletName.trim() : WalletRepository.getNextWalletName(vault),
+                        address: address,
+                        encryptedWalletData: encryptedWalletData,
+                        createdAt: now,
+                        updatedAt: now,
+                        lastOpenedAt: now,
+                        backupConfirmed: backupConfirmed
+                    };
+                    vault.wallets.push(existingRecord);
+                }
+                else {
+                    existingRecord.address = address;
+                    existingRecord.encryptedWalletData = encryptedWalletData;
+                    existingRecord.updatedAt = now;
+                    existingRecord.backupConfirmed = existingRecord.backupConfirmed || backupConfirmed;
+                    if (typeof walletName === 'string' && walletName.trim() !== '')
+                        existingRecord.name = walletName.trim();
+                }
+                if (makeActive && (WalletRepository.currentWalletId === null || WalletRepository.currentWalletId === resolvedWalletId)) {
+                    vault.activeWalletId = resolvedWalletId;
+                    WalletRepository.currentWalletId = resolvedWalletId;
+                }
+                return WalletRepository.writeVault(vault);
+            });
         };
         WalletRepository.getEncrypted = function (wallet, password) {
             if (password.length > 32)
@@ -112,8 +352,49 @@ define(["require", "exports", "./Wallet", "./CoinUri", "./Storage"], function (r
             };
             return fullEncryptedWallet;
         };
-        WalletRepository.deleteLocalCopy = function () {
-            return Storage_1.Storage.remove('wallet');
+        WalletRepository.renameWallet = function (walletId, name) {
+            var cleanName = name.trim();
+            if (cleanName === '')
+                cleanName = 'Wallet';
+            return WalletRepository.ensureVault().then(function (vault) {
+                var record = WalletRepository.findRecord(vault, walletId);
+                if (record === null)
+                    throw 'missing_wallet';
+                record.name = cleanName;
+                record.updatedAt = new Date().toISOString();
+                if (WalletRepository.hasElectronStorage() && window.karboStorage)
+                    return window.karboStorage.renameWallet(walletId, cleanName);
+                return WalletRepository.writeVault(vault);
+            });
+        };
+        WalletRepository.getEncryptedWalletBackup = function (walletId) {
+            return WalletRepository.ensureVault().then(function (vault) {
+                var record = WalletRepository.findRecord(vault, walletId);
+                if (record === null)
+                    return null;
+                return WalletRepository.getEncryptedWalletData(record);
+            });
+        };
+        WalletRepository.deleteLocalCopy = function (walletId) {
+            return WalletRepository.ensureVault().then(function (vault) {
+                var resolvedWalletId = WalletRepository.resolveWalletId(vault, walletId);
+                if (resolvedWalletId === null)
+                    return Promise.resolve();
+                var filteredWallets = [];
+                for (var _i = 0, _a = vault.wallets; _i < _a.length; _i++) {
+                    var record = _a[_i];
+                    if (record.id !== resolvedWalletId)
+                        filteredWallets.push(record);
+                }
+                vault.wallets = filteredWallets;
+                if (vault.activeWalletId === resolvedWalletId)
+                    vault.activeWalletId = vault.wallets.length > 0 ? vault.wallets[0].id : null;
+                if (WalletRepository.currentWalletId === resolvedWalletId)
+                    WalletRepository.currentWalletId = null;
+                if (WalletRepository.hasElectronStorage() && window.karboStorage)
+                    return window.karboStorage.deleteWallet(resolvedWalletId);
+                return WalletRepository.writeVault(vault);
+            });
         };
         WalletRepository.downloadEncryptedPdf = function (wallet) {
             if (wallet.keys.priv.spend === '')
@@ -184,6 +465,10 @@ define(["require", "exports", "./Wallet", "./CoinUri", "./Storage"], function (r
                 alert('Error ' + e);
             }
         };
+        WalletRepository.VAULT_STORAGE_KEY = 'wallet-vault';
+        WalletRepository.LEGACY_WALLET_STORAGE_KEY = 'wallet';
+        WalletRepository.MIGRATION_NOTICE_KEY = 'wallet-vault-migration-notice';
+        WalletRepository.currentWalletId = null;
         return WalletRepository;
     }());
     exports.WalletRepository = WalletRepository;

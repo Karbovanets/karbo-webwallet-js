@@ -67,6 +67,7 @@ define(["require", "exports", "./lib/numbersLab/Router", "./lib/numbersLab/Depen
             metaThemeColor.setAttribute('content', userTheme === 'light' ? '#eef4ff' : '#111827');
         }
     });
+    Storage_1.Storage.requestPersistentStorage();
     //========================================================
     //===========Bottom Navigation active state===============
     //========================================================

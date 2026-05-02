@@ -33,30 +33,142 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "../model/WalletRepository", "../lib/numbersLab/DependencyInjector", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DestructableView", "../model/Wallet", "../model/AppState"], function (require, exports, WalletRepository_1, DependencyInjector_1, VueAnnotate_1, DestructableView_1, Wallet_1, AppState_1) {
+define(["require", "exports", "../model/WalletRepository", "../lib/numbersLab/DependencyInjector", "../lib/numbersLab/VueAnnotate", "../lib/numbersLab/DestructableView", "../model/Wallet", "../model/AppState", "../model/Storage"], function (require, exports, WalletRepository_1, DependencyInjector_1, VueAnnotate_1, DestructableView_1, Wallet_1, AppState_1, Storage_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var wallet = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Wallet_1.Wallet.name, 'default', false);
-    if (wallet !== null) {
-        window.location.href = '#account';
-    }
     var IndexView = /** @class */ (function (_super) {
         __extends(IndexView, _super);
         function IndexView(container) {
             var _this = _super.call(this, container) || this;
             _this.isWalletLoaded = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Wallet_1.Wallet.name, 'default', false) !== null;
-            WalletRepository_1.WalletRepository.hasOneStored().then(function (status) {
-                _this.hasLocalWallet = status;
+            _this.refreshWallets();
+            _this.refreshStorageProtection();
+            WalletRepository_1.WalletRepository.consumeMigrationNotice().then(function (message) {
+                if (message !== null) {
+                    swal({
+                        type: 'info',
+                        title: i18n.t('walletVault.migrationNoticeTitle'),
+                        text: _this.translateMigrationNotice(message),
+                        confirmButtonText: i18n.t('global.invalidPasswordModal.confirmText')
+                    });
+                }
             });
-            // this.importWallet();
-            AppState_1.AppState.disableLeftMenu();
+            if (_this.isWalletLoaded)
+                AppState_1.AppState.enableLeftMenu();
+            else
+                AppState_1.AppState.disableLeftMenu();
             return _this;
         }
         IndexView.prototype.destruct = function () {
             return _super.prototype.destruct.call(this);
         };
-        IndexView.prototype.loadWallet = function () {
-            AppState_1.AppState.askUserOpenWallet();
+        IndexView.prototype.refreshWallets = function () {
+            var _this = this;
+            WalletRepository_1.WalletRepository.getWallets().then(function (wallets) {
+                _this.wallets = wallets;
+                _this.hasLocalWallet = wallets.length > 0;
+                var currentWalletId = WalletRepository_1.WalletRepository.getCurrentWalletId();
+                _this.activeWalletId = currentWalletId === null ? '' : currentWalletId;
+            });
+        };
+        IndexView.prototype.refreshStorageProtection = function () {
+            var _this = this;
+            Storage_1.Storage.requestPersistentStorage().then(function (status) {
+                _this.storageProtectionStatus = status;
+                if (status === 'enabled')
+                    _this.storageProtectionKey = 'walletVault.storageStatus.enabled';
+                else if (status === 'not_available')
+                    _this.storageProtectionKey = 'walletVault.storageStatus.notAvailable';
+                else
+                    _this.storageProtectionKey = 'walletVault.storageStatus.notGranted';
+            });
+        };
+        IndexView.prototype.loadWallet = function (walletId) {
+            AppState_1.AppState.askUserOpenWallet(true, walletId);
+        };
+        IndexView.prototype.renameWallet = function (wallet) {
+            var _this = this;
+            var options = {
+                title: i18n.t('walletVault.renameModal.title'),
+                input: 'text',
+                inputValue: wallet.name,
+                showCancelButton: true,
+                confirmButtonText: i18n.t('walletVault.renameModal.confirmText'),
+                cancelButtonText: i18n.t('global.openWalletModal.cancelText')
+            };
+            swal(options).then(function (result) {
+                if (result.value) {
+                    WalletRepository_1.WalletRepository.renameWallet(wallet.id, result.value).then(function () {
+                        _this.refreshWallets();
+                    });
+                }
+            });
+        };
+        IndexView.prototype.exportWallet = function (wallet) {
+            var _this = this;
+            swal({
+                title: i18n.t('global.openWalletModal.title'),
+                input: 'password',
+                showCancelButton: true,
+                confirmButtonText: i18n.t('walletVault.actions.exportBackup'),
+                cancelButtonText: i18n.t('global.openWalletModal.cancelText')
+            }).then(function (result) {
+                if (!result.value)
+                    return;
+                var password = result.value;
+                WalletRepository_1.WalletRepository.getLocalWalletWithPassword(password, wallet.id, false).then(function (openedWallet) {
+                    if (openedWallet === null) {
+                        swal({
+                            type: 'error',
+                            title: i18n.t('global.invalidPasswordModal.title'),
+                            text: i18n.t('global.invalidPasswordModal.content'),
+                            confirmButtonText: i18n.t('global.invalidPasswordModal.confirmText')
+                        });
+                        return;
+                    }
+                    WalletRepository_1.WalletRepository.getEncryptedWalletBackup(wallet.id).then(function (encryptedWallet) {
+                        if (encryptedWallet === null)
+                            return;
+                        var blob = new Blob([encryptedWallet], { type: "application/json" });
+                        saveAs(blob, _this.walletBackupFileName(wallet));
+                    });
+                });
+            });
+        };
+        IndexView.prototype.removeWallet = function (wallet) {
+            var _this = this;
+            swal({
+                title: i18n.t('walletVault.actions.remove'),
+                html: i18n.t('walletVault.removeModal.content'),
+                showCancelButton: true,
+                confirmButtonText: i18n.t('walletVault.actions.remove'),
+                cancelButtonText: i18n.t('global.openWalletModal.cancelText'),
+                type: 'warning'
+            }).then(function (result) {
+                if (result.value) {
+                    if (WalletRepository_1.WalletRepository.getCurrentWalletId() === wallet.id)
+                        AppState_1.AppState.disconnect();
+                    WalletRepository_1.WalletRepository.deleteLocalCopy(wallet.id).then(function () {
+                        _this.refreshWallets();
+                    });
+                }
+            });
+        };
+        IndexView.prototype.formatWalletDate = function (value) {
+            if (value === null || value === '')
+                return i18n.t('walletVault.neverOpened');
+            return new Date(value).toLocaleString();
+        };
+        IndexView.prototype.translateMigrationNotice = function (message) {
+            if (message.indexOf('walletVault.') === 0)
+                return i18n.t(message);
+            return message;
+        };
+        IndexView.prototype.walletBackupFileName = function (wallet) {
+            var name = wallet.name.replace(/[^a-z0-9_\-]+/gi, '_').replace(/^_+|_+$/g, '');
+            if (name === '')
+                name = 'wallet';
+            return name + '.karbowallet';
         };
         __decorate([
             (0, VueAnnotate_1.VueVar)(false)
@@ -64,6 +176,18 @@ define(["require", "exports", "../model/WalletRepository", "../lib/numbersLab/De
         __decorate([
             (0, VueAnnotate_1.VueVar)(false)
         ], IndexView.prototype, "isWalletLoaded", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)([])
+        ], IndexView.prototype, "wallets", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('')
+        ], IndexView.prototype, "activeWalletId", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('walletVault.storageStatus.notAvailable')
+        ], IndexView.prototype, "storageProtectionKey", void 0);
+        __decorate([
+            (0, VueAnnotate_1.VueVar)('not_available')
+        ], IndexView.prototype, "storageProtectionStatus", void 0);
         return IndexView;
     }(DestructableView_1.DestructableView));
     var newIndexView = new IndexView('#app');
@@ -118,4 +242,4 @@ window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs : any) {
 
 }, onErrorLoadFs);
 
-*/ 
+*/

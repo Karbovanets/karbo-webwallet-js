@@ -84,6 +84,8 @@ export class WalletWatchdog {
             } else if (message === 'readyWallet') {
                 self.workerProcessingReady = true;
             } else if (message.type) {
+                if (self.stopped)
+                    return;
                 if (message.type === 'processed') {
                     let transactions = message.transactions;
                     let txPrivateKeys = typeof message.txPrivateKeys === 'object' && message.txPrivateKeys !== null ? message.txPrivateKeys : {};
@@ -118,6 +120,8 @@ export class WalletWatchdog {
     }
 
     signalWalletUpdate() {
+        if (this.stopped)
+            return;
         let self = this;
         logDebugMsg('wallet update');
         this.lastBlockLoading = -1;//reset scanning
@@ -156,9 +160,13 @@ export class WalletWatchdog {
 
     stop() {
         clearInterval(this.intervalTransactionsProcess);
+        this.intervalTransactionsProcess = 0;
         this.transactionsToProcess = [];
         clearInterval(this.intervalMempool);
+        this.intervalMempool = 0;
         this.stopped = true;
+        if (typeof this.workerProcessing !== 'undefined')
+            this.terminateWorker();
     }
 
     checkMempool(force: boolean = false): boolean {
@@ -168,6 +176,8 @@ export class WalletWatchdog {
         }
 
         this.explorer.getTransactionPool().then(function (pool: any) {
+            if (self.stopped)
+                return;
             let txsMem: Transaction[] = [];
             if (typeof pool !== 'undefined')
                 for (let rawTx of pool) {
@@ -201,6 +211,11 @@ export class WalletWatchdog {
 
     checkTransactionsInterval() {
         logDebugMsg(`checkTransactionsInterval called...`);
+        if (this.stopped) {
+            clearInterval(this.intervalTransactionsProcess);
+            this.intervalTransactionsProcess = 0;
+            return;
+        }
 
         //somehow we're repeating and regressing back to re-process Tx's
         //loadHistory getting into a stack overflow ?
@@ -246,6 +261,10 @@ export class WalletWatchdog {
 
     processTransactions(transactions: RawDaemon_Transaction[], callback: Function) {
         logDebugMsg(`processTransactions called...`, transactions);
+        if (this.stopped) {
+            callback();
+            return;
+        }
         let transactionsToAdd = transactions;
 
         // add the raw transaction to the processing FIFO list
@@ -291,6 +310,8 @@ export class WalletWatchdog {
         }
 
         this.explorer.getHeight().then(function (height) {
+            if (self.stopped)
+                return;
             logDebugMsg("Checking on height", height);
             if (height > self.lastMaximumHeight) {
                 self.lastMaximumHeight = height;
@@ -314,6 +335,8 @@ export class WalletWatchdog {
                 if (endBlock > self.lastMaximumHeight) endBlock = self.lastMaximumHeight;
 
                 self.explorer.getTransactionsForBlocks(previousStartBlock, endBlock, self.wallet.options.checkMinerTx).then(function (transactions: any) {
+                    if (self.stopped)
+                        return;
                     logDebugMsg("getTransactionsForBlocks", previousStartBlock, endBlock, transactions);
 
                     //to ensure no pile explosion
@@ -346,6 +369,8 @@ export class WalletWatchdog {
                         }, delay);
                     }
                 }).catch(function () {
+                    if (self.stopped)
+                        return;
                     logDebugMsg(`Error occured in loadHistory[1]...`);
                     setTimeout(function () {
                         self.loadHistory();
@@ -357,6 +382,8 @@ export class WalletWatchdog {
                 }, 30 * 1000);
             }
         }).catch(function () {
+            if (self.stopped)
+                return;
             logDebugMsg(`Error occured in loadHistory[2]...`);
             setTimeout(function () {
                 self.loadHistory();

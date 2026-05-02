@@ -25,8 +25,6 @@ define(["require", "exports", "../lib/numbersLab/DestructableView", "../model/Ap
             return _this;
         }
         ForgotPasswordView.prototype.deleteWallet = function () {
-            //localStorage.clear();
-            //window.location.href = '/';
             DeleteWallet_1.DeleteWallet.deleteWallet();
         };
         return ForgotPasswordView;

@@ -58,7 +58,7 @@ define(["require", "exports"], function (require, exports) {
             this.dbName = 'mydb';
             this.storeName = 'storage';
             this.ready = new Promise(function (resolve, reject) {
-                var request = indexedDB.open(_this.dbName);
+                var request = indexedDB.open(_this.dbName, 1);
                 request.onupgradeneeded = function (event) {
                     _this.db = event.target.result;
                     _this.db.createObjectStore(_this.storeName, { keyPath: 'key' });
@@ -74,18 +74,19 @@ define(["require", "exports"], function (require, exports) {
         }
         IndexedDBStorage.prototype.setItem = function (key, value) {
             return __awaiter(this, void 0, void 0, function () {
-                var transaction, store;
+                var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, this.ready];
                         case 1:
                             _a.sent();
-                            transaction = this.db.transaction(this.storeName, 'readwrite');
-                            store = transaction.objectStore(this.storeName);
-                            return [4 /*yield*/, store.put({ key: key, value: value })];
-                        case 2:
-                            _a.sent();
-                            return [2 /*return*/];
+                            return [2 /*return*/, new Promise(function (resolve, reject) {
+                                    var transaction = _this.db.transaction(_this.storeName, 'readwrite');
+                                    var store = transaction.objectStore(_this.storeName);
+                                    var request = store.put({ key: key, value: value });
+                                    request.onsuccess = function () { return resolve(); };
+                                    request.onerror = function (event) { return reject(event.target.error); };
+                                })];
                     }
                 });
             });
@@ -117,59 +118,198 @@ define(["require", "exports"], function (require, exports) {
         };
         IndexedDBStorage.prototype.keys = function () {
             return __awaiter(this, void 0, void 0, function () {
-                var transaction, store, keys;
+                var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, this.ready];
                         case 1:
                             _a.sent();
-                            transaction = this.db.transaction(this.storeName, 'readonly');
-                            store = transaction.objectStore(this.storeName);
-                            return [4 /*yield*/, store.getAllKeys()];
-                        case 2:
-                            keys = _a.sent();
-                            return [2 /*return*/, keys];
+                            return [2 /*return*/, new Promise(function (resolve, reject) {
+                                    var transaction = _this.db.transaction(_this.storeName, 'readonly');
+                                    var store = transaction.objectStore(_this.storeName);
+                                    var request = store.getAllKeys();
+                                    request.onsuccess = function () { return resolve(request.result); };
+                                    request.onerror = function (event) { return reject(event.target.error); };
+                                })];
                     }
                 });
             });
         };
         IndexedDBStorage.prototype.remove = function (key) {
             return __awaiter(this, void 0, void 0, function () {
-                var transaction, store;
+                var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, this.ready];
                         case 1:
                             _a.sent();
-                            transaction = this.db.transaction(this.storeName, 'readwrite');
-                            store = transaction.objectStore(this.storeName);
-                            return [4 /*yield*/, store.delete(key)];
-                        case 2:
-                            _a.sent();
-                            return [2 /*return*/];
+                            return [2 /*return*/, new Promise(function (resolve, reject) {
+                                    var transaction = _this.db.transaction(_this.storeName, 'readwrite');
+                                    var store = transaction.objectStore(_this.storeName);
+                                    var request = store.delete(key);
+                                    request.onsuccess = function () { return resolve(); };
+                                    request.onerror = function (event) { return reject(event.target.error); };
+                                })];
                     }
                 });
             });
         };
         IndexedDBStorage.prototype.clear = function () {
             return __awaiter(this, void 0, void 0, function () {
-                var transaction, store;
+                var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, this.ready];
                         case 1:
                             _a.sent();
-                            transaction = this.db.transaction(this.storeName, 'readwrite');
-                            store = transaction.objectStore(this.storeName);
-                            return [4 /*yield*/, store.clear()];
-                        case 2:
-                            _a.sent();
-                            return [2 /*return*/];
+                            return [2 /*return*/, new Promise(function (resolve, reject) {
+                                    var transaction = _this.db.transaction(_this.storeName, 'readwrite');
+                                    var store = transaction.objectStore(_this.storeName);
+                                    var request = store.clear();
+                                    request.onsuccess = function () { return resolve(); };
+                                    request.onerror = function (event) { return reject(event.target.error); };
+                                })];
                     }
                 });
             });
         };
         return IndexedDBStorage;
+    }());
+    var NativeStorage = /** @class */ (function () {
+        function NativeStorage() {
+        }
+        Object.defineProperty(NativeStorage.prototype, "nativeStorage", {
+            get: function () {
+                return window.NativeStorage;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        NativeStorage.prototype.isAvailable = function () {
+            return typeof window !== 'undefined' && typeof window.NativeStorage !== 'undefined';
+        };
+        NativeStorage.prototype.setItem = function (key, value) {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                _this.nativeStorage.setItem(key, value, function () {
+                    resolve();
+                }, function (error) {
+                    reject(error);
+                });
+            });
+        };
+        NativeStorage.prototype.getItem = function (key, defaultValue) {
+            var _this = this;
+            if (defaultValue === void 0) { defaultValue = null; }
+            return new Promise(function (resolve, reject) {
+                _this.nativeStorage.getItem(key, function (value) {
+                    resolve(value);
+                }, function (error) {
+                    if (error && (error.code === 2 || error.code === 'ITEM_NOT_FOUND')) {
+                        resolve(defaultValue);
+                    }
+                    else {
+                        reject(error);
+                    }
+                });
+            });
+        };
+        NativeStorage.prototype.keys = function () {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                _this.nativeStorage.keys(function (keys) {
+                    resolve(keys);
+                }, function (error) {
+                    reject(error);
+                });
+            });
+        };
+        NativeStorage.prototype.remove = function (key) {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                _this.nativeStorage.remove(key, function () {
+                    resolve();
+                }, function (error) {
+                    reject(error);
+                });
+            });
+        };
+        NativeStorage.prototype.clear = function () {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                _this.nativeStorage.clear(function () {
+                    resolve();
+                }, function (error) {
+                    reject(error);
+                });
+            });
+        };
+        return NativeStorage;
+    }());
+    var HybridStorage = /** @class */ (function () {
+        function HybridStorage() {
+            this.indexedDbStorage = new IndexedDBStorage();
+            this.nativeStorage = new NativeStorage();
+        }
+        Object.defineProperty(HybridStorage.prototype, "activeStorage", {
+            get: function () {
+                if (this.nativeStorage.isAvailable())
+                    return this.nativeStorage;
+                return this.indexedDbStorage;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        HybridStorage.prototype.setItem = function (key, value) {
+            return this.activeStorage.setItem(key, value);
+        };
+        HybridStorage.prototype.getItem = function (key, defaultValue) {
+            var _this = this;
+            if (defaultValue === void 0) { defaultValue = null; }
+            if (!this.nativeStorage.isAvailable())
+                return this.indexedDbStorage.getItem(key, defaultValue);
+            var missingValue = '__karbo_storage_missing__' + key;
+            return this.nativeStorage.getItem(key, missingValue).then(function (value) {
+                if (value !== missingValue)
+                    return value;
+                return _this.indexedDbStorage.getItem(key, defaultValue);
+            });
+        };
+        HybridStorage.prototype.keys = function () {
+            if (!this.nativeStorage.isAvailable())
+                return this.indexedDbStorage.keys();
+            return Promise.all([
+                this.nativeStorage.keys(),
+                this.indexedDbStorage.keys()
+            ]).then(function (keyLists) {
+                var keysObj = {};
+                for (var _i = 0, keyLists_1 = keyLists; _i < keyLists_1.length; _i++) {
+                    var keyList = keyLists_1[_i];
+                    for (var _a = 0, keyList_1 = keyList; _a < keyList_1.length; _a++) {
+                        var key = keyList_1[_a];
+                        keysObj[key] = true;
+                    }
+                }
+                return Object.keys(keysObj);
+            });
+        };
+        HybridStorage.prototype.remove = function (key) {
+            if (!this.nativeStorage.isAvailable())
+                return this.indexedDbStorage.remove(key);
+            return Promise.all([
+                this.nativeStorage.remove(key).catch(function () { }),
+                this.indexedDbStorage.remove(key).catch(function () { })
+            ]).then(function () { });
+        };
+        HybridStorage.prototype.clear = function () {
+            if (!this.nativeStorage.isAvailable())
+                return this.indexedDbStorage.clear();
+            return Promise.all([
+                this.nativeStorage.clear(),
+                this.indexedDbStorage.clear()
+            ]).then(function () { });
+        };
+        return HybridStorage;
     }());
     var Storage = /** @class */ (function () {
         function Storage() {
@@ -193,7 +333,23 @@ define(["require", "exports"], function (require, exports) {
         Storage.setItem = function (key, value) {
             return Storage._storage.setItem(key, value);
         };
-        Storage._storage = new IndexedDBStorage();
+        Storage.requestPersistentStorage = function () {
+            if (typeof navigator === 'undefined' || typeof navigator.storage === 'undefined')
+                return Promise.resolve('not_available');
+            var storageManager = navigator.storage;
+            if (typeof storageManager.persisted !== 'function' || typeof storageManager.persist !== 'function')
+                return Promise.resolve('not_available');
+            return storageManager.persisted().then(function (persisted) {
+                if (persisted)
+                    return 'enabled';
+                return storageManager.persist().then(function (granted) {
+                    return granted ? 'enabled' : 'not_granted';
+                });
+            }).catch(function () {
+                return 'not_granted';
+            });
+        };
+        Storage._storage = new HybridStorage();
         return Storage;
     }());
     exports.Storage = Storage;

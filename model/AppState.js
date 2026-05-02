@@ -17,22 +17,47 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AppState = exports.WalletWorker = void 0;
     var WalletWorker = /** @class */ (function () {
-        function WalletWorker(wallet, password) {
+        function WalletWorker(wallet, password, walletId, walletName, backupConfirmed) {
+            if (walletName === void 0) { walletName = null; }
+            if (backupConfirmed === void 0) { backupConfirmed = true; }
             this.intervalSave = 0;
+            this.active = true;
             this.wallet = wallet;
             this.password = password;
+            this.walletId = walletId;
+            this.walletName = walletName;
+            this.backupConfirmed = backupConfirmed;
             var self = this;
-            wallet.addObserver(Observable_1.Observable.EVENT_MODIFIED, function () {
+            this.saveObserver = function () {
+                if (!self.active)
+                    return;
                 if (self.intervalSave === 0)
                     self.intervalSave = setTimeout(function () {
+                        if (!self.active)
+                            return;
                         self.save();
                         self.intervalSave = 0;
                     }, 1000);
-            });
+            };
+            wallet.addObserver(Observable_1.Observable.EVENT_MODIFIED, this.saveObserver);
             this.save();
         }
-        WalletWorker.prototype.save = function () {
-            WalletRepository_1.WalletRepository.save(this.wallet, this.password);
+        WalletWorker.prototype.save = function (makeActive) {
+            if (makeActive === void 0) { makeActive = true; }
+            if (!this.active && makeActive)
+                return Promise.resolve();
+            return WalletRepository_1.WalletRepository.save(this.wallet, this.password, this.walletId, this.walletName, this.backupConfirmed, makeActive);
+        };
+        WalletWorker.prototype.stop = function () {
+            if (!this.active)
+                return Promise.resolve();
+            this.active = false;
+            this.wallet.removeObserver(Observable_1.Observable.EVENT_MODIFIED, this.saveObserver);
+            if (this.intervalSave !== 0) {
+                clearTimeout(this.intervalSave);
+                this.intervalSave = 0;
+            }
+            return this.save(false);
         };
         return WalletWorker;
     }());
@@ -40,13 +65,22 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
     var AppState = /** @class */ (function () {
         function AppState() {
         }
-        AppState.openWallet = function (wallet, password) {
-            var walletWorker = new WalletWorker(wallet, password);
+        AppState.openWallet = function (wallet, password, walletId, walletName, backupConfirmed) {
+            if (walletId === void 0) { walletId = null; }
+            if (walletName === void 0) { walletName = null; }
+            if (backupConfirmed === void 0) { backupConfirmed = true; }
+            var existingWallet = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Wallet_1.Wallet.name, 'default', false);
+            if (existingWallet !== null)
+                AppState.disconnect();
+            var resolvedWalletId = walletId === null ? WalletRepository_1.WalletRepository.createWalletId() : walletId;
+            WalletRepository_1.WalletRepository.setCurrentWalletId(resolvedWalletId);
+            var walletWorker = new WalletWorker(wallet, password, resolvedWalletId, walletName, backupConfirmed);
             (0, DependencyInjector_1.DependencyInjectorInstance)().register(Wallet_1.Wallet.name, wallet);
             var watchdog = BlockchainExplorerProvider_1.BlockchainExplorerProvider.getInstance().watchdog(wallet);
             (0, DependencyInjector_1.DependencyInjectorInstance)().register(WalletWatchdog_1.WalletWatchdog.name, watchdog);
             (0, DependencyInjector_1.DependencyInjectorInstance)().register(WalletWorker.name, walletWorker);
             $('body').addClass('connected');
+            $('body').removeClass('viewOnlyWallet');
             if (wallet.isViewOnly())
                 $('body').addClass('viewOnlyWallet');
         };
@@ -56,6 +90,8 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
             var walletWatchdog = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(WalletWatchdog_1.WalletWatchdog.name, 'default', false);
             if (walletWatchdog !== null)
                 walletWatchdog.stop();
+            if (walletWorker !== null)
+                walletWorker.stop();
             (0, DependencyInjector_1.DependencyInjectorInstance)().register(Wallet_1.Wallet.name, undefined, 'default');
             (0, DependencyInjector_1.DependencyInjectorInstance)().register(WalletWorker.name, undefined, 'default');
             (0, DependencyInjector_1.DependencyInjectorInstance)().register(WalletWatchdog_1.WalletWatchdog.name, undefined, 'default');
@@ -74,8 +110,9 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
                 $('body').addClass('menuDisabled');
             }
         };
-        AppState.askUserOpenWallet = function (redirectToHome) {
+        AppState.askUserOpenWallet = function (redirectToHome, walletId) {
             if (redirectToHome === void 0) { redirectToHome = true; }
+            if (walletId === void 0) { walletId = null; }
             var self = this;
             return new Promise(function (resolve, reject) {
                 swal({
@@ -98,8 +135,9 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
                             var savePassword_1 = result.value;
                             // let password = prompt();
                             var memoryWallet = (0, DependencyInjector_1.DependencyInjectorInstance)().getInstance(Wallet_1.Wallet.name, 'default', false);
-                            if (memoryWallet === null) {
-                                WalletRepository_1.WalletRepository.getLocalWalletWithPassword(savePassword_1).then(function (wallet) {
+                            var currentWalletId = WalletRepository_1.WalletRepository.getCurrentWalletId();
+                            if (memoryWallet === null || (walletId !== null && currentWalletId !== walletId)) {
+                                WalletRepository_1.WalletRepository.getLocalWalletWithPassword(savePassword_1, walletId).then(function (wallet) {
                                     //console.log(wallet);
                                     if (wallet !== null) {
                                         wallet.recalculateIfNotViewOnly();
@@ -138,7 +176,7 @@ define(["require", "exports", "../lib/numbersLab/DependencyInjector", "./Wallet"
                                         }
                                         swal.close();
                                         resolve();
-                                        AppState.openWallet(wallet, savePassword_1);
+                                        AppState.openWallet(wallet, savePassword_1, WalletRepository_1.WalletRepository.getCurrentWalletId());
                                         if (redirectToHome)
                                             window.location.href = '#account';
                                     }

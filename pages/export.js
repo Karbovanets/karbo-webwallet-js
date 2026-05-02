@@ -62,7 +62,7 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
                     var savePassword_1 = result.value;
                     // let password = prompt();
                     // let wallet = WalletRepository.getMain();
-                    return WalletRepository_1.WalletRepository.getLocalWalletWithPassword(savePassword_1).then(function (wallet) {
+                    return WalletRepository_1.WalletRepository.getLocalWalletWithPassword(savePassword_1, WalletRepository_1.WalletRepository.getCurrentWalletId(), false).then(function (wallet) {
                         if (wallet !== null) {
                             return { wallet: wallet, password: savePassword_1 };
                         }
