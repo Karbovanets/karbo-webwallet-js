@@ -29,7 +29,9 @@ export class WalletWorker {
 	walletName: string|null;
 	backupConfirmed: boolean;
 
-	intervalSave = 0;
+	intervalSave: any = 0;
+	private active = true;
+	private saveObserver !: Function;
 
 	constructor(wallet: Wallet, password: string, walletId: string, walletName: string|null = null, backupConfirmed: boolean = true) {
 		this.wallet = wallet;
@@ -38,19 +40,39 @@ export class WalletWorker {
 		this.walletName = walletName;
 		this.backupConfirmed = backupConfirmed;
 		let self: any = this;
-		wallet.addObserver(Observable.EVENT_MODIFIED, function () {
+		this.saveObserver = function () {
+			if (!self.active)
+				return;
 			if (self.intervalSave === 0)
 				self.intervalSave = setTimeout(function () {
+					if (!self.active)
+						return;
 					self.save();
 					self.intervalSave = 0;
 				}, 1000);
-		});
+		};
+		wallet.addObserver(Observable.EVENT_MODIFIED, this.saveObserver);
 
 		this.save();
 	}
 
-	save() {
-		WalletRepository.save(this.wallet, this.password, this.walletId, this.walletName, this.backupConfirmed);
+	save(makeActive: boolean = true): Promise<void> {
+		if (!this.active && makeActive)
+			return Promise.resolve();
+		return WalletRepository.save(this.wallet, this.password, this.walletId, this.walletName, this.backupConfirmed, makeActive);
+	}
+
+	stop(): Promise<void> {
+		if (!this.active)
+			return Promise.resolve();
+
+		this.active = false;
+		this.wallet.removeObserver(Observable.EVENT_MODIFIED, this.saveObserver);
+		if (this.intervalSave !== 0) {
+			clearTimeout(this.intervalSave);
+			this.intervalSave = 0;
+		}
+		return this.save(false);
 	}
 }
 
@@ -83,7 +105,7 @@ export class AppState {
 		if (walletWatchdog !== null)
 			walletWatchdog.stop();
 		if (walletWorker !== null)
-			walletWorker.save();
+			walletWorker.stop();
 
 		DependencyInjectorInstance().register(Wallet.name, undefined, 'default');
 		DependencyInjectorInstance().register(WalletWorker.name, undefined, 'default');

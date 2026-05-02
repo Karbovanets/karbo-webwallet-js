@@ -346,7 +346,7 @@ export class WalletRepository{
 		});
 	}
 	
-	static save(wallet : Wallet, password : string, walletId? : string|null, walletName? : string|null, backupConfirmed: boolean = true) : Promise<void>{
+	static save(wallet : Wallet, password : string, walletId? : string|null, walletName? : string|null, backupConfirmed: boolean = true, makeActive: boolean = true) : Promise<void>{
 		return WalletRepository.ensureVault().then((vault: WalletVault) => {
 			let resolvedWalletId = WalletRepository.resolveWalletId(vault, walletId);
 			if (resolvedWalletId === null || (typeof walletId === 'string' && WalletRepository.findRecord(vault, walletId) === null))
@@ -378,8 +378,10 @@ export class WalletRepository{
 					existingRecord.name = walletName.trim();
 			}
 
-			vault.activeWalletId = resolvedWalletId;
-			WalletRepository.currentWalletId = resolvedWalletId;
+			if (makeActive && (WalletRepository.currentWalletId === null || WalletRepository.currentWalletId === resolvedWalletId)) {
+				vault.activeWalletId = resolvedWalletId;
+				WalletRepository.currentWalletId = resolvedWalletId;
+			}
 			return WalletRepository.writeVault(vault);
 		});
 	}
