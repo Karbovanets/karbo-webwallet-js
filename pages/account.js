@@ -255,7 +255,7 @@ define(["require", "exports", "../lib/numbersLab/VueAnnotate", "../lib/numbersLa
             rows += "<div class=\"tx-detail-row\">\n\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.blockHeight') + "</span>\n\t\t\t<span class=\"tx-detail-value\">" + this.txBlockDetailsHtml(transaction, explorerUrlBlock) + "</span>\n\t\t</div>";
             // Payment ID
             if (transaction.paymentId !== '') {
-                rows += "<div class=\"tx-detail-row\">\n\t\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.paymentId') + "</span>\n\t\t\t\t<span class=\"tx-detail-value tx-detail-mono\">" + transaction.paymentId + "</span>\n\t\t\t</div>";
+                rows += "<div class=\"tx-detail-row tx-detail-row-stack\">\n\t\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.paymentId') + "</span>\n\t\t\t\t<span class=\"tx-detail-hash\">" + transaction.paymentId + "</span>\n\t\t\t</div>";
             }
             // Tx hash
             rows += "<div class=\"tx-detail-row tx-detail-row-stack\">\n\t\t\t<span class=\"tx-detail-label\">" + i18n.t('accountPage.txDetails.txHash') + "</span>\n\t\t\t<a href=\"" + explorerUrlHash.replace('{ID}', transaction.hash) + "\" target=\"_blank\" class=\"tx-detail-hash\">" + transaction.hash + "</a>\n\t\t</div>";
