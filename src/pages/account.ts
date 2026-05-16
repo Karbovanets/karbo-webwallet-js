@@ -306,9 +306,9 @@ class AccountView extends DestructableView{
 
 		// Payment ID
 		if(transaction.paymentId !== ''){
-			rows += `<div class="tx-detail-row">
+			rows += `<div class="tx-detail-row tx-detail-row-stack">
 				<span class="tx-detail-label">`+i18n.t('accountPage.txDetails.paymentId')+`</span>
-				<span class="tx-detail-value tx-detail-mono">`+transaction.paymentId+`</span>
+				<span class="tx-detail-hash">`+transaction.paymentId+`</span>
 			</div>`;
 		}
 
